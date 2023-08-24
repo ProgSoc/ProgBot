@@ -15,6 +15,7 @@ import { HandbookSubmajorsCommandDto } from 'src/dto/HandbookSubmajorsCommandDto
 import { HandbookService } from 'src/handbook.service';
 import { UseInterceptors } from '@nestjs/common';
 import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
+import { HandbookSubjectCommandDto } from 'src/dto/HandbookSubjectCommandDto';
 
 export const HandbookCommandDecorator = createCommandGroupDecorator({
   name: 'handbook',
@@ -107,6 +108,31 @@ export class HandbookCommands {
     await interaction.reply({
       content: subjectString,
       flags: [MessageFlags.SuppressEmbeds, MessageFlags.Ephemeral],
+    });
+  }
+
+  @UseInterceptors(SubjectCodeAutocompleteInterceptor)
+  @Subcommand({
+    name: 'subject',
+    description: "Get a subject's handbook entry",
+  })
+  public async subject(
+    @Context() [interaction]: SlashCommandContext,
+    @Options() { code }: HandbookSubjectCommandDto,
+  ) {
+    const md = await this.handbookService.getSubjectMd(code);
+
+    if (!md) {
+      await interaction.reply({
+        content: 'No subject found',
+        ephemeral: true,
+      });
+      return;
+    }
+
+    await interaction.reply({
+      content: md.slice(0, 2000),
+      flags: [MessageFlags.Ephemeral, MessageFlags.SuppressEmbeds],
     });
   }
 

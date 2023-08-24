@@ -2,6 +2,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { type Cache } from 'cache-manager';
 import { load } from 'cheerio';
+import { NodeHtmlMarkdown } from 'node-html-markdown';
 import { z } from 'zod';
 
 const coursesSchema = z.array(
@@ -98,6 +99,39 @@ export class HandbookService {
     }
   }
 
+  public async getSubjectMd(subjectCode: string): Promise<null | string> {
+    const url = `https://handbook.uts.edu.au/subjects/${subjectCode}.html`;
+
+    const existingSubjectMd = await this.cacheManager.get<string>(
+      `subject-${subjectCode}`,
+    );
+
+    if (existingSubjectMd) {
+      return existingSubjectMd;
+    }
+
+    const subjectPageFetch = await fetch(url);
+
+    if (!subjectPageFetch.ok) {
+      return null;
+    }
+
+    const subjectHtml = await subjectPageFetch.text();
+
+    const $ = load(subjectHtml);
+
+    const pageContent = $('.ie-images').html();
+
+    const md = NodeHtmlMarkdown.translate(pageContent);
+
+    await this.cacheManager.set(
+      `subject-${subjectCode}`,
+      md,
+      1000 * 60 * 60 * 24, // 1 day
+    );
+
+    return md;
+  }
   /**
    * Get a list of subjects
    * @returns A list of subjects
