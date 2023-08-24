@@ -11,5 +11,7 @@ export default defineConfig(({ watch }) => ({
   dts: true,
   bundle: true,
   metafile: true,
-  onSuccess: watch ? 'node --enable-source-maps dist/main' : undefined,
+  onSuccess: watch
+    ? 'node --enable-source-maps --inspect dist/main'
+    : undefined,
 }));

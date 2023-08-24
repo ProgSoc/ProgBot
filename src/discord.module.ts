@@ -4,6 +4,7 @@ import { NecordModule } from 'necord';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PingCommand } from './commands/ping.command';
 import { InviteCommand } from './commands/invite.command';
+import { OutlineCommand } from './commands/outline.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -20,7 +21,7 @@ import { InviteCommand } from './commands/invite.command';
       inject: [ConfigService],
     }),
   ],
-  providers: [DiscordService, PingCommand, InviteCommand],
+  providers: [DiscordService, PingCommand, InviteCommand, OutlineCommand],
   controllers: [],
 })
 export class DiscordModule {}
