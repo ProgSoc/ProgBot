@@ -11,6 +11,8 @@ import { NecordPaginationModule } from '@necord/pagination';
 import type { RedisOptions } from 'ioredis';
 import { HandbookCommands } from './commands/handbook.command';
 import { HandbookService } from './handbook.service';
+import { TimetableService } from './timetable.service';
+import { TimetableCommand } from './commands/timetable.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -56,6 +58,8 @@ import { HandbookService } from './handbook.service';
     OutlineCommand,
     HandbookCommands,
     HandbookService,
+    TimetableService,
+    TimetableCommand,
   ],
   controllers: [],
 })
