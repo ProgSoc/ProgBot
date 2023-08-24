@@ -49,5 +49,15 @@
     "typescript": "^5.1.3"
   },
   "type": "module",
-  "module": "dist/main.js"
+  "module": "dist/main.js",
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ]
+  }
 }
