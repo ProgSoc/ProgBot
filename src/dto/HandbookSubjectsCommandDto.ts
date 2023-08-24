@@ -5,6 +5,7 @@ export class HandbookSubjectsCommandDto {
     name: 'search',
     description: 'The search query',
     required: true,
+    autocomplete: true,
   })
   search: string;
 }

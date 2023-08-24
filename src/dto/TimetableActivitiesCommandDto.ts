@@ -5,6 +5,7 @@ export class TimetableActivitiesCommandDto {
     name: 'code',
     description: 'The subject code',
     required: true,
+    autocomplete: true,
   })
   code: string;
   @StringOption({

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseInterceptors } from '@nestjs/common';
 import { EmbedBuilder } from 'discord.js';
 import {
   Context,
@@ -6,6 +6,7 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from 'necord';
+import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
 import { TimetableActivitiesCommandDto } from 'src/dto/TimetableActivitiesCommandDto';
 import mainLogger from 'src/logger';
 import { TimetableService } from 'src/timetable.service';
@@ -16,6 +17,7 @@ export class TimetableCommand {
 
   constructor(private readonly timetableService: TimetableService) {}
 
+  @UseInterceptors(SubjectCodeAutocompleteInterceptor)
   @SlashCommand({
     name: 'timetable',
     description: 'Get the timetable of a subject',

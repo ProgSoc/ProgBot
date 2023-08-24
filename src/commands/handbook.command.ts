@@ -13,6 +13,8 @@ import { HandbookSubjectsCommandDto } from 'src/dto/HandbookSubjectsCommandDto';
 import { HandbookMajorsCommandDto } from 'src/dto/HandbookMajorsCommandDto';
 import { HandbookSubmajorsCommandDto } from 'src/dto/HandbookSubmajorsCommandDto';
 import { HandbookService } from 'src/handbook.service';
+import { UseInterceptors } from '@nestjs/common';
+import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
 
 export const HandbookCommandDecorator = createCommandGroupDecorator({
   name: 'handbook',
@@ -65,6 +67,7 @@ export class HandbookCommands {
     });
   }
 
+  @UseInterceptors(SubjectCodeAutocompleteInterceptor)
   @Subcommand({
     name: 'subjects',
     description: 'Get a list of subjects',

@@ -1,5 +1,5 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { AttachmentBuilder } from 'discord.js';
 import {
   Context,
@@ -10,6 +10,7 @@ import {
 import { OutlineCommandDto } from 'src/dto/OutlineCommandDto';
 import mainLogger from 'src/logger';
 import type { Cache } from 'cache-manager';
+import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
 
 @Injectable()
 export class OutlineCommand {
@@ -96,6 +97,7 @@ export class OutlineCommand {
     }
   }
 
+  @UseInterceptors(SubjectCodeAutocompleteInterceptor)
   @SlashCommand({
     name: 'outline',
     description: 'Get the subject outline for a specific subject',
@@ -105,7 +107,11 @@ export class OutlineCommand {
     @Options()
     { subjectCode, session, year }: OutlineCommandDto,
   ) {
-    const outlineAttachment = await this.getOutline(subjectCode, session, year);
+    const outlineAttachment = await this.getOutline(
+      parseInt(subjectCode),
+      session,
+      year,
+    );
 
     if (!outlineAttachment) {
       await interaction.reply({

@@ -1,12 +1,13 @@
 import { NumberOption, StringOption } from 'necord';
 
 export class OutlineCommandDto {
-  @NumberOption({
+  @StringOption({
     name: 'subject-code',
     description: 'The subject code',
     required: true,
+    autocomplete: true,
   })
-  subjectCode: number;
+  subjectCode: string;
   @StringOption({
     name: 'session',
     description: 'The session',
