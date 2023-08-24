@@ -7,8 +7,10 @@ import { InviteCommand } from './commands/invite.command';
 import { CacheModule } from '@nestjs/cache-manager';
 import { OutlineCommand } from './commands/outline.command';
 import { redisStore } from 'cache-manager-ioredis-yet';
-
+import { NecordPaginationModule } from '@necord/pagination';
 import type { RedisOptions } from 'ioredis';
+import { HandbookCommands } from './commands/handbook.command';
+import { HandbookService } from './handbook.service';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -38,8 +40,23 @@ import type { RedisOptions } from 'ioredis';
       }),
       inject: [ConfigService],
     }),
+    NecordPaginationModule.forRoot({
+      // Change your buttons appearance
+      buttons: {},
+      // Add buttons for skip to first and last page
+      allowSkip: true,
+      // Add buttons for search page
+      allowTraversal: true,
+    }),
   ],
-  providers: [DiscordService, PingCommand, InviteCommand, OutlineCommand],
+  providers: [
+    DiscordService,
+    PingCommand,
+    InviteCommand,
+    OutlineCommand,
+    HandbookCommands,
+    HandbookService,
+  ],
   controllers: [],
 })
 export class DiscordModule {}
