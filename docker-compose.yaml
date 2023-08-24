@@ -4,3 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file: .env
+    environment:
+      - REDIS_URL=redis://cache:6379
+    links:
+      - cache
+  cache:
+    image: redis:alpine
+    ports:
+      - 6379:6379
