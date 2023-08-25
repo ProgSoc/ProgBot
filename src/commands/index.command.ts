@@ -10,10 +10,13 @@ import {
 import { MEILI_TOKEN } from 'src/services/meilisearch.module';
 import { ScrapingService } from 'src/services/scraping.service';
 
+const guildId = process.env.GUILD_ID;
+
 export const IndexCommandDecorator = createCommandGroupDecorator({
   name: 'index',
   description: 'Indexing the handbook',
   defaultMemberPermissions: ['Administrator'],
+  guilds: guildId ? [guildId] : undefined,
 });
 
 @IndexCommandDecorator()
