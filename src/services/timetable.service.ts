@@ -2,7 +2,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
 import { type Cache } from 'cache-manager';
 import { z } from 'zod';
-import mainLogger from './logger';
+import mainLogger from '../logger';
 
 const activitySchema = z.object({
   /**

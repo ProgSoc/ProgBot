@@ -1,29 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AutocompleteInteraction } from 'discord.js';
 import Fuse from 'fuse.js';
+import MeiliSearch from 'meilisearch';
 import { AutocompleteInterceptor } from 'necord';
-import { HandbookService } from 'src/handbook.service';
+import { MEILI_TOKEN } from 'src/services/meilisearch.module';
+import { IndexedSubject } from 'src/workers/subjectWorker';
 
 @Injectable()
 export class SubjectCodeAutocompleteInterceptor extends AutocompleteInterceptor {
-  constructor(private readonly handbookService: HandbookService) {
+  constructor(@Inject(MEILI_TOKEN) private readonly search: MeiliSearch) {
     super();
   }
 
   public async transformOptions(interaction: AutocompleteInteraction) {
     const focused = interaction.options.getFocused(true);
 
-    const choices = await this.handbookService.getSubjects();
-    const fuse = new Fuse(choices, {
-      keys: ['code', 'name'],
-    });
+    const subjectIndex = await this.search.getIndex<IndexedSubject>('subjects');
 
-    const searched = fuse.search(focused.value.toString(), {
+    const searchRes = await subjectIndex.search(focused.value, {
       limit: 10,
+      attributesToRetrieve: ['code', 'name'],
+      attributesToSearchOn: ['code', 'name', 'md'],
     });
 
     return interaction.respond(
-      searched.map(({ item: subject }) => ({
+      searchRes.hits.map((subject) => ({
         name: `${subject.code.toString()} - ${subject.name}`,
         value: subject.code.toString(),
       })),

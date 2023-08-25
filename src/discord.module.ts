@@ -10,9 +10,12 @@ import { redisStore } from 'cache-manager-ioredis-yet';
 import { NecordPaginationModule } from '@necord/pagination';
 import type { RedisOptions } from 'ioredis';
 import { HandbookCommands } from './commands/handbook.command';
-import { HandbookService } from './handbook.service';
-import { TimetableService } from './timetable.service';
+import { HandbookService } from './services/handbook.service';
+import { TimetableService } from './services/timetable.service';
 import { TimetableCommand } from './commands/timetable.command';
+import { MeiliSearchModule } from './services/meilisearch.module';
+import { ScrapingService } from './services/scraping.service';
+import { IndexCommands } from './commands/index.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -21,6 +24,7 @@ import { TimetableCommand } from './commands/timetable.command';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    // MeiliSearchModule,
     CacheModule.registerAsync<RedisOptions>({
       useFactory: (configService: ConfigService) => {
         const redisUrl = new URL(configService.getOrThrow<string>('REDIS_URL'));
@@ -35,6 +39,7 @@ import { TimetableCommand } from './commands/timetable.command';
       inject: [ConfigService],
       isGlobal: true,
     }),
+    MeiliSearchModule,
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow<string>('DISCORD_TOKEN'),
@@ -57,9 +62,11 @@ import { TimetableCommand } from './commands/timetable.command';
     InviteCommand,
     OutlineCommand,
     HandbookCommands,
+    IndexCommands,
     HandbookService,
     TimetableService,
     TimetableCommand,
+    ScrapingService,
   ],
   controllers: [],
 })

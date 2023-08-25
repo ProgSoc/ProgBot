@@ -6,6 +6,7 @@ const mainLogger = new Signale({
     displayScope: true,
     displayLabel: true,
   },
+  scope: 'Main',
 });
 
 export default mainLogger;

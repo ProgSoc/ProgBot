@@ -9,7 +9,7 @@ import {
 import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
 import { TimetableActivitiesCommandDto } from 'src/dto/TimetableActivitiesCommandDto';
 import mainLogger from 'src/logger';
-import { TimetableService } from 'src/timetable.service';
+import { TimetableService } from 'src/services/timetable.service';
 
 @Injectable()
 export class TimetableCommand {

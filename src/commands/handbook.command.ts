@@ -12,10 +12,13 @@ import Fuse from 'fuse.js';
 import { HandbookSubjectsCommandDto } from 'src/dto/HandbookSubjectsCommandDto';
 import { HandbookMajorsCommandDto } from 'src/dto/HandbookMajorsCommandDto';
 import { HandbookSubmajorsCommandDto } from 'src/dto/HandbookSubmajorsCommandDto';
-import { HandbookService } from 'src/handbook.service';
-import { UseInterceptors } from '@nestjs/common';
+import { HandbookService } from 'src/services/handbook.service';
+import { Inject, UseInterceptors } from '@nestjs/common';
 import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
 import { HandbookSubjectCommandDto } from 'src/dto/HandbookSubjectCommandDto';
+import { MEILI_TOKEN } from 'src/services/meilisearch.module';
+import MeiliSearch from 'meilisearch';
+import { IndexedSubject } from 'src/workers/subjectWorker';
 
 export const HandbookCommandDecorator = createCommandGroupDecorator({
   name: 'handbook',
@@ -24,7 +27,10 @@ export const HandbookCommandDecorator = createCommandGroupDecorator({
 
 @HandbookCommandDecorator()
 export class HandbookCommands {
-  constructor(private readonly handbookService: HandbookService) {}
+  constructor(
+    private readonly handbookService: HandbookService,
+    @Inject(MEILI_TOKEN) private readonly search: MeiliSearch,
+  ) {}
 
   private readonly logger = mainLogger.scope(HandbookCommands.name);
 
@@ -108,31 +114,6 @@ export class HandbookCommands {
     await interaction.reply({
       content: subjectString,
       flags: [MessageFlags.SuppressEmbeds, MessageFlags.Ephemeral],
-    });
-  }
-
-  @UseInterceptors(SubjectCodeAutocompleteInterceptor)
-  @Subcommand({
-    name: 'subject',
-    description: "Get a subject's handbook entry",
-  })
-  public async subject(
-    @Context() [interaction]: SlashCommandContext,
-    @Options() { code }: HandbookSubjectCommandDto,
-  ) {
-    const md = await this.handbookService.getSubjectMd(code);
-
-    if (!md) {
-      await interaction.reply({
-        content: 'No subject found',
-        ephemeral: true,
-      });
-      return;
-    }
-
-    await interaction.reply({
-      content: md.slice(0, 2000),
-      flags: [MessageFlags.Ephemeral, MessageFlags.SuppressEmbeds],
     });
   }
 

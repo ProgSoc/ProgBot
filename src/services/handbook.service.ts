@@ -1,8 +1,13 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { type Cache } from 'cache-manager';
 import { load } from 'cheerio';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
+import path from 'path';
+import Piscina from 'piscina';
+import mainLogger from 'src/logger';
+import { fileURLToPath } from 'url';
 import { z } from 'zod';
 
 const coursesSchema = z.array(
@@ -14,14 +19,14 @@ const coursesSchema = z.array(
   }),
 );
 
-const subjectsSchema = z.array(
-  z.object({
-    /** Has 6 numbers */
-    code: z.coerce.number().int(),
-    name: z.string(),
-    link: z.string().url(),
-  }),
-);
+const subjectSchema = z.object({
+  /** Has 6 numbers */
+  code: z.coerce.number().int(),
+  name: z.string(),
+  link: z.string().url(),
+});
+
+const subjectsSchema = z.array(subjectSchema);
 
 const majorsSchema = z.array(
   z.object({
@@ -48,6 +53,9 @@ const submajorsSchema = z.array(
 
 @Injectable()
 export class HandbookService {
+  private pool: Piscina;
+  private readonly logger = mainLogger.child(HandbookService.name);
+
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   /**
@@ -76,6 +84,9 @@ export class HandbookService {
           const link = $(anchor).attr('href');
           let name = '';
           const nextSibling = $(anchor)[0].nextSibling;
+
+          if (!nextSibling) return;
+
           if (nextSibling.type === 'text') {
             name = nextSibling.nodeValue.trim();
           }
@@ -99,39 +110,6 @@ export class HandbookService {
     }
   }
 
-  public async getSubjectMd(subjectCode: string): Promise<null | string> {
-    const url = `https://handbook.uts.edu.au/subjects/${subjectCode}.html`;
-
-    const existingSubjectMd = await this.cacheManager.get<string>(
-      `subject-${subjectCode}`,
-    );
-
-    if (existingSubjectMd) {
-      return existingSubjectMd;
-    }
-
-    const subjectPageFetch = await fetch(url);
-
-    if (!subjectPageFetch.ok) {
-      return null;
-    }
-
-    const subjectHtml = await subjectPageFetch.text();
-
-    const $ = load(subjectHtml);
-
-    const pageContent = $('.ie-images').html();
-
-    const md = NodeHtmlMarkdown.translate(pageContent);
-
-    await this.cacheManager.set(
-      `subject-${subjectCode}`,
-      md,
-      1000 * 60 * 60 * 24, // 1 day
-    );
-
-    return md;
-  }
   /**
    * Get a list of subjects
    * @returns A list of subjects
