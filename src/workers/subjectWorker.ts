@@ -1,7 +1,4 @@
-import { Redis } from 'ioredis';
-import { redisStore } from 'cache-manager-ioredis-yet';
 import { MeiliSearch } from 'meilisearch';
-import got from 'node_modules/got/dist/source/index';
 import KeyvRedis from '@keyv/redis';
 import { load } from 'cheerio';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
@@ -35,7 +32,7 @@ export interface SubjectIndexArgsArgs {
   options: Options;
 }
 
-const getSubjectHTML = async (link: string, redis: KeyvRedis<string>) => {
+const getHTML = async (link: string, redis: KeyvRedis<string>) => {
   const cachedSubjectHTML = await redis.get(link);
 
   if (cachedSubjectHTML) {
@@ -44,10 +41,15 @@ const getSubjectHTML = async (link: string, redis: KeyvRedis<string>) => {
 
   const subjectHtml = await fetch(link).then((res) => {
     if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+      return null;
     }
     return res.text();
   });
+
+  if (!subjectHtml) {
+    return null;
+  }
+
   mainLogger.info(`Fetched ${link}`);
   await redis.set(link, subjectHtml, 60 * 60 * 24 * 7);
   return subjectHtml;
@@ -63,7 +65,7 @@ export async function indexSubject({ subject, options }: SubjectIndexArgsArgs) {
 
   const index = searchClient.index('subjects');
 
-  const subjectHtml = await getSubjectHTML(subject.link, redis);
+  const subjectHtml = await getHTML(subject.link, redis);
 
   if (!subjectHtml) {
     return;
@@ -87,6 +89,174 @@ export async function indexSubject({ subject, options }: SubjectIndexArgsArgs) {
   };
 
   const id = await index.addDocuments([subjectData], {
+    primaryKey: 'code',
+  });
+}
+
+interface Course {
+  code: string;
+  name: string;
+  link: string;
+}
+
+export interface CourseIndexArgs {
+  course: Course;
+  options: Options;
+}
+
+export interface IndexedCourse {
+  code: string;
+  name: string;
+  link: string;
+  md: string;
+}
+
+export async function indexCourse({ course, options }: CourseIndexArgs) {
+  const redis = new KeyvRedis(options.redis.url);
+
+  const searchClient = new MeiliSearch({
+    host: options.meilisearch.url,
+    apiKey: options.meilisearch.key,
+  });
+
+  const index = searchClient.index('courses');
+
+  const courseHtml = await getHTML(course.link, redis);
+
+  if (!courseHtml) {
+    return;
+  }
+
+  const $ = load(courseHtml);
+
+  const pageContent = $('.ie-images').html();
+
+  if (!pageContent) {
+    return;
+  }
+
+  const md = NodeHtmlMarkdown.translate(pageContent);
+
+  const courseData = {
+    code: course.code,
+    name: course.name,
+    link: course.link,
+    md,
+  };
+
+  const id = await index.addDocuments([courseData], {
+    primaryKey: 'code',
+  });
+}
+
+interface Major {
+  code: string;
+  name: string;
+  link: string;
+}
+
+export interface MajorIndexArgs {
+  major: Major;
+  options: Options;
+}
+
+export interface IndexedMajor {
+  code: string;
+  name: string;
+  link: string;
+  md: string;
+}
+
+export async function indexMajor({ major, options }: MajorIndexArgs) {
+  const redis = new KeyvRedis(options.redis.url);
+
+  const searchClient = new MeiliSearch({
+    host: options.meilisearch.url,
+    apiKey: options.meilisearch.key,
+  });
+
+  const index = searchClient.index('majors');
+
+  const majorHtml = await getHTML(major.link, redis);
+
+  if (!majorHtml) {
+    return;
+  }
+
+  const $ = load(majorHtml);
+
+  const pageContent = $('.ie-images').html();
+
+  if (!pageContent) {
+    return;
+  }
+
+  const md = NodeHtmlMarkdown.translate(pageContent);
+
+  const majorData = {
+    code: major.code,
+    name: major.name,
+    link: major.link,
+    md,
+  };
+
+  const id = await index.addDocuments([majorData], {
+    primaryKey: 'code',
+  });
+}
+
+interface Submajor {
+  code: string;
+  name: string;
+  link: string;
+}
+
+export interface SubmajorsIndexArgs {
+  submajor: Submajor;
+  options: Options;
+}
+
+export interface IndexedSubmajor {
+  code: string;
+  name: string;
+  link: string;
+  md: string;
+}
+
+export async function indexSubmajor({ submajor, options }: SubmajorsIndexArgs) {
+  const redis = new KeyvRedis(options.redis.url);
+
+  const searchClient = new MeiliSearch({
+    host: options.meilisearch.url,
+    apiKey: options.meilisearch.key,
+  });
+
+  const index = searchClient.index('submajors');
+
+  const submajorHtml = await getHTML(submajor.link, redis);
+
+  if (!submajorHtml) {
+    return;
+  }
+
+  const $ = load(submajorHtml);
+
+  const pageContent = $('.ie-images').html();
+
+  if (!pageContent) {
+    return;
+  }
+
+  const md = NodeHtmlMarkdown.translate(pageContent);
+
+  const submajorData = {
+    code: submajor.code,
+    name: submajor.name,
+    link: submajor.link,
+    md,
+  };
+
+  const id = await index.addDocuments([submajorData], {
     primaryKey: 'code',
   });
 }

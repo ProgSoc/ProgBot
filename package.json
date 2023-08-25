@@ -25,8 +25,6 @@
     "cache-manager-ioredis-yet": "^1.2.2",
     "cheerio": "1.0.0-rc.12",
     "discord.js": "^14.13.0",
-    "fuse.js": "^6.6.2",
-    "got": "^13.0.0",
     "ioredis": "^5.3.2",
     "meilisearch": "^0.34.1",
     "necord": "^6.0.0",

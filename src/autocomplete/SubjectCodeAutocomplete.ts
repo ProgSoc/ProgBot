@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AutocompleteInteraction } from 'discord.js';
-import Fuse from 'fuse.js';
 import MeiliSearch from 'meilisearch';
 import { AutocompleteInterceptor } from 'necord';
 import { MEILI_TOKEN } from 'src/services/meilisearch.module';

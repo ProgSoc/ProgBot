@@ -35,4 +35,34 @@ export class IndexCommands {
     await this.scrapingService.scrapeSubjects();
     await interaction.editReply('Done');
   }
+
+  @Subcommand({
+    name: 'courses',
+    description: 'Index courses',
+  })
+  public async indexCourses(@Context() [interaction]: SlashCommandContext) {
+    await interaction.reply('Indexing courses');
+    await this.scrapingService.scrapeCourses();
+    await interaction.editReply('Done');
+  }
+
+  @Subcommand({
+    name: 'majors',
+    description: 'Index majors',
+  })
+  public async indexMajors(@Context() [interaction]: SlashCommandContext) {
+    await interaction.reply('Indexing majors');
+    await this.scrapingService.scrapeMajors();
+    await interaction.editReply('Done');
+  }
+
+  @Subcommand({
+    name: 'submajors',
+    description: 'Index submajors',
+  })
+  public async indexSubmajors(@Context() [interaction]: SlashCommandContext) {
+    await interaction.reply('Indexing submajors');
+    await this.scrapingService.scrapeSubmajors();
+    await interaction.editReply('Done');
+  }
 }

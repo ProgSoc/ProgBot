@@ -8,7 +8,6 @@ import {
 import mainLogger from 'src/logger';
 import { MessageFlags, hyperlink } from 'discord.js';
 import { HandbookCoursesCommandDto } from 'src/dto/HandbookCoursesCommandDto';
-import Fuse from 'fuse.js';
 import { HandbookSubjectsCommandDto } from 'src/dto/HandbookSubjectsCommandDto';
 import { HandbookMajorsCommandDto } from 'src/dto/HandbookMajorsCommandDto';
 import { HandbookSubmajorsCommandDto } from 'src/dto/HandbookSubmajorsCommandDto';
@@ -18,7 +17,12 @@ import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCode
 import { HandbookSubjectCommandDto } from 'src/dto/HandbookSubjectCommandDto';
 import { MEILI_TOKEN } from 'src/services/meilisearch.module';
 import MeiliSearch from 'meilisearch';
-import { IndexedSubject } from 'src/workers/subjectWorker';
+import {
+  IndexedCourse,
+  IndexedMajor,
+  IndexedSubject,
+  IndexedSubmajor,
+} from 'src/workers/subjectWorker';
 
 export const HandbookCommandDecorator = createCommandGroupDecorator({
   name: 'handbook',
@@ -44,19 +48,17 @@ export class HandbookCommands {
   ) {
     this.logger.info('Courses command received');
 
-    const courses = await this.handbookService.getCourses();
+    const index = this.search.index<IndexedCourse>('courses');
 
-    const searchRes = new Fuse(courses, {
-      keys: ['code', 'name'],
+    const searchRes = await index.search(search, {
+      limit: 10,
+      attributesToSearchOn: ['code', 'name'],
+      attributesToRetrieve: ['code', 'name', 'link'],
     });
 
-    const courseString = searchRes
-      .search(search, {
-        limit: 10,
-      })
+    const courseString = searchRes.hits
       .map(
-        ({ item: course }) =>
-          `- ${hyperlink(course.code, course.link)} ${course.name}`,
+        (course) => `- ${hyperlink(course.code, course.link)} ${course.name}`,
       )
       .join('\n');
 
@@ -85,18 +87,17 @@ export class HandbookCommands {
   ) {
     this.logger.info('Subjects command received');
 
-    const subjects = await this.handbookService.getSubjects();
+    const index = this.search.index<IndexedSubject>('subjects');
 
-    const searchRes = new Fuse(subjects, {
-      keys: ['code', 'name'],
+    const searchRes = await index.search(search, {
+      limit: 10,
+      attributesToSearchOn: ['code', 'name'],
+      attributesToRetrieve: ['code', 'name', 'link'],
     });
 
-    const subjectString = searchRes
-      .search(search, {
-        limit: 10,
-      })
+    const subjectString = searchRes.hits
       .map(
-        ({ item: subject }) =>
+        (subject) =>
           `- ${hyperlink(subject.code.toString(), subject.link)} ${
             subject.name
           }`,
@@ -127,20 +128,16 @@ export class HandbookCommands {
   ) {
     this.logger.info('Majors command received');
 
-    const majors = await this.handbookService.getMajors();
+    const index = this.search.index<IndexedMajor>('majors');
 
-    const searchRes = new Fuse(majors, {
-      keys: ['code', 'name'],
+    const searchRes = await index.search(search, {
+      limit: 10,
+      attributesToSearchOn: ['code', 'name'],
+      attributesToRetrieve: ['code', 'name', 'link'],
     });
 
-    const majorString = searchRes
-      .search(search, {
-        limit: 10,
-      })
-      .map(
-        ({ item: major }) =>
-          `- ${hyperlink(major.code, major.link)} ${major.name}`,
-      )
+    const majorString = searchRes.hits
+      .map((major) => `- ${hyperlink(major.code, major.link)} ${major.name}`)
       .join('\n');
 
     if (majorString === '') {
@@ -167,18 +164,17 @@ export class HandbookCommands {
   ) {
     this.logger.info('Submajors command received');
 
-    const submajors = await this.handbookService.getSubmajors();
+    const index = this.search.index<IndexedSubmajor>('submajors');
 
-    const searchRes = new Fuse(submajors, {
-      keys: ['code', 'name'],
+    const searchRes = await index.search(search, {
+      limit: 10,
+      attributesToSearchOn: ['code', 'name'],
+      attributesToRetrieve: ['code', 'name', 'link'],
     });
 
-    const submajorString = searchRes
-      .search(search, {
-        limit: 10,
-      })
+    const submajorString = searchRes.hits
       .map(
-        ({ item: submajor }) =>
+        (submajor) =>
           `- ${hyperlink(submajor.code, submajor.link)} ${submajor.name}`,
       )
       .join('\n');

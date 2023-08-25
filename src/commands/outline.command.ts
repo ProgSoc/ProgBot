@@ -70,9 +70,11 @@ export class OutlineCommand {
         },
       });
 
+      const contentTypeHeader = fetchedOutline.headers.get('Content-Type');
+
       if (
         !fetchedOutline.ok ||
-        !fetchedOutline.headers.get('Content-Type').includes('application/pdf')
+        !contentTypeHeader?.includes('application/pdf')
       ) {
         return null;
       }
@@ -105,8 +107,10 @@ export class OutlineCommand {
   public async invite(
     @Context() [interaction]: SlashCommandContext,
     @Options()
-    { subjectCode, session, year }: OutlineCommandDto,
+    { subjectCode, session, year: tempYear }: OutlineCommandDto,
   ) {
+    const year = tempYear ?? new Date().getFullYear();
+
     const outlineAttachment = await this.getOutline(
       parseInt(subjectCode),
       session,
