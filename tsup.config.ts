@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entry: ['src/main.ts', 'src/workers/**/*.ts'],
+  entry: ['src/main.ts', 'src/workers/**/*.ts', 'src/db/migrations/**/*.*'],
   splitting: true,
   sourcemap: true,
   clean: true,
@@ -14,4 +14,8 @@ export default defineConfig(({ watch }) => ({
   onSuccess: watch
     ? 'node --enable-source-maps --inspect dist/main'
     : undefined,
+  loader: {
+    '.sql': 'copy',
+    '.json': 'copy',
+  },
 }));

@@ -16,6 +16,7 @@ import { TimetableCommand } from './commands/timetable.command';
 import { MeiliSearchModule } from './services/meilisearch.module';
 import { ScrapingService } from './services/scraping.service';
 import { IndexCommands } from './commands/index.command';
+import { DatabaseModule } from './db/db.module';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -55,6 +56,7 @@ import { IndexCommands } from './commands/index.command';
       // Add buttons for search page
       allowTraversal: true,
     }),
+    DatabaseModule,
   ],
   providers: [
     DiscordService,
