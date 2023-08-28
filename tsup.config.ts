@@ -1,12 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entry: [
-    'src/main.ts',
-    'src/workers/**/*.ts',
-    'src/db/migrations/**/*.*',
-    'src/healthcheck.ts',
-  ],
+  entry: ['src/main.ts', 'src/workers/**/*.ts', 'src/db/migrations/**/*.*'],
   splitting: true,
   sourcemap: true,
   clean: true,
