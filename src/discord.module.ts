@@ -17,6 +17,7 @@ import { MeiliSearchModule } from './services/meilisearch.module';
 import { ScrapingService } from './services/scraping.service';
 import { IndexCommands } from './commands/index.command';
 import { DatabaseModule } from './db/db.module';
+import { DiscordController } from './discord.controller';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -70,6 +71,6 @@ import { DatabaseModule } from './db/db.module';
     TimetableCommand,
     ScrapingService,
   ],
-  controllers: [],
+  controllers: [DiscordController],
 })
 export class DiscordModule {}

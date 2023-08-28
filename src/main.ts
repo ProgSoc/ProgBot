@@ -11,6 +11,6 @@ async function bootstrap() {
   const app = await NestFactory.create(DiscordModule, {
     logger: mainLogger,
   });
-  await app.init();
+  await app.listen(3000);
 }
 bootstrap();
