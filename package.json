@@ -9,6 +9,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "start": "node dist/main.js --enable-source-maps",
+    "healthcheck": "node dist/healthcheck.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "drizzle-kit generate:pg"
