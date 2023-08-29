@@ -107,7 +107,12 @@ export class OutlineCommand {
   public async invite(
     @Context() [interaction]: SlashCommandContext,
     @Options()
-    { subjectCode, session, year: tempYear }: OutlineCommandDto,
+    {
+      subjectCode,
+      session,
+      year: tempYear,
+      visible = false,
+    }: OutlineCommandDto,
   ) {
     const year = tempYear ?? new Date().getFullYear();
 
@@ -128,7 +133,7 @@ export class OutlineCommand {
     await interaction.reply({
       content: 'Here is your subject outline!',
       files: [outlineAttachment],
-      ephemeral: true,
+      ephemeral: visible,
     });
   }
 }

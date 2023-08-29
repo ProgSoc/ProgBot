@@ -1,4 +1,4 @@
-import { NumberOption, StringOption } from 'necord';
+import { BooleanOption, NumberOption, StringOption } from 'necord';
 
 export class OutlineCommandDto {
   @StringOption({
@@ -28,6 +28,12 @@ export class OutlineCommandDto {
     ],
   })
   session: string;
+  @BooleanOption({
+    name: 'visible',
+    required: false,
+    description: 'Whether the subject outline should be visible to everyone',
+  })
+  visible?: boolean;
   @NumberOption({
     name: 'year',
     description: 'The year',
