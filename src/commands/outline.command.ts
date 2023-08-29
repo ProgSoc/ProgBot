@@ -133,7 +133,7 @@ export class OutlineCommand {
     await interaction.reply({
       content: 'Here is your subject outline!',
       files: [outlineAttachment],
-      ephemeral: visible,
+      ephemeral: !visible,
     });
   }
 }
