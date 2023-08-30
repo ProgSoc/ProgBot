@@ -122,7 +122,9 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
       {
         name: 'Duration',
         value:
-          durationInHours === 1 ? `${durationInHours}` : `${durationInHours}s`,
+          durationInHours === 1
+            ? `${durationInHours} hour`
+            : `${durationInHours} hours`,
         inline: true,
       },
     );
