@@ -4,6 +4,7 @@ import {
   ButtonStyle,
   EmbedBuilder,
   hyperlink,
+  time,
 } from 'discord.js';
 import { eq } from 'drizzle-orm';
 import { Button, type ButtonContext, ComponentParam, Context } from 'necord';
@@ -99,6 +100,7 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
   const availability = activity.availability;
   const description = activity.description;
   const colour = activity.color as `#`; // As hex to satisfy type
+  const dateTime = `${activity.start_time} ${activity.day_of_week}`;
 
   return new EmbedBuilder()
     .setTitle(`${activityGroup} ${activityIndex}`)
@@ -109,6 +111,16 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
       {
         name: 'Availability',
         value: availability.toString(),
+        inline: true,
+      },
+      {
+        name: 'Time',
+        value: dateTime,
+        inline: true,
+      },
+      {
+        name: 'Duration',
+        value: activity.duration.toString(),
         inline: true,
       },
     );
