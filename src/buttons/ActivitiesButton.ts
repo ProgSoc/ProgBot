@@ -48,12 +48,11 @@ export class ActivitiesButton {
     const activityEmbeds: Array<Array<EmbedBuilder>> = [];
     // chunk activities in groups of 10
     Object.values(firstSubject.activities)
-      .filter((acitivty) => !!acitivty.availability)
+      // .filter((acitivty) => !!acitivty.availability)
       .forEach((activity, index) => {
         // round down
         const pageIndex = Math.floor(index / 10);
         const page = activityEmbeds.at(pageIndex);
-        console.log({ pageIndex });
         if (!page) {
           activityEmbeds[pageIndex] = [SubjectActivityBuilder(activity)];
         } else {
