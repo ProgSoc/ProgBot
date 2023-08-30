@@ -10,6 +10,7 @@ const activitySchema = z.object({
    */
   subject_code: z.string(),
   activity_group_code: z.string(),
+  activity_code: z.coerce.number(),
   campus: z.string(),
   day_of_week: z.string(),
   /** 17:30 */
@@ -30,6 +31,8 @@ const activitySchema = z.object({
   color: z.string(),
   activityDays: z.array(z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/)).optional(),
 });
+
+export type ActivitySchemaType = z.infer<typeof activitySchema>;
 
 const subjectSchema = z.object({
   /** "010024_AUT_U_1_S" */

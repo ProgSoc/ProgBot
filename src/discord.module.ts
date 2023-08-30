@@ -18,6 +18,7 @@ import { ScrapingService } from './services/scraping.service';
 import { IndexCommands } from './commands/index.command';
 import { DatabaseModule } from './db/db.module';
 import { DiscordController } from './discord.controller';
+import { ActivitiesButton } from './buttons/ActivitiesButton';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -70,6 +71,7 @@ import { DiscordController } from './discord.controller';
     TimetableService,
     TimetableCommand,
     ScrapingService,
+    ActivitiesButton,
   ],
   controllers: [DiscordController],
 })

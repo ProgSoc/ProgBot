@@ -1,5 +1,10 @@
 import { Injectable, UseInterceptors } from '@nestjs/common';
-import { EmbedBuilder } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonComponent,
+  EmbedBuilder,
+} from 'discord.js';
 import {
   Context,
   Options,
@@ -7,6 +12,7 @@ import {
   type SlashCommandContext,
 } from 'necord';
 import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
+import { ActivitiesButton } from 'src/buttons/ActivitiesButton';
 import { TimetableActivitiesCommandDto } from 'src/dto/TimetableActivitiesCommandDto';
 import mainLogger from 'src/logger';
 import { TimetableService } from 'src/services/timetable.service';
@@ -59,9 +65,15 @@ export class TimetableCommand {
       ])
       .setColor('Blue');
 
+    const actionRowBuilder =
+      new ActionRowBuilder<ButtonBuilder>().addComponents(
+        ActivitiesButton.ActivityButtonBuilder(year, session, code),
+      );
+
     await interaction.followUp({
       embeds: [subjectEmbed],
       ephemeral: true,
+      components: [actionRowBuilder],
     });
   }
 }
