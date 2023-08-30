@@ -7,6 +7,7 @@ import {
   time,
 } from 'discord.js';
 import { eq } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 import { Button, type ButtonContext, ComponentParam, Context } from 'necord';
 import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
 import { subject } from 'src/db/schema';
@@ -101,6 +102,7 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
   const description = activity.description;
   const colour = activity.color as `#`; // As hex to satisfy type
   const dateTime = `${activity.start_time} ${activity.day_of_week}`;
+  const durationInHours = activity.duration / 60;
 
   return new EmbedBuilder()
     .setTitle(`${activityGroup} ${activityIndex}`)
@@ -120,7 +122,8 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
       },
       {
         name: 'Duration',
-        value: activity.duration.toString(),
+        value:
+          durationInHours === 1 ? `${durationInHours}` : `${durationInHours}s`,
         inline: true,
       },
     );
