@@ -14,9 +14,9 @@ This includes:
 
 ## Planned Features
 
-- [] Reputation system
-- [] Member Verification
-- [] Docs Search
+- [ ] Reputation system
+- [ ] Member Verification
+- [ ] Docs Search
 
 ## Contributing
 
