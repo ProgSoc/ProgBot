@@ -12,7 +12,7 @@ export class UptimeCommand {
     const uptime = process.uptime();
 
     const relativeUptime = Duration.fromObject({ seconds: uptime })
-      .normalize()
+      .rescale()
       .toHuman();
 
     this.logger.info('Uptime command received');
