@@ -19,6 +19,7 @@ import { IndexCommands } from './commands/index.command';
 import { DatabaseModule } from './db/db.module';
 import { DiscordController } from './discord.controller';
 import { ActivitiesButton } from './buttons/ActivitiesButton';
+import { SelfTimeoutCommand } from './commands/selftimeout.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -70,6 +71,7 @@ import { ActivitiesButton } from './buttons/ActivitiesButton';
     HandbookService,
     TimetableService,
     TimetableCommand,
+    SelfTimeoutCommand,
     ScrapingService,
     ActivitiesButton,
   ],
