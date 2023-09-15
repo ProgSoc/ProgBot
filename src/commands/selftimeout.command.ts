@@ -28,6 +28,13 @@ export class SelfTimeoutCommand {
       return interaction.reply('You must be in a server to use this command.');
     }
 
+    if (!interaction.appPermissions?.has('ModerateMembers')) {
+      return interaction.reply({
+        ephemeral: true,
+        content: `The bot needs the \`ModerateMembers\` permission to use this command.`,
+      });
+    }
+
     const timedOutMember = await member.timeout(timeout);
 
     return interaction.reply({
