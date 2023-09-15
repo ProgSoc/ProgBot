@@ -16,6 +16,7 @@ This includes:
 
 - [ ] Reputation system
 - [ ] Member Verification
+- [ ] Announcement system - Approvals, editing, etc.
 - [ ] Docs Search
 
 ## Contributing
