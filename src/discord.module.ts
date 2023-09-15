@@ -20,6 +20,7 @@ import { DatabaseModule } from './db/db.module';
 import { DiscordController } from './discord.controller';
 import { ActivitiesButton } from './buttons/ActivitiesButton';
 import { SelfTimeoutCommand } from './commands/selftimeout.command';
+import { UptimeCommand } from './commands/uptime.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -74,6 +75,7 @@ import { SelfTimeoutCommand } from './commands/selftimeout.command';
     SelfTimeoutCommand,
     ScrapingService,
     ActivitiesButton,
+    UptimeCommand,
   ],
   controllers: [DiscordController],
 })
