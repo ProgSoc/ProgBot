@@ -11,7 +11,7 @@ export class UptimeCommand {
   public async ping(@Context() [interaction]: SlashCommandContext) {
     const uptime = process.uptime();
 
-    const relativeUptime = Duration.fromMillis(uptime * 1000).toHuman();
+    const relativeUptime = Duration.fromObject({ seconds: uptime }).toHuman();
 
     this.logger.info('Uptime command received');
 
