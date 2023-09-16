@@ -13,6 +13,7 @@ export class InviteCommand {
 
     const inviteString = interaction.client.generateInvite({
       scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
+      permissions: ['ManageRoles', 'ModerateMembers'],
     });
 
     await interaction.reply({
