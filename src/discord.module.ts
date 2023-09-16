@@ -21,6 +21,9 @@ import { DiscordController } from './discord.controller';
 import { ActivitiesButton } from './buttons/ActivitiesButton';
 import { SelfTimeoutCommand } from './commands/selftimeout.command';
 import { UptimeCommand } from './commands/uptime.command';
+import { UploadMembershipsCommand } from './commands/membership.command';
+import { MembershipsService } from './services/memberships.service';
+import { LinkMemberShipModal } from './modals/LinkMembership.modal';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -76,6 +79,9 @@ import { UptimeCommand } from './commands/uptime.command';
     ScrapingService,
     ActivitiesButton,
     UptimeCommand,
+    UploadMembershipsCommand,
+    MembershipsService,
+    LinkMemberShipModal,
   ],
   controllers: [DiscordController],
 })

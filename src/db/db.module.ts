@@ -56,7 +56,14 @@ const migrationsFolder = path.join(rootFilePath, '../db/migrations');
           },
         );
 
-        const db = drizzle(queryPgClient, { schema });
+        const db = drizzle(queryPgClient, {
+          schema,
+          logger: {
+            logQuery(query, params) {
+              logger.debug(query, params);
+            },
+          },
+        });
 
         return db;
       },

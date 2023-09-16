@@ -1,17 +1,83 @@
-import { pgTable, text, unique } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import {
+  date,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  unique,
+} from 'drizzle-orm/pg-core';
 
-export const subject = pgTable('subject', {
-  id: text('id').primaryKey(),
+export const guilds = pgTable('guilds', {
+  /** The Guild Id */
+  guildId: text('guild_id').primaryKey(),
+  /** Member Role */
+  memberRole: text('member_role'),
 });
 
-export const major = pgTable('major', {
-  id: text('id').primaryKey(),
+export const membershipTypeEnum = pgEnum('membership_type', [
+  'Staff',
+  'Student',
+  'Alumni',
+  'Public',
+]);
+
+export const discordUsers = pgTable('discordUsers', {
+  /** The Discord User Id */
+  userId: text('user_id').primaryKey(),
+  /** Access token */
+  accessToken: text('access_token'),
+  /** Refresh token */
+  refreshToken: text('refresh_token'),
 });
 
-export const submajor = pgTable('submajor', {
-  id: text('id').primaryKey(),
-});
+export const discordUsersRelations = relations(discordUsers, ({ one }) => ({
+  guild: one(guilds, {
+    fields: [discordUsers.userId],
+    references: [guilds.guildId],
+  }),
+}));
 
-export const course = pgTable('course', {
-  id: text('id').primaryKey(),
-});
+export const memberships = pgTable(
+  'memberships',
+  {
+    /** The Guild Id */
+    guildId: text('guild_id')
+      .references(() => guilds.guildId)
+      .notNull(),
+    /** The email of the member */
+    email: text('email'),
+    /** The phone number */
+    phone: text('phone'),
+    /** The name of the member */
+    name: text('name').notNull(), // This is in the format, "First|Preferred Last"
+    /** The type of membership */
+    type: membershipTypeEnum('type').notNull(),
+    /** Joined Date, the earliest date that the member is in the memberships list */
+    start_date: date('start_date', {
+      mode: 'string',
+    }).notNull(),
+    /** End Date */
+    end_date: date('end_date', {
+      mode: 'string',
+    }).notNull(),
+    /** The Discord User Id if linked */
+    userId: text('user_id').references(() => discordUsers.userId),
+  },
+  (table) => {
+    return {
+      pk: primaryKey(table.guildId, table.email),
+    };
+  },
+);
+
+export const membershipsRelations = relations(memberships, ({ one }) => ({
+  guild: one(guilds, {
+    fields: [memberships.guildId],
+    references: [guilds.guildId],
+  }),
+  discordUser: one(discordUsers, {
+    fields: [memberships.userId],
+    references: [discordUsers.userId],
+  }),
+}));
