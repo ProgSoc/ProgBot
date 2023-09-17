@@ -120,7 +120,13 @@ export class MembershipsService {
 
         const member = await guild.members.fetch(userId);
 
-        await member.roles.add(guildSettings.memberRole);
+        const role = await guild.roles.fetch(guildSettings.memberRole);
+
+        if (!role) {
+          throw new Error('Invalid role');
+        }
+
+        await member.roles.add(role);
       }
     } catch (error) {
       await this.cacheManager.del(code);
