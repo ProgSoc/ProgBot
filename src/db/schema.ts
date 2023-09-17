@@ -25,8 +25,6 @@ export const membershipTypeEnum = pgEnum('membership_type', [
 export const discordUsers = pgTable('discordUsers', {
   /** The Discord User Id */
   userId: text('user_id').primaryKey(),
-  /** Access token */
-  accessToken: text('access_token'),
   /** Refresh token */
   refreshToken: text('refresh_token'),
 });

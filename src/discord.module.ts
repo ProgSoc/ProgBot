@@ -25,6 +25,7 @@ import { UploadMembershipsCommand } from './commands/membership.command';
 import { MembershipsService } from './services/memberships.service';
 import { LinkMemberShipModal } from './modals/LinkMembership.modal';
 import { IntentsBitField } from 'discord.js';
+import { AuthModule } from './auth/auth.module';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -65,6 +66,7 @@ import { IntentsBitField } from 'discord.js';
       allowTraversal: true,
     }),
     DatabaseModule,
+    AuthModule,
   ],
   providers: [
     DiscordService,
