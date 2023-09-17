@@ -70,9 +70,7 @@ export class UploadMembershipsCommand {
       return;
     }
 
-    // await this.logger.debug(validatedData);
-
-    this.logger.info('UploadMemberships command received');
+    await this.membershipsService.registerMembers(guildId, csv.url);
 
     await interaction.followUp({
       content: `The bot has received your file`,
