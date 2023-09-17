@@ -24,6 +24,7 @@ import { UptimeCommand } from './commands/uptime.command';
 import { UploadMembershipsCommand } from './commands/membership.command';
 import { MembershipsService } from './services/memberships.service';
 import { LinkMemberShipModal } from './modals/LinkMembership.modal';
+import { IntentsBitField } from 'discord.js';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -51,7 +52,7 @@ import { LinkMemberShipModal } from './modals/LinkMembership.modal';
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow<string>('DISCORD_TOKEN'),
-        intents: [],
+        intents: [IntentsBitField.Flags.GuildMembers],
       }),
       inject: [ConfigService],
     }),

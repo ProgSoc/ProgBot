@@ -42,8 +42,10 @@ export class MembershipsService {
     const userDetails = JSON.stringify({ userId, email });
 
     await this.cacheManager.set(code, userDetails, ONE_HOUR_IN_MILLISECONDS);
-
     this.logger.info(`Sending email to ${email} with code ${code}`);
+
+    if (this.configService.get('NODE_ENV') === 'development') return;
+
     await this.mailer.sendMail({
       from: this.configService.getOrThrow('EMAIL_USER'),
       to: email,
