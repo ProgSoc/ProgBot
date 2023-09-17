@@ -257,35 +257,40 @@ export class MembershipsService {
     await this.db.insert(guilds).values({ guildId }).onConflictDoNothing();
 
     await this.db.transaction(async (tx) => {
-      await Promise.all(
-        validatedData.map((entry) =>
-          tx
-            .insert(memberships)
-            .values({
+      let updates = 0;
+      validatedData.forEach(async (entry) => {
+        const updated = await tx
+          .insert(memberships)
+          .values({
+            end_date: entry.end_date,
+            guildId: guildId,
+            name: `${entry.preferred_name ?? entry.first_name} ${
+              entry.last_name
+            }`,
+            start_date: entry.joined_date,
+            type: entry.type,
+            email: entry.email,
+            phone: entry.mobile,
+            userId: null,
+          })
+          .onConflictDoUpdate({
+            target: [memberships.guildId, memberships.email],
+            set: {
               end_date: entry.end_date,
-              guildId: guildId,
               name: `${entry.preferred_name ?? entry.first_name} ${
                 entry.last_name
               }`,
-              start_date: entry.joined_date,
-              type: entry.type,
-              email: entry.email,
               phone: entry.mobile,
-              userId: null,
-            })
-            .onConflictDoUpdate({
-              target: [memberships.guildId, memberships.email],
-              set: {
-                end_date: entry.end_date,
-                name: `${entry.preferred_name ?? entry.first_name} ${
-                  entry.last_name
-                }`,
-                phone: entry.mobile,
-                type: entry.type,
-              },
-            }),
-        ),
-      );
+              type: entry.type,
+            },
+          });
+
+        if (updated) {
+          updates += updated.length;
+        }
+      });
+
+      this.logger.log(updates);
     });
   }
 }
