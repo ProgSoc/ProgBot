@@ -35,6 +35,7 @@ export class DiscordService {
       status: 'online',
     });
 
+    this.logger.time('editRoleConnectionMetadataRecords');
     await client.application.editRoleConnectionMetadataRecords([
       {
         key: 'member',
@@ -55,6 +56,7 @@ export class DiscordService {
         type: ApplicationRoleConnectionMetadataType.DatetimeLessThanOrEqual,
       },
     ]);
+    this.logger.timeEnd('editRoleConnectionMetadataRecords');
   }
 
   @On('warn')

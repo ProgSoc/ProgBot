@@ -5,6 +5,7 @@ import { type Cache } from 'cache-manager';
 import { parse } from 'csv-parse';
 import { Client, Routes } from 'discord.js';
 import { and, eq, gte, ilike, isNotNull, sql } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 import { Transporter, createTransport } from 'nodemailer';
 import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
 import { discordUsers, guilds, memberships } from 'src/db/schema';
@@ -386,6 +387,11 @@ export class MembershipsService {
       const isMember = await this.hasMembershipDiscord(progSocGuildId, userId);
 
       if (isMember) {
+        this.logger.debug({
+          member: isMember ? 1 : 0,
+          expiry: DateTime.fromISO(isMember.end_date).toISODate(),
+          joined: DateTime.fromISO(isMember.start_date).toISODate(),
+        });
         const response = await fetch(
           `https://discord.com/api${metadataRoute}`,
           {
@@ -396,8 +402,8 @@ export class MembershipsService {
             },
             body: JSON.stringify({
               member: isMember ? 1 : 0,
-              expiry: isMember.end_date,
-              joined: isMember.start_date,
+              expiry: DateTime.fromISO(isMember.end_date).toISODate(),
+              joined: DateTime.fromISO(isMember.start_date).toISODate(),
             }),
           },
         );
