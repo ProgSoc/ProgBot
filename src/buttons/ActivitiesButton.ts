@@ -9,7 +9,6 @@ import {
 import { eq } from 'drizzle-orm';
 import { Button, type ButtonContext, ComponentParam, Context } from 'necord';
 import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
-import { subject } from 'src/db/schema';
 import {
   ActivitySchemaType,
   TimetableService,
