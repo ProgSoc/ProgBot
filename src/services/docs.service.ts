@@ -56,6 +56,7 @@ export class DocsService {
     const { default: lunr } = await import('lunr');
     const idx = lunr((builder) => {
       builder.ref('location');
+      builder.field('location');
       builder.field('title', {
         boost: 10,
       });
