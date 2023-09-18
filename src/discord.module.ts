@@ -26,6 +26,9 @@ import { MembershipsService } from './services/memberships.service';
 import { LinkMemberShipModal } from './modals/LinkMembership.modal';
 import { IntentsBitField } from 'discord.js';
 import { AuthModule } from './auth/auth.module';
+import { DocsService } from './services/docs.service';
+import { DocsSearchCommandDto } from './dto/DocsSearchCommandDto';
+import { DocsCommand } from './commands/docs.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -85,6 +88,8 @@ import { AuthModule } from './auth/auth.module';
     UploadMembershipsCommand,
     MembershipsService,
     LinkMemberShipModal,
+    DocsService,
+    DocsCommand,
   ],
   controllers: [DiscordController],
 })

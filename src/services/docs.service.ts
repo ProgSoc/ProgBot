@@ -15,7 +15,7 @@ const DocsResponseSchema = z.object({
   docs: z.array(DocSchema),
   config: z.object({
     lang: z.array(z.string()),
-    seperator: z.string(),
+    separator: z.string().optional(),
     pipeline: z.array(z.string()),
   }),
 });
@@ -54,11 +54,47 @@ export class DocsService {
   }
 
   public async searchDocs(query: string) {
-    const { docs } = await this.getDocs();
-    const lunr = await import('lunr');
-    const idx = lunr.Index.load(docs);
+    const docs = await this.getDocs();
+    const { default: lunr } = await import('lunr');
+    const idx = lunr((builder) => {
+      builder.ref('location');
+      builder.field('title', {
+        boost: 10,
+      });
+      builder.field('text', {
+        boost: 5,
+      });
+      builder.field('tags', {
+        boost: 5,
+      });
+      docs.docs.forEach((doc) => {
+        builder.add(doc);
+      });
+    });
+
     const results = idx.search(query);
 
-    console.log(results);
+    const resultsWithDocs: Array<z.infer<typeof DocSchema>> = [];
+
+    results.forEach((result) => {
+      const doc = docs.docs.find((doc) => doc.location === result.ref);
+      if (doc) {
+        resultsWithDocs.push(doc);
+      }
+    });
+
+    // covert text to markdown
+    const resultsWithMarkdown = await Promise.all(
+      resultsWithDocs.map(async (doc) => {
+        const { NodeHtmlMarkdown } = await import('node-html-markdown');
+        const md = NodeHtmlMarkdown.translate(doc.text);
+        return {
+          ...doc,
+          text: md,
+        };
+      }),
+    );
+
+    return resultsWithMarkdown;
   }
 }
