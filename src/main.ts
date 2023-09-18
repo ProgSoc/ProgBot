@@ -2,8 +2,7 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { DiscordModule } from './discord.module';
 import mainLogger from './logger';
-import { Signales } from '@dynamicabot/signales';
-import { LoggerService } from '@nestjs/common';
+import passport from 'passport';
 // import { resolveDynamicProviders } from 'nestjs-dynamic-providers';
 
 async function bootstrap() {
@@ -11,6 +10,9 @@ async function bootstrap() {
   const app = await NestFactory.create(DiscordModule, {
     logger: mainLogger,
   });
+
+  app.use(passport.initialize());
+
   await app.listen(3000);
 }
 bootstrap();

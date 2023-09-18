@@ -3,8 +3,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { type Cache } from 'cache-manager';
 import { parse } from 'csv-parse';
-import { Client } from 'discord.js';
+import { Client, Routes } from 'discord.js';
 import { and, eq, gte, ilike, isNotNull, sql } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 import { Transporter, createTransport } from 'nodemailer';
 import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
 import { discordUsers, guilds, memberships } from 'src/db/schema';
@@ -94,10 +95,11 @@ export class MembershipsService {
     }
 
     try {
-      await this.db
+      const [discordUser] = await this.db
         .insert(discordUsers)
         .values({ userId })
-        .onConflictDoNothing();
+        .onConflictDoNothing()
+        .returning();
       await this.db
         .update(memberships)
         .set({
@@ -127,6 +129,10 @@ export class MembershipsService {
         }
 
         await member.roles.add(role);
+      }
+
+      if (discordUser?.refreshToken) {
+        await this.updateMetadata(userId);
       }
     } catch (error) {
       await this.cacheManager.del(code);
@@ -182,7 +188,7 @@ export class MembershipsService {
    * @param email The email the user entered
    * @returns Verifies the email address using a code sent to the email
    */
-  async hasMembershipEmail(guildId: string, email: string): Promise<boolean> {
+  async hasMembershipEmail(guildId: string, email: string) {
     /** Check to see if the membership already has a userId asociated with it */
 
     const membership = await this.db.query.memberships.findFirst({
@@ -193,17 +199,10 @@ export class MembershipsService {
       ),
     });
 
-    if (membership) {
-      return true;
-    }
-
-    return false;
+    return membership;
   }
 
-  async hasMembershipDiscord(
-    guildId: string,
-    userId: string,
-  ): Promise<boolean> {
+  async hasMembershipDiscord(guildId: string, userId: string) {
     /** Check to see if the membership already has a userId asociated with it */
 
     const membership = await this.db.query.memberships.findFirst({
@@ -215,11 +214,7 @@ export class MembershipsService {
       ),
     });
 
-    if (membership) {
-      return true;
-    }
-
-    return false;
+    return membership;
   }
 
   private generateCode() {
@@ -300,5 +295,125 @@ export class MembershipsService {
 
       this.logger.log(updates);
     });
+  }
+
+  private async getUserAccessToken(userId: string) {
+    const cachedAccessToken = this.cacheManager.get<string>(
+      `${userId}-access-token`,
+    );
+
+    if (cachedAccessToken) {
+      return cachedAccessToken;
+    }
+
+    const [user] = await this.db
+      .select()
+      .from(discordUsers)
+      .where(
+        and(
+          eq(discordUsers.userId, userId),
+          isNotNull(discordUsers.refreshToken),
+        ),
+      );
+
+    if (!user || !user.refreshToken) {
+      throw new Error('User not found');
+    }
+
+    const response = await fetch('https://discord.com/api/oauth2/token', {
+      method: 'POST',
+      body: new URLSearchParams({
+        client_id: this.configService.getOrThrow('DISCORD_CLIENT_ID'),
+        client_secret: this.configService.getOrThrow('DISCORD_SECRET'),
+        grant_type: 'refresh_token',
+        refresh_token: user.refreshToken,
+        redirect_uri: this.configService.getOrThrow('DISCORD_CALLBACK'),
+        scope: ['identify', 'role_connections.write'].join(','),
+      }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get access token');
+    }
+
+    const data = await response.json();
+
+    const responseSchema = z.object({
+      access_token: z.string(),
+      expires_in: z.number(),
+      refresh_token: z.string(),
+      scope: z.string(),
+      token_type: z.string(),
+    });
+
+    const validatedData = await responseSchema.parseAsync(data);
+
+    await this.db.insert(discordUsers).values({
+      userId,
+      refreshToken: validatedData.refresh_token,
+    });
+
+    await this.cacheManager.set(
+      `${userId}-access-token`,
+      validatedData.access_token,
+      validatedData.expires_in,
+    );
+
+    return validatedData.access_token;
+  }
+
+  public async updateMetadata(userId: string) {
+    const [discordUser] = await this.db
+      .select()
+      .from(discordUsers)
+      .where(
+        and(
+          eq(discordUsers.userId, userId),
+          isNotNull(discordUsers.refreshToken),
+        ),
+      );
+
+    if (discordUser && discordUser.refreshToken) {
+      const accessToken = await this.getUserAccessToken(userId);
+      const metadataRoute = Routes.userApplicationRoleConnection(
+        this.configService.getOrThrow('DISCORD_CLIENT_ID'),
+      );
+
+      const progSocGuildId = this.configService.getOrThrow('GUILD_ID');
+
+      const isMember = await this.hasMembershipDiscord(progSocGuildId, userId);
+
+      if (isMember) {
+        this.logger.debug({
+          member: isMember ? 1 : 0,
+          expiry: DateTime.fromISO(isMember.end_date).toISODate(),
+          joined: DateTime.fromISO(isMember.start_date).toISODate(),
+        });
+        const response = await fetch(
+          `https://discord.com/api${metadataRoute}`,
+          {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              member: isMember ? 1 : 0,
+              expiry: DateTime.fromISO(isMember.end_date).toISODate(),
+              joined: DateTime.fromISO(isMember.start_date).toISODate(),
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to push metadata');
+        }
+
+        return;
+      }
+    }
   }
 }
