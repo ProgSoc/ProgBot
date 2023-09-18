@@ -25,9 +25,7 @@ export class DocsService {
   constructor(
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly configService: ConfigService,
-  ) {
-    this.searchDocs('test');
-  }
+  ) {}
 
   private async getDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
     const cacheKey = 'docs';

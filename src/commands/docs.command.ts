@@ -37,14 +37,12 @@ export class DocsCommand {
     const tagsLine = first.tags
       ? `Tags: ${first.tags.map((tag) => `**${tag}**`).join(', ')}`
       : undefined;
-    const linkLine = `https://docs.progsoc.org/${first.location}`;
+    const linkLine = `_This is an excerpt from the page: https://docs.progsoc.org/${first.location}_`;
     const body = first.text;
 
-    const fields = [titleLine];
+    const fields = [linkLine, titleLine];
     if (tagsLine) fields.push(tagsLine);
-    fields.push(linkLine);
     fields.push(body);
-    console.log(body);
 
     const content = fields.join('\n\n');
 
