@@ -59,6 +59,9 @@ dependencies:
   ioredis:
     specifier: ^5.3.2
     version: 5.3.2
+  lunr:
+    specifier: ^2.3.9
+    version: 2.3.9
   luxon:
     specifier: ^3.4.3
     version: 3.4.3
@@ -118,6 +121,9 @@ devDependencies:
   '@types/express':
     specifier: ^4.17.17
     version: 4.17.17
+  '@types/lunr':
+    specifier: ^2.3.5
+    version: 2.3.5
   '@types/luxon':
     specifier: ^3.3.2
     version: 3.3.2
@@ -1266,6 +1272,10 @@ packages:
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
+    dev: true
+
+  /@types/lunr@2.3.5:
+    resolution: {integrity: sha512-C4xYh7A4FRKg70AWJCe27oJYVPhUlEY5MQ4dKbRR7G6Xsb2HiqO672yWHRvWxl8/h7IuISvwDjv88ECHUEsV2A==}
     dev: true
 
   /@types/luxon@3.3.2:
@@ -3650,6 +3660,10 @@ packages:
     dependencies:
       es5-ext: 0.10.62
     dev: true
+
+  /lunr@2.3.9:
+    resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
+    dev: false
 
   /luxon@3.4.3:
     resolution: {integrity: sha512-tFWBiv3h7z+T/tDaoxA8rqTxy1CHV6gHS//QdaH4pulbq/JuBSGgQspQQqcgnwdAx6pNI7cmvz5Sv/addzHmUg==}
