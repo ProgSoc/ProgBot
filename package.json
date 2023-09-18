@@ -12,7 +12,8 @@
     "healthcheck": "node dist/healthcheck.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "generate": "drizzle-kit generate:pg"
+    "generate": "drizzle-kit generate:pg",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@dynamicabot/signales": "^2.0.15",

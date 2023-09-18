@@ -2,6 +2,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { type Cache } from 'cache-manager';
+import { MatchData } from 'lunr';
 import { z } from 'zod';
 
 const DocSchema = z.object({
@@ -20,12 +21,37 @@ const DocsResponseSchema = z.object({
   }),
 });
 
-export interface SearchResult {
-  text: string;
-  title: string;
-  location: string;
-  tags?: string[] | undefined;
-}
+/**
+ * The metadata contains a key for each search term found in the document and the field in which it was found. This will contain all the metadata about this term and field; for example the position of the term matches:
+ * e.g. 
+  "metadata": {
+    "test": {
+      "body": {
+        "position": [[0, 4], [24, 4]]
+      }
+    }
+  }
+*/
+const MetadataSchema = z.record(
+  z.record(
+    z.object({
+      position: z.array(z.tuple([z.number(), z.number()])),
+    }),
+    {
+      description: 'The metadata about the field',
+    },
+  ),
+  {
+    description: 'The metadata about the search term',
+  },
+);
+
+const SearchResultSchema = z.object({
+  ...DocSchema.shape,
+  meta: MetadataSchema,
+});
+
+export type SearchResult = z.infer<typeof SearchResultSchema>;
 
 @Injectable()
 export class DocsService {
@@ -39,12 +65,12 @@ export class DocsService {
    * @returns The lunr index as a string
    */
   private async getDocsIndex(): Promise<string> {
-    const cacheKey = 'docs-index';
+    const cacheKey = 'docs-index-position-md3';
     const cached = await this.cacheManager.get<string>(cacheKey);
     if (cached) {
       return cached;
     }
-    const docs = await this.fetchDocs();
+    const docs = await this.getDocs();
     const { default: lunr } = await import('lunr');
     const idx = lunr((builder) => {
       builder.ref('location');
@@ -58,6 +84,7 @@ export class DocsService {
       builder.field('tags', {
         boost: 5,
       });
+      builder.metadataWhitelist = ['position'];
       docs.docs.forEach((doc) => {
         builder.add(doc);
       });
@@ -74,11 +101,20 @@ export class DocsService {
    * @returns The docs as a validated object
    */
   private async getDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
-    const cacheKey = 'docs';
+    const cacheKey = 'docs-md3';
     const cached = await this.cacheManager.get<string>(cacheKey);
     if (cached) {
       const validated = await DocsResponseSchema.parse(JSON.parse(cached));
-      return validated;
+      const { NodeHtmlMarkdown } = await import('node-html-markdown'); // This markdown processor is fast but sacrifices spacing
+      const markedDown = validated.docs.map((doc) => ({
+        ...doc,
+        text: NodeHtmlMarkdown.translate(doc.text),
+        title: NodeHtmlMarkdown.translate(doc.title),
+      }));
+      return {
+        ...validated,
+        docs: markedDown,
+      };
     }
 
     const docs = await this.fetchDocs();
@@ -118,29 +154,20 @@ export class DocsService {
 
     const results = idx.search(query);
 
-    const resultsWithDocs: Array<z.infer<typeof DocSchema>> = [];
+    const resultsWithDocs: Array<SearchResult> = [];
 
     results.forEach((result) => {
       const doc = docs.docs.find((doc) => doc.location === result.ref);
       if (doc) {
-        resultsWithDocs.push(doc);
+        resultsWithDocs.push(
+          SearchResultSchema.parse({
+            ...doc,
+            meta: result.matchData.metadata as z.infer<typeof MetadataSchema>,
+          }),
+        );
       }
     });
 
-    // covert text to markdown
-    const resultsWithMarkdown = await Promise.all(
-      resultsWithDocs.map(async (doc) => {
-        const { NodeHtmlMarkdown } = await import('node-html-markdown'); // This markdown processor is fast but sacrifices spacing
-        const bodyMd = NodeHtmlMarkdown.translate(doc.text);
-        const titleMd = NodeHtmlMarkdown.translate(doc.title);
-        return {
-          ...doc,
-          text: bodyMd,
-          title: titleMd,
-        };
-      }),
-    );
-
-    return resultsWithMarkdown;
+    return resultsWithDocs;
   }
 }
