@@ -20,6 +20,13 @@ const DocsResponseSchema = z.object({
   }),
 });
 
+export interface SearchResult {
+  text: string;
+  title: string;
+  location: string;
+  tags?: string[] | undefined;
+}
+
 @Injectable()
 export class DocsService {
   constructor(
@@ -27,32 +34,17 @@ export class DocsService {
     private readonly configService: ConfigService,
   ) {}
 
-  private async getDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
-    const cacheKey = 'docs';
+  /**
+   * Fetch the docs from the docs API and index them with lunr, generating a cached lunr index
+   * @returns The lunr index as a string
+   */
+  private async getDocsIndex(): Promise<string> {
+    const cacheKey = 'docs-index';
     const cached = await this.cacheManager.get<string>(cacheKey);
     if (cached) {
-      const asJson = JSON.parse(cached);
-      const validated = await DocsResponseSchema.parse(asJson);
-      return validated;
+      return cached;
     }
     const docs = await this.fetchDocs();
-    await this.cacheManager.set(cacheKey, JSON.stringify(docs), 1000);
-    return docs;
-  }
-
-  private async fetchDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
-    const docsUrl = this.configService.getOrThrow('DOCS_LUNR_INDEX_URL');
-    const response = await fetch(docsUrl);
-
-    const docs = await response.json();
-
-    const validated = await DocsResponseSchema.parse(docs);
-
-    return validated;
-  }
-
-  public async searchDocs(query: string) {
-    const docs = await this.getDocs();
     const { default: lunr } = await import('lunr');
     const idx = lunr((builder) => {
       builder.ref('location');
@@ -71,6 +63,59 @@ export class DocsService {
       });
     });
 
+    const serializedIdx = JSON.stringify(idx);
+
+    await this.cacheManager.set(cacheKey, serializedIdx, 1000 * 60 * 30);
+    return serializedIdx;
+  }
+
+  /**
+   * Get the docs from the blog and their asociated excerpts
+   * @returns The docs as a validated object
+   */
+  private async getDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
+    const cacheKey = 'docs';
+    const cached = await this.cacheManager.get<string>(cacheKey);
+    if (cached) {
+      const validated = await DocsResponseSchema.parse(JSON.parse(cached));
+      return validated;
+    }
+
+    const docs = await this.fetchDocs();
+
+    const serializedDocs = JSON.stringify(docs);
+
+    await this.cacheManager.set(cacheKey, serializedDocs, 1000 * 60 * 30);
+
+    return docs;
+  }
+
+  /**
+   * Fetch the mkdocs-material search index
+   * @returns The search index as a validated object
+   */
+  private async fetchDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
+    const docsUrl = this.configService.getOrThrow('DOCS_LUNR_INDEX_URL');
+    const response = await fetch(docsUrl);
+
+    const docs = await response.json();
+
+    const validated = await DocsResponseSchema.parse(docs);
+
+    return validated;
+  }
+
+  /**
+   * Search the docs for a query
+   * @param query The query to search for
+   * @returns The search results as a validated object
+   */
+  public async searchDocs(query: string): Promise<SearchResult[]> {
+    const searchIndex = await this.getDocsIndex();
+    const docs = await this.getDocs();
+    const { default: lunr } = await import('lunr');
+    const idx = lunr.Index.load(JSON.parse(searchIndex));
+
     const results = idx.search(query);
 
     const resultsWithDocs: Array<z.infer<typeof DocSchema>> = [];
@@ -85,11 +130,13 @@ export class DocsService {
     // covert text to markdown
     const resultsWithMarkdown = await Promise.all(
       resultsWithDocs.map(async (doc) => {
-        const { NodeHtmlMarkdown } = await import('node-html-markdown');
-        const md = NodeHtmlMarkdown.translate(doc.text);
+        const { NodeHtmlMarkdown } = await import('node-html-markdown'); // This markdown processor is fast but sacrifices spacing
+        const bodyMd = NodeHtmlMarkdown.translate(doc.text);
+        const titleMd = NodeHtmlMarkdown.translate(doc.title);
         return {
           ...doc,
-          text: md,
+          text: bodyMd,
+          title: titleMd,
         };
       }),
     );

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EmbedBuilder } from 'discord.js';
 import {
   Context,
   Options,
@@ -6,7 +7,7 @@ import {
   type SlashCommandContext,
 } from 'necord';
 import { DocsSearchCommandDto } from 'src/dto/DocsSearchCommandDto';
-import { DocsService } from 'src/services/docs.service';
+import { DocsService, SearchResult } from 'src/services/docs.service';
 
 @Injectable()
 export class DocsCommand {
@@ -31,26 +32,32 @@ export class DocsCommand {
       return;
     }
 
-    const [first] = results;
+    const embeds = results.slice(0, 3).map(searchResultToEmbed);
 
-    const titleLine = `## ${first.title}`;
-    const tagsLine = first.tags
-      ? `Tags: ${first.tags.map((tag) => `**${tag}**`).join(', ')}`
-      : undefined;
-    const linkLine = `_This is an excerpt from the page: https://docs.progsoc.org/${first.location}_`;
-    const body = first.text;
-
-    const fields = [linkLine, titleLine];
-    if (tagsLine) fields.push(tagsLine);
-    fields.push(body);
-
-    const content = fields.join('\n\n');
+    const content =
+      results.length > 3
+        ? `Found ${results.length} results, here are the first 3:`
+        : `Showing ${results.length} results`;
 
     await interaction.editReply({
       content,
+      embeds,
       allowedMentions: {
         parse: [],
       },
     });
   }
 }
+
+const searchResultToEmbed = (result: SearchResult) => {
+  const embed = new EmbedBuilder()
+    .setTitle(result.title)
+    .setDescription(result.text.split('\n').slice(0, 2).join('\n'))
+    .setURL(`https://docs.progsoc.org/${result.location}`);
+
+  if (result.tags) {
+    embed.addFields({ name: 'Tags', value: result.tags?.join(', ') ?? 'None' });
+  }
+
+  return embed;
+};
