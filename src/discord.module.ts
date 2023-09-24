@@ -56,7 +56,10 @@ import { DocsCommand } from './commands/docs.command';
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow<string>('DISCORD_TOKEN'),
-        intents: [IntentsBitField.Flags.GuildMembers],
+        intents: [
+          IntentsBitField.Flags.GuildMembers,
+          IntentsBitField.Flags.Guilds,
+        ],
       }),
       inject: [ConfigService],
     }),
