@@ -24,7 +24,7 @@ jobs:
       patch: ${{ steps.semantic.outputs.new_release_patch_version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Semantic Release
@@ -44,7 +44,7 @@ jobs:
     name: 'Build and Publish Image'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
