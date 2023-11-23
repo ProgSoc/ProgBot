@@ -338,4 +338,31 @@ export class UploadMembershipsCommand {
       ephemeral: true,
     });
   }
+
+  @Subcommand({
+    name: 'clear',
+    description: "Clear the guild's memberships",
+    dmPermission: false,
+  })
+  public async clear(@Context() [interaction]: SlashCommandContext) {
+    const { guildId } = interaction;
+
+    if (!guildId) {
+      await interaction.reply({
+        content: 'This command must be run in a guild',
+        ephemeral: true,
+      });
+
+      return;
+    }
+
+    await this.membershipsService.clearMemberships(guildId);
+
+    await interaction.reply({
+      content: 'The memberships have been cleared',
+      ephemeral: true,
+    });
+
+    return;
+  }
 }

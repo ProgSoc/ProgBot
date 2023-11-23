@@ -416,4 +416,11 @@ export class MembershipsService {
       }
     }
   }
+
+  public async clearMemberships(guildId: string) {
+    await this.db
+      .delete(memberships)
+      .where(eq(memberships.guildId, guildId))
+      .execute();
+  }
 }
