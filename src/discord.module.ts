@@ -31,6 +31,7 @@ import { DocsSearchCommandDto } from './dto/DocsSearchCommandDto';
 import { DocsCommand } from './commands/docs.command';
 import { VerifyButton } from './buttons/VerifyButton';
 import { LinkMembershipEmailModal } from './modals/EmailLink.modal';
+import { VerifyEmailButton } from './buttons/EmailButton';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -96,6 +97,7 @@ import { LinkMembershipEmailModal } from './modals/EmailLink.modal';
     DocsService,
     DocsCommand,
     VerifyButton,
+    VerifyEmailButton,
     LinkMembershipEmailModal,
   ],
   controllers: [DiscordController],
