@@ -31,6 +31,7 @@ import { LinkMemberShipModal } from 'src/modals/LinkMembership.modal';
 import { MembershipSetMemberRoleDto } from 'src/dto/MembershipSetMemberRoleDto';
 import { VerifyButtonCommandDto } from 'src/dto/VerifyButtonCommandDto';
 import { VerifyButton } from 'src/buttons/VerifyButton';
+import { VerifyEmailButton } from 'src/buttons/EmailButton';
 
 export const MembershipCommandDecorator = createCommandGroupDecorator({
   name: 'membership',
@@ -314,7 +315,7 @@ export class UploadMembershipsCommand {
       return;
     }
 
-    const button = VerifyButton.getButton();
+    const button = VerifyEmailButton.getButton();
     const messageComponent =
       new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 

@@ -8,7 +8,7 @@ import { MembershipsService } from 'src/services/memberships.service';
 import { TimetableService } from 'src/services/timetable.service';
 
 @Injectable()
-export class VerifyButton {
+export class VerifyEmailButton {
   constructor(
     @Inject(DATABASE_TOKEN) private readonly db: Database,
     private readonly membershipsService: MembershipsService,
@@ -18,15 +18,15 @@ export class VerifyButton {
    * Verify a membership using modal
    * @param param[0] The button context
    */
-  @Button('verify-code')
+  @Button('verify-email')
   public async verifyMembership(@Context() [interaction]: ButtonContext) {
-    return interaction.showModal(LinkMemberShipModal.getModal());
+    return interaction.showModal(LinkMembershipEmailModal.getModal());
   }
 
   public static getButton() {
     return new ButtonBuilder()
-      .setCustomId('verify-code')
-      .setLabel('Verify Code')
+      .setCustomId('verify-email')
+      .setLabel('Verify')
       .setStyle(ButtonStyle.Primary)
       .setEmoji('✅');
   }
