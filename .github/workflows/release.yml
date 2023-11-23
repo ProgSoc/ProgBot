@@ -82,3 +82,20 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ needs.release.outputs.version }}
+
+      - name: Extract /app/dist
+        uses: docker/build-push-action@v5
+        id: docker_build_dist
+        with:
+          context: .
+          target: 'dist'
+          push: false
+          outputs: type=local,dest=./dist
+
+      - name: Upload dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./dist

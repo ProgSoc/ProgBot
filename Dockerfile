@@ -13,7 +13,13 @@ COPY . /app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
+FROM scratch as dist
+COPY --from=build /app/dist/ .
+
 FROM base
+ARG VERSION
+ENV VERSION=$VERSION
+ENV NODE_ENV="production"
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 COPY --from=build /app/package.json /app/package.json

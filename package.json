@@ -25,6 +25,8 @@
     "@nestjs/core": "^10.2.1",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.2.1",
+    "@sentry/integrations": "^7.81.1",
+    "@sentry/node": "^7.81.1",
     "cache-manager": "^5.2.3",
     "cache-manager-ioredis-yet": "^1.2.2",
     "cheerio": "1.0.0-rc.12",

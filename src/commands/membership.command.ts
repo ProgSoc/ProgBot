@@ -18,10 +18,19 @@ import { MembershipsService } from 'src/services/memberships.service';
 import { ListSchema } from 'src/schema/MembershipRowSchema';
 import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
 import { MembershipHasCommandDto as MembershipHasCommandDto } from 'src/dto/MembershipHasCommandDto';
-import { inlineCode, userMention } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonComponent,
+  MessageActionRowComponent,
+  inlineCode,
+  userMention,
+} from 'discord.js';
 import { MembershipLinkCommandDto } from 'src/dto/MembershipLinkCommandDto';
 import { LinkMemberShipModal } from 'src/modals/LinkMembership.modal';
 import { MembershipSetMemberRoleDto } from 'src/dto/MembershipSetMemberRoleDto';
+import { VerifyButtonCommandDto } from 'src/dto/VerifyButtonCommandDto';
+import { VerifyButton } from 'src/buttons/VerifyButton';
 
 export const MembershipCommandDecorator = createCommandGroupDecorator({
   name: 'membership',
@@ -282,5 +291,50 @@ export class UploadMembershipsCommand {
     });
 
     return;
+  }
+
+  @Subcommand({
+    name: 'verifybutton',
+    description: 'Prompt a user to link their membership',
+    dmPermission: false,
+    nsfw: false,
+  })
+  public async button(
+    @Context() [interaction]: SlashCommandContext,
+    @Options() { channel, message }: VerifyButtonCommandDto,
+  ) {
+    const { guildId } = interaction;
+
+    if (!guildId) {
+      await interaction.reply({
+        content: 'This command must be run in a guild',
+        ephemeral: true,
+      });
+
+      return;
+    }
+
+    const button = VerifyButton.getButton();
+    const messageComponent =
+      new ActionRowBuilder<ButtonBuilder>().addComponents(button);
+
+    if (!channel.isTextBased()) {
+      await interaction.reply({
+        content: 'The channel must be a text channel',
+        ephemeral: true,
+      });
+
+      return;
+    }
+
+    await channel.send({
+      content: message,
+      components: [messageComponent],
+    });
+
+    return interaction.reply({
+      content: 'The button has been sent',
+      ephemeral: true,
+    });
   }
 }
