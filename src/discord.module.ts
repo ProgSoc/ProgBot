@@ -29,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
 import { DocsService } from './services/docs.service';
 import { DocsSearchCommandDto } from './dto/DocsSearchCommandDto';
 import { DocsCommand } from './commands/docs.command';
+import { VerifyButton } from './buttons/VerifyButton';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -93,6 +94,7 @@ import { DocsCommand } from './commands/docs.command';
     LinkMemberShipModal,
     DocsService,
     DocsCommand,
+    VerifyButton,
   ],
   controllers: [DiscordController],
 })
