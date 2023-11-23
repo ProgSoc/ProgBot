@@ -32,7 +32,7 @@
     "discord-api-types": "^0.37.56",
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.28.5",
+    "drizzle-orm": "^0.29.0",
     "ioredis": "^5.3.2",
     "lunr": "^2.3.9",
     "luxon": "^3.4.3",
