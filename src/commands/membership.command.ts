@@ -26,6 +26,7 @@ import { MembershipSetMemberRoleDto } from 'src/dto/MembershipSetMemberRoleDto';
 export const MembershipCommandDecorator = createCommandGroupDecorator({
   name: 'membership',
   description: 'Membership commands',
+  defaultMemberPermissions: 'Administrator',
 });
 
 // ["first_name", "last_name", "preferred_name", "email", "mobile", "type", "joined_date", "end_date", "price_paid"]
@@ -43,7 +44,6 @@ export class UploadMembershipsCommand {
     name: 'upload',
     description: "Upload the guild's memberships",
     dmPermission: false,
-    defaultMemberPermissions: 'Administrator',
   })
   public async ping(
     @Context() [interaction]: SlashCommandContext,
@@ -80,7 +80,7 @@ export class UploadMembershipsCommand {
     return;
   }
 
-  @Subcommand({
+  @SlashCommand({
     name: 'link',
     description: 'Link a user to a membership',
     dmPermission: false,
@@ -128,7 +128,7 @@ export class UploadMembershipsCommand {
     // Open Modal
   }
 
-  @Subcommand({
+  @SlashCommand({
     name: 'unlink',
     description: 'Unlink a user from a membership',
     dmPermission: false,
@@ -159,7 +159,6 @@ export class UploadMembershipsCommand {
     name: 'has',
     description: 'Verify a user email',
     dmPermission: false,
-    defaultMemberPermissions: 'Administrator',
   })
   public async has(
     @Context() [interaction]: SlashCommandContext,
@@ -232,7 +231,6 @@ export class UploadMembershipsCommand {
     name: 'setmemberrole',
     description: 'Set the member role',
     dmPermission: false,
-    defaultMemberPermissions: 'Administrator',
   })
   public async setMemberRole(
     @Context() [interaction]: SlashCommandContext,
@@ -263,7 +261,6 @@ export class UploadMembershipsCommand {
     name: 'unsetmemberrole',
     description: 'Unset the member role',
     dmPermission: false,
-    defaultMemberPermissions: 'Administrator',
   })
   public async unsetMemberRole(@Context() [interaction]: SlashCommandContext) {
     const { guildId } = interaction;
