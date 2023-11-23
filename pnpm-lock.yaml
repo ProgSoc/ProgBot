@@ -66,8 +66,8 @@ dependencies:
     specifier: ^3.4.3
     version: 3.4.3
   meilisearch:
-    specifier: ^0.34.1
-    version: 0.34.1
+    specifier: ^0.36.0
+    version: 0.36.0
   necord:
     specifier: ^6.0.0
     version: 6.1.0(@nestjs/common@10.2.1)(@nestjs/core@10.2.1)(discord.js@14.13.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -4045,8 +4045,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /meilisearch@0.34.1:
-    resolution: {integrity: sha512-7mrLp88JfrbvhAMhOjNPzHGd2iCLHgzNhkveMxppMOToMLQw4Ygof4ksQ9uFi7SKq3UwEhIoMoFT1rUHLD3vWQ==}
+  /meilisearch@0.36.0:
+    resolution: {integrity: sha512-swcvEYrct0/zsGj3jlbPm1OYxbH14IURnlysKlXywNicIQ5EMkSYLYCLCwOuBKAaGcdISWdgdylH9TXVLegmOQ==}
     dependencies:
       cross-fetch: 3.1.8
     transitivePeerDependencies:
