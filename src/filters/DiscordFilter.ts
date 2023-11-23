@@ -2,19 +2,20 @@ import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { BaseInteraction } from 'discord.js';
 import { NecordArgumentsHost } from 'necord';
+import mainLogger from 'src/logger';
 
 @Catch()
 export class DiscordExceptionFilter implements ExceptionFilter {
   public async catch(exception: Error, host: ArgumentsHost) {
     const necordContext = NecordArgumentsHost.create(host).getContext();
     if (!Array.isArray(necordContext)) {
-      return console.log(exception);
+      return mainLogger.warn(exception);
     }
 
     const [interaction] = necordContext;
 
     if (!interaction) {
-      return console.log(exception);
+      return mainLogger.warn(exception);
     }
 
     Sentry.captureException(exception);
@@ -30,6 +31,6 @@ export class DiscordExceptionFilter implements ExceptionFilter {
       });
     }
 
-    return console.log(exception);
+    return mainLogger.error(exception);
   }
 }

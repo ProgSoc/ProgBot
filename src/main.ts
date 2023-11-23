@@ -4,6 +4,8 @@ import { DiscordModule } from './discord.module';
 import mainLogger from './logger';
 import passport from 'passport';
 import { ConfigService } from '@nestjs/config';
+import { DiscordExceptionFilter } from './filters/DiscordFilter';
+import { SentryFilter } from './filters/SentryFilter';
 // import { resolveDynamicProviders } from 'nestjs-dynamic-providers';
 
 async function bootstrap() {
@@ -33,6 +35,8 @@ async function bootstrap() {
       ],
     });
   }
+
+  app.useGlobalFilters(new DiscordExceptionFilter(), new SentryFilter());
 
   app.use(passport.initialize());
 
