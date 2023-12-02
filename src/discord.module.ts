@@ -32,6 +32,9 @@ import { DocsCommand } from './commands/docs.command';
 import { VerifyButton } from './buttons/VerifyButton';
 import { LinkMembershipEmailModal } from './modals/EmailLink.modal';
 import { VerifyEmailButton } from './buttons/EmailButton';
+import { AoCService } from './services/aoc.service';
+import { AocSetupModal } from './modals/AocSetup';
+import { AoCCommands } from './commands/aoc.command';
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -99,6 +102,9 @@ import { VerifyEmailButton } from './buttons/EmailButton';
     VerifyButton,
     VerifyEmailButton,
     LinkMembershipEmailModal,
+    AoCService,
+    AocSetupModal,
+    AoCCommands,
   ],
   controllers: [DiscordController],
 })
