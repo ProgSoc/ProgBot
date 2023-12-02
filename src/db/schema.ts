@@ -13,6 +13,10 @@ export const guilds = pgTable('guilds', {
   guildId: text('guild_id').primaryKey(),
   /** Member Role */
   memberRole: text('member_role'),
+  /** Advent of code leaderboard url */
+  aocLeaderboardUrl: text('aoc_leaderboard_url'),
+  /** Advent of code session cookie */
+  aocSessionCookie: text('aoc_session_cookie'),
 });
 
 export const membershipTypeEnum = pgEnum('membership_type', [
