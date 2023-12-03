@@ -95,7 +95,7 @@ const leaderboardToMd = (leaderboard: Leaderboard) => {
   //   }, 0);
 
   memberRows.forEach((row) => {
-    table.addRow(row.rank, row.score, `${row.stars}`, row.name);
+    table.addRow(row.rank, row.score, `${row.stars}`, row.name ?? 'Unknown');
   });
 
   //   table.setWidth(3, maxStarsLength);

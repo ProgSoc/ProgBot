@@ -114,7 +114,7 @@ const CompletionDayLevelSchema = z.object({
 });
 
 const LeaderboardMemberSchema = z.object({
-  name: z.string(),
+  name: z.string().nullable(),
   local_score: z.number(),
   global_score: z.number(),
   id: z.number(),
