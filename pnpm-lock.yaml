@@ -12,8 +12,8 @@ dependencies:
     specifier: 2.8.4
     version: 2.8.4
   '@necord/pagination':
-    specifier: 1.1.6
-    version: 1.1.6(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+    specifier: 1.2.1
+    version: 1.2.1(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.2.1)(rxjs@7.8.1)
   '@nestjs/cache-manager':
     specifier: 2.1.1
     version: 2.1.1(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(cache-manager@5.4.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
@@ -915,8 +915,8 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /@necord/pagination@1.1.6(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.2.1)(rxjs@7.8.1):
-    resolution: {integrity: sha512-Kx4EeZbxfgmJfS1GEVAwKdBRDw1iwfEWSqfxLKXyS8fhwozHYm+4HA3P8E6aWvWEUTOISOuM1ZAujnDI7nEdvQ==}
+  /@necord/pagination@1.2.1(@nestjs/common@10.3.3)(@nestjs/core@10.3.3)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.2.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-P+qhI7hreR3GV4ESxQSDr9LUTuWGVySArhrJMNkl2uvJR5xvBn5ysKtWlK6054E4HEXbz+Fd8NOmEF+Je5rOLg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
