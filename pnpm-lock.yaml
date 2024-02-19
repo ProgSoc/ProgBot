@@ -13,7 +13,7 @@ dependencies:
     version: 2.8.0
   '@necord/pagination':
     specifier: 1.1.6
-    version: 1.1.6(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(necord@6.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+    version: 1.1.6(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@nestjs/cache-manager':
     specifier: 2.1.1
     version: 2.1.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(cache-manager@5.3.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -78,8 +78,8 @@ dependencies:
     specifier: 0.37.0
     version: 0.37.0
   necord:
-    specifier: 6.4.2
-    version: 6.4.2(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+    specifier: 6.6.1
+    version: 6.6.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   node-html-markdown:
     specifier: 1.3.0
     version: 1.3.0
@@ -1145,7 +1145,7 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /@necord/pagination@1.1.6(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(necord@6.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+  /@necord/pagination@1.1.6(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(necord@6.6.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-Kx4EeZbxfgmJfS1GEVAwKdBRDw1iwfEWSqfxLKXyS8fhwozHYm+4HA3P8E6aWvWEUTOISOuM1ZAujnDI7nEdvQ==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -1158,7 +1158,7 @@ packages:
       '@nestjs/common': 10.2.10(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       discord.js: 14.14.1
-      necord: 6.4.2(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      necord: 6.6.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       reflect-metadata: 0.1.13
       rxjs: 7.8.1
     dev: false
@@ -4544,14 +4544,14 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /necord@6.4.2(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
-    resolution: {integrity: sha512-9ownhBeL3+w5qAQ0YjRx1wBcPsNkoUVCYYQvXpiT3F0GfsUHS1/+5T4BKOG5RYj8EbEWr86fuK8ufPEQx/ccSw==}
+  /necord@6.6.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-WIlkBkK4ZdtuvSNIB9XhgH8LRCVsuYj7ZDF4VGt3KAZkCF8pe24CwsLwb4A9CJECCOakBrvX0hlA15718GRZsg==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     peerDependencies:
       '@nestjs/common': ^10.2.0
       '@nestjs/core': ^10.2.0
       discord.js: ^14.0.1
-      reflect-metadata: ^0.1.13
+      reflect-metadata: ^0.2.1
       rxjs: ^7.2.0
     dependencies:
       '@nestjs/common': 10.2.10(reflect-metadata@0.1.13)(rxjs@7.8.1)
