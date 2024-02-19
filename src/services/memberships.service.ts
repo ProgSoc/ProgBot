@@ -423,4 +423,19 @@ export class MembershipsService {
       .where(eq(memberships.guildId, guildId))
       .execute();
   }
+
+  public async anonymised(guildId: string) {
+    return await this.db
+      .select({
+        type: memberships.type,
+        date: memberships.start_date,
+      })
+      .from(memberships)
+      .where(
+        and(
+          eq(memberships.guildId, guildId),
+          gte(memberships.end_date, sql`now()::date`),
+        )
+      );
+  }
 }
