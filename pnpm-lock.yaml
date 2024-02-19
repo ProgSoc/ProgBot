@@ -108,8 +108,8 @@ dependencies:
     specifier: 7.8.1
     version: 7.8.1
   stream-transform:
-    specifier: 3.2.10
-    version: 3.2.10
+    specifier: 3.3.0
+    version: 3.3.0
   terminal-link:
     specifier: 3.0.0
     version: 3.0.0
@@ -5501,8 +5501,8 @@ packages:
     engines: {node: '>=4', npm: '>=6'}
     dev: true
 
-  /stream-transform@3.2.10:
-    resolution: {integrity: sha512-Yu+x7zcWbWdyB0Td8dFzHt2JEyD6694CNq2lqh1rbuEBVxPtjb/GZ7xDnZcdYiU5E/RtufM54ClSEOzZDeWguA==}
+  /stream-transform@3.3.0:
+    resolution: {integrity: sha512-pG1NeDdmErNYKtvTpFayrEueAmL0xVU5wd22V7InGnatl4Ocq3HY7dcXIKj629kXvYQvglCC7CeDIGAlx1RNGA==}
     dev: false
 
   /streamsearch@1.1.0:
