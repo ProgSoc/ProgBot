@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@dynamicabot/signales": "2.1.1",
-    "@keyv/redis": "2.8.0",
+    "@keyv/redis": "2.8.4",
     "@necord/pagination": "1.1.6",
     "@nestjs/cache-manager": "2.1.1",
     "@nestjs/common": "10.2.10",
