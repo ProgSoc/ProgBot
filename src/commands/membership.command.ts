@@ -365,4 +365,31 @@ export class UploadMembershipsCommand {
 
     return;
   }
+
+  @Subcommand({
+    name: "stats",
+    description: "Display ProgSoc membership statistics",
+    dmPermission: false,
+  })
+  public async stats(@Context() [interaction]: SlashCommandContext) {
+    const { guildId } = interaction;
+
+    // dmPermission doesn't seem to have any effect, so make sure we are in a guild.
+    if (!guildId) {
+      await interaction.reply({
+        content: 'This command must be run in a guild',
+        ephemeral: true,
+      });
+
+      return;
+    }
+
+    const list = await this.membershipsService.anonymised(guildId);
+
+    // IDEA: column-chart plot over the year
+
+    await interaction.reply({
+      content: `ProgSoc has ${list.length} member${list.length != 1 ? "s" : ""}!`,
+    });
+  }
 }
