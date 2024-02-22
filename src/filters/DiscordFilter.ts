@@ -1,8 +1,8 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
-import { BaseInteraction } from 'discord.js';
-import { NecordArgumentsHost } from 'necord';
-import mainLogger from 'src/logger';
+import { ExceptionFilter, Catch, ArgumentsHost } from "@nestjs/common";
+import * as Sentry from "@sentry/node";
+import { BaseInteraction } from "discord.js";
+import { NecordArgumentsHost } from "necord";
+import mainLogger from "src/logger";
 
 @Catch()
 export class DiscordExceptionFilter implements ExceptionFilter {

@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations } from "drizzle-orm";
 import {
   date,
   pgEnum,
@@ -6,31 +6,31 @@ import {
   primaryKey,
   text,
   unique,
-} from 'drizzle-orm/pg-core';
+} from "drizzle-orm/pg-core";
 
-export const guilds = pgTable('guilds', {
+export const guilds = pgTable("guilds", {
   /** The Guild Id */
-  guildId: text('guild_id').primaryKey(),
+  guildId: text("guild_id").primaryKey(),
   /** Member Role */
-  memberRole: text('member_role'),
+  memberRole: text("member_role"),
   /** Advent of code leaderboard url */
-  aocLeaderboardUrl: text('aoc_leaderboard_url'),
+  aocLeaderboardUrl: text("aoc_leaderboard_url"),
   /** Advent of code session cookie */
-  aocSessionCookie: text('aoc_session_cookie'),
+  aocSessionCookie: text("aoc_session_cookie"),
 });
 
-export const membershipTypeEnum = pgEnum('membership_type', [
-  'Staff',
-  'Student',
-  'Alumni',
-  'Public',
+export const membershipTypeEnum = pgEnum("membership_type", [
+  "Staff",
+  "Student",
+  "Alumni",
+  "Public",
 ]);
 
-export const discordUsers = pgTable('discordUsers', {
+export const discordUsers = pgTable("discordUsers", {
   /** The Discord User Id */
-  userId: text('user_id').primaryKey(),
+  userId: text("user_id").primaryKey(),
   /** Refresh token */
-  refreshToken: text('refresh_token'),
+  refreshToken: text("refresh_token"),
 });
 
 export const discordUsersRelations = relations(discordUsers, ({ one }) => ({
@@ -41,30 +41,30 @@ export const discordUsersRelations = relations(discordUsers, ({ one }) => ({
 }));
 
 export const memberships = pgTable(
-  'memberships',
+  "memberships",
   {
     /** The Guild Id */
-    guildId: text('guild_id')
+    guildId: text("guild_id")
       .references(() => guilds.guildId)
       .notNull(),
     /** The email of the member */
-    email: text('email'),
+    email: text("email"),
     /** The phone number */
-    phone: text('phone'),
+    phone: text("phone"),
     /** The name of the member */
-    name: text('name').notNull(), // This is in the format, "First|Preferred Last"
+    name: text("name").notNull(), // This is in the format, "First|Preferred Last"
     /** The type of membership */
-    type: membershipTypeEnum('type').notNull(),
+    type: membershipTypeEnum("type").notNull(),
     /** Joined Date, the earliest date that the member is in the memberships list */
-    start_date: date('start_date', {
-      mode: 'string',
+    start_date: date("start_date", {
+      mode: "string",
     }).notNull(),
     /** End Date */
-    end_date: date('end_date', {
-      mode: 'string',
+    end_date: date("end_date", {
+      mode: "string",
     }).notNull(),
     /** The Discord User Id if linked */
-    userId: text('user_id').references(() => discordUsers.userId),
+    userId: text("user_id").references(() => discordUsers.userId),
   },
   (table) => {
     return {

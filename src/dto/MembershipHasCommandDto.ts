@@ -1,17 +1,17 @@
-import { GuildMember } from 'discord.js';
-import { MemberOption, StringOption, UserOption } from 'necord';
+import { GuildMember } from "discord.js";
+import { MemberOption, StringOption, UserOption } from "necord";
 
 export class MembershipHasCommandDto {
   @StringOption({
-    description: 'The email to verify',
+    description: "The email to verify",
     required: false,
-    name: 'email',
+    name: "email",
   })
   email?: string;
   @MemberOption({
-    description: 'The user to verify',
+    description: "The user to verify",
     required: false,
-    name: 'member',
+    name: "member",
   })
   member?: GuildMember;
 }

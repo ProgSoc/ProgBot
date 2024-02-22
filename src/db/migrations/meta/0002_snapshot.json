@@ -119,12 +119,8 @@
           "name": "memberships_guild_id_guilds_guild_id_fk",
           "tableFrom": "memberships",
           "tableTo": "guilds",
-          "columnsFrom": [
-            "guild_id"
-          ],
-          "columnsTo": [
-            "guild_id"
-          ],
+          "columnsFrom": ["guild_id"],
+          "columnsTo": ["guild_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -132,12 +128,8 @@
           "name": "memberships_user_id_discordUsers_user_id_fk",
           "tableFrom": "memberships",
           "tableTo": "discordUsers",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["user_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -145,10 +137,7 @@
       "compositePrimaryKeys": {
         "memberships_guild_id_email": {
           "name": "memberships_guild_id_email",
-          "columns": [
-            "guild_id",
-            "email"
-          ]
+          "columns": ["guild_id", "email"]
         }
       },
       "uniqueConstraints": {}

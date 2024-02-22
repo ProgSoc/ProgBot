@@ -1,26 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { EmbedBuilder, codeBlock } from 'discord.js';
-import { Context, SlashCommand, type SlashCommandContext } from 'necord';
-import { AocSetupModal } from 'src/modals/AocSetup';
-import { AoCService, Leaderboard } from 'src/services/aoc.service';
-import { AsciiTable3 } from 'ascii-table3';
+import { Injectable } from "@nestjs/common";
+import { EmbedBuilder, codeBlock } from "discord.js";
+import { Context, SlashCommand, type SlashCommandContext } from "necord";
+import { AocSetupModal } from "src/modals/AocSetup";
+import { AoCService, Leaderboard } from "src/services/aoc.service";
+import { AsciiTable3 } from "ascii-table3";
 
 @Injectable()
 export class AoCCommands {
   constructor(private readonly aocService: AoCService) {}
 
   @SlashCommand({
-    name: 'aocsetup',
-    description: 'Setup AoC for this server',
-    defaultMemberPermissions: ['Administrator'],
+    name: "aocsetup",
+    description: "Setup AoC for this server",
+    defaultMemberPermissions: ["Administrator"],
   })
   public async aocsetup(@Context() [interaction]: SlashCommandContext) {
     await interaction.showModal(AocSetupModal.getModal());
   }
 
   @SlashCommand({
-    name: 'aocleaderboard',
-    description: 'Get the AoC leaderboard for this server',
+    name: "aocleaderboard",
+    description: "Get the AoC leaderboard for this server",
     dmPermission: false,
   })
   public async aocleaderboard(@Context() [interaction]: SlashCommandContext) {
@@ -28,7 +28,7 @@ export class AoCCommands {
 
     if (!guildId) {
       await interaction.reply({
-        content: 'This command can only be used in a guild',
+        content: "This command can only be used in a guild",
         ephemeral: true,
       });
       return;
@@ -61,7 +61,7 @@ export class AoCCommands {
  * @param leaderboard The leaderboard to convert to markdown
  */
 const leaderboardToMd = (leaderboard: Leaderboard) => {
-  const table = new AsciiTable3().setHeading('Rank', 'Score', 'Stars', 'Name');
+  const table = new AsciiTable3().setHeading("Rank", "Score", "Stars", "Name");
 
   const members = Object.values(leaderboard.members);
 
@@ -71,15 +71,15 @@ const leaderboardToMd = (leaderboard: Leaderboard) => {
       const dayRecords = Object.values(member.completion_day_level);
 
       // Make a single line of gold and silver stars
-      let stars = '';
-      dayRecords.forEach((dayRecord) => {
+      let stars = "";
+      for (const dayRecord of dayRecords) {
         const starsForDay = Object.values(dayRecord).length;
         if (starsForDay === 1) {
-          stars += '☆';
+          stars += "☆";
         } else if (starsForDay === 2) {
-          stars += '★';
+          stars += "★";
         }
-      });
+      }
 
       return {
         rank: index + 1,
@@ -94,9 +94,9 @@ const leaderboardToMd = (leaderboard: Leaderboard) => {
   //     return Math.max(acc, Buffer.byteLength(row.stars));
   //   }, 0);
 
-  memberRows.forEach((row) => {
-    table.addRow(row.rank, row.score, `${row.stars}`, row.name ?? 'Unknown');
-  });
+  for (const row of memberRows) {
+    table.addRow(row.rank, row.score, `${row.stars}`, row.name ?? "Unknown");
+  }
 
   //   table.setWidth(3, maxStarsLength);
 

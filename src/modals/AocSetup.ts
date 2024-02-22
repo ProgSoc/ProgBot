@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import {
   ActionRowBuilder,
   MessageActionRowComponent,
@@ -7,28 +7,28 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-} from 'discord.js';
-import { Ctx, Modal, type ModalContext } from 'necord';
-import { VerifyButton } from 'src/buttons/VerifyButton';
-import { AoCService } from 'src/services/aoc.service';
-import { MembershipsService } from 'src/services/memberships.service';
-import { z } from 'zod';
+} from "discord.js";
+import { Ctx, Modal, type ModalContext } from "necord";
+import { VerifyButton } from "src/buttons/VerifyButton";
+import { AoCService } from "src/services/aoc.service";
+import { MembershipsService } from "src/services/memberships.service";
+import { z } from "zod";
 
 @Injectable()
 export class AocSetupModal {
   constructor(private readonly aocService: AoCService) {}
 
-  @Modal(`aoc-setup`)
+  @Modal("aoc-setup")
   public async modal(@Ctx() [interaction]: ModalContext) {
     const rawLeaderboardUrl =
-      interaction.fields.getTextInputValue('leaderboard-url');
+      interaction.fields.getTextInputValue("leaderboard-url");
     const rawSessionToken =
-      interaction.fields.getTextInputValue('session-token');
+      interaction.fields.getTextInputValue("session-token");
     const guild = interaction.guild;
 
     if (!guild) {
       await interaction.reply({
-        content: 'This command can only be used in a guild',
+        content: "This command can only be used in a guild",
         ephemeral: true,
       });
       return;
@@ -37,12 +37,12 @@ export class AocSetupModal {
     try {
       z.string()
         .url()
-        .startsWith('https://adventofcode.com')
-        .endsWith('.json')
+        .startsWith("https://adventofcode.com")
+        .endsWith(".json")
         .parse(rawLeaderboardUrl);
     } catch (error) {
       await interaction.reply({
-        content: 'Invalid leaderboard url',
+        content: "Invalid leaderboard url",
         ephemeral: true,
       });
       return;
@@ -52,7 +52,7 @@ export class AocSetupModal {
       z.string().parse(rawSessionToken);
     } catch (error) {
       await interaction.reply({
-        content: 'Invalid session token',
+        content: "Invalid session token",
         ephemeral: true,
       });
       return;
@@ -62,29 +62,29 @@ export class AocSetupModal {
     await this.aocService.setup(guild.id, rawLeaderboardUrl, rawSessionToken);
 
     await interaction.reply({
-      content: 'AoC setup complete',
+      content: "AoC setup complete",
       ephemeral: true,
     });
   }
 
   public static getModal() {
     return new ModalBuilder()
-      .setTitle('Advent of Code Setup')
-      .setCustomId('aoc-setup')
+      .setTitle("Advent of Code Setup")
+      .setCustomId("aoc-setup")
       .setComponents([
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
           new TextInputBuilder()
-            .setCustomId('leaderboard-url')
-            .setLabel('Leaderboard URL')
-            .setPlaceholder('Enter your leaderboard url ending in .json')
+            .setCustomId("leaderboard-url")
+            .setLabel("Leaderboard URL")
+            .setPlaceholder("Enter your leaderboard url ending in .json")
             .setRequired(true)
             .setStyle(TextInputStyle.Paragraph),
         ]),
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
           new TextInputBuilder()
-            .setCustomId('session-token')
-            .setLabel('Session Token')
-            .setPlaceholder('Enter your session token (from your cookies)')
+            .setCustomId("session-token")
+            .setLabel("Session Token")
+            .setPlaceholder("Enter your session token (from your cookies)")
             .setRequired(true)
             .setStyle(TextInputStyle.Paragraph),
         ]),

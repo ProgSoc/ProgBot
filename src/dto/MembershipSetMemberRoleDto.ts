@@ -1,7 +1,7 @@
-import { Role } from 'discord.js';
-import { RoleOption } from 'necord';
+import { Role } from "discord.js";
+import { RoleOption } from "necord";
 
 export class MembershipSetMemberRoleDto {
-  @RoleOption({ name: 'role', description: 'The role to set' })
+  @RoleOption({ name: "role", description: "The role to set" })
   role: Role;
 }

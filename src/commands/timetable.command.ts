@@ -1,21 +1,21 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable, UseInterceptors } from "@nestjs/common";
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonComponent,
   EmbedBuilder,
-} from 'discord.js';
+} from "discord.js";
 import {
   Context,
   Options,
   SlashCommand,
   type SlashCommandContext,
-} from 'necord';
-import { SubjectCodeAutocompleteInterceptor } from 'src/autocomplete/SubjectCodeAutocomplete';
-import { ActivitiesButton } from 'src/buttons/ActivitiesButton';
-import { TimetableActivitiesCommandDto } from 'src/dto/TimetableActivitiesCommandDto';
-import mainLogger from 'src/logger';
-import { TimetableService } from 'src/services/timetable.service';
+} from "necord";
+import { SubjectCodeAutocompleteInterceptor } from "src/autocomplete/SubjectCodeAutocomplete";
+import { ActivitiesButton } from "src/buttons/ActivitiesButton";
+import { TimetableActivitiesCommandDto } from "src/dto/TimetableActivitiesCommandDto";
+import mainLogger from "src/logger";
+import { TimetableService } from "src/services/timetable.service";
 
 @Injectable()
 export class TimetableCommand {
@@ -25,8 +25,8 @@ export class TimetableCommand {
 
   @UseInterceptors(SubjectCodeAutocompleteInterceptor)
   @SlashCommand({
-    name: 'timetable',
-    description: 'Get the timetable of a subject',
+    name: "timetable",
+    description: "Get the timetable of a subject",
   })
   public async timetable(
     @Context() [interaction]: SlashCommandContext,
@@ -36,7 +36,7 @@ export class TimetableCommand {
     await interaction.deferReply();
     const year = inputYear ?? new Date().getFullYear();
 
-    this.logger.info('Timetable command received');
+    this.logger.info("Timetable command received");
 
     const timetable = await this.timetableService.getSubjectTimetable(
       code,
@@ -48,7 +48,7 @@ export class TimetableCommand {
 
     if (!firstSubject) {
       await interaction.followUp({
-        content: 'No subjects found',
+        content: "No subjects found",
         ephemeral: true,
       });
       return;
@@ -59,11 +59,11 @@ export class TimetableCommand {
       .setDescription(firstSubject.subject_code)
       .addFields([
         {
-          name: 'Acitivity Count',
-          value: firstSubject.activity_count?.toString() ?? 'Unknown',
+          name: "Acitivity Count",
+          value: firstSubject.activity_count?.toString() ?? "Unknown",
         },
       ])
-      .setColor('Blue');
+      .setColor("Blue");
 
     const actionRowBuilder =
       new ActionRowBuilder<ButtonBuilder>().addComponents(

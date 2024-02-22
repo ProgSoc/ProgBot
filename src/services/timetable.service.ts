@@ -1,8 +1,8 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject } from '@nestjs/common';
-import { type Cache } from 'cache-manager';
-import { z } from 'zod';
-import mainLogger from '../logger';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject } from "@nestjs/common";
+import { type Cache } from "cache-manager";
+import { z } from "zod";
+import mainLogger from "../logger";
 
 const activitySchema = z.object({
   /**
@@ -56,13 +56,13 @@ export class TimetableService {
   public async getSubjectTimetable(
     callistaCode: string,
     year: number,
-    semester: 'AUT' | 'SUM' | 'SPR',
+    semester: "AUT" | "SUM" | "SPR",
   ): Promise<Array<z.infer<typeof subjectSchema>>> {
     const cacheString = `${year}-${semester}-${callistaCode}`.trim();
     const cachedSubject = await this.cacheManager.get<string>(cacheString);
 
     if (cachedSubject) {
-      this.logger.debug('Found cached subject', callistaCode);
+      this.logger.debug("Found cached subject", callistaCode);
       const subject = await subjectSchema.parseAsync(JSON.parse(cachedSubject));
       return [subject];
     }
@@ -70,48 +70,49 @@ export class TimetableService {
     const oddYear = year % 2 === 1;
 
     const rootUrl = `https://mytimetablecloud.uts.edu.au/${
-      oddYear ? 'odd' : 'even'
+      oddYear ? "odd" : "even"
     }/rest/timetable/subjects`;
 
     const requestParams = {
-      'search-term': callistaCode,
+      "search-term": callistaCode,
       semester: semester,
-      campus: 'ALL',
-      faculty: 'ALL',
-      type: 'ALL',
-      days: ['1', '2', '3', '4', '5', '6', '0'],
-      'start-time': '00:00',
-      'end-time': '23:00',
+      campus: "ALL",
+      faculty: "ALL",
+      type: "ALL",
+      days: ["1", "2", "3", "4", "5", "6", "0"],
+      "start-time": "00:00",
+      "end-time": "23:00",
     };
 
     const urlParams = new URLSearchParams();
 
-    // append the body to the url params
-    Object.entries(requestParams).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(requestParams)) {
       if (Array.isArray(value)) {
-        value.forEach((v) => urlParams.append(key, v));
+        for (const v of value) {
+          urlParams.append(key, v);
+        }
       } else {
         urlParams.append(key, value);
       }
-    });
+    }
 
     const response = await fetch(rootUrl, {
       body: urlParams.toString(),
-      method: 'POST',
+      method: "POST",
       headers: {
-        'User-Agent': 'UTS-Subject-Outline-Bot',
+        "User-Agent": "UTS-Subject-Outline-Bot",
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get subject timetable');
+      throw new Error("Failed to get subject timetable");
     }
 
     const data = await response.json();
 
     const subjects = subjectsSchema.parse(data);
 
-    Object.values(subjects).forEach(async (subject) => {
+    for (const subject of Object.values(subjects)) {
       const year = new Date().getFullYear();
       const cachingString =
         `${year}-${subject.semester}-${subject.callista_code}`.trim();
@@ -120,8 +121,8 @@ export class TimetableService {
         JSON.stringify(subject),
         1000 * 60 * 60 * 24 * 7,
       );
-      this.logger.debug('Cached subject', cachingString);
-    });
+      this.logger.debug("Cached subject", cachingString);
+    }
 
     const subjectValues = await z
       .array(subjectSchema)

@@ -1,4 +1,4 @@
-import { Signale } from '@dynamicabot/signales';
+import { Signale } from "@dynamicabot/signales";
 
 const mainLogger = new Signale({
   config: {
@@ -6,7 +6,7 @@ const mainLogger = new Signale({
     displayScope: true,
     displayLabel: true,
   },
-  scope: 'Main',
+  scope: "Main",
 });
 
 export default mainLogger;

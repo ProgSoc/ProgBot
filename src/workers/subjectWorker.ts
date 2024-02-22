@@ -1,8 +1,8 @@
-import { MeiliSearch } from 'meilisearch';
-import KeyvRedis from '@keyv/redis';
-import { load } from 'cheerio';
-import { NodeHtmlMarkdown } from 'node-html-markdown';
-import mainLogger from 'src/logger';
+import { MeiliSearch } from "meilisearch";
+import KeyvRedis from "@keyv/redis";
+import { load } from "cheerio";
+import { NodeHtmlMarkdown } from "node-html-markdown";
+import mainLogger from "src/logger";
 
 interface Options {
   redis: {
@@ -63,7 +63,7 @@ export async function indexSubject({ subject, options }: SubjectIndexArgsArgs) {
     apiKey: options.meilisearch.key,
   });
 
-  const index = searchClient.index('subjects');
+  const index = searchClient.index("subjects");
 
   const subjectHtml = await getHTML(subject.link, redis);
 
@@ -73,7 +73,7 @@ export async function indexSubject({ subject, options }: SubjectIndexArgsArgs) {
 
   const $ = load(subjectHtml);
 
-  const pageContent = $('.ie-images').html();
+  const pageContent = $(".ie-images").html();
 
   if (!pageContent) {
     return;
@@ -89,7 +89,7 @@ export async function indexSubject({ subject, options }: SubjectIndexArgsArgs) {
   };
 
   const id = await index.addDocuments([subjectData], {
-    primaryKey: 'code',
+    primaryKey: "code",
   });
 }
 
@@ -119,7 +119,7 @@ export async function indexCourse({ course, options }: CourseIndexArgs) {
     apiKey: options.meilisearch.key,
   });
 
-  const index = searchClient.index('courses');
+  const index = searchClient.index("courses");
 
   const courseHtml = await getHTML(course.link, redis);
 
@@ -129,7 +129,7 @@ export async function indexCourse({ course, options }: CourseIndexArgs) {
 
   const $ = load(courseHtml);
 
-  const pageContent = $('.ie-images').html();
+  const pageContent = $(".ie-images").html();
 
   if (!pageContent) {
     return;
@@ -145,7 +145,7 @@ export async function indexCourse({ course, options }: CourseIndexArgs) {
   };
 
   const id = await index.addDocuments([courseData], {
-    primaryKey: 'code',
+    primaryKey: "code",
   });
 }
 
@@ -175,7 +175,7 @@ export async function indexMajor({ major, options }: MajorIndexArgs) {
     apiKey: options.meilisearch.key,
   });
 
-  const index = searchClient.index('majors');
+  const index = searchClient.index("majors");
 
   const majorHtml = await getHTML(major.link, redis);
 
@@ -185,7 +185,7 @@ export async function indexMajor({ major, options }: MajorIndexArgs) {
 
   const $ = load(majorHtml);
 
-  const pageContent = $('.ie-images').html();
+  const pageContent = $(".ie-images").html();
 
   if (!pageContent) {
     return;
@@ -201,7 +201,7 @@ export async function indexMajor({ major, options }: MajorIndexArgs) {
   };
 
   const id = await index.addDocuments([majorData], {
-    primaryKey: 'code',
+    primaryKey: "code",
   });
 }
 
@@ -231,7 +231,7 @@ export async function indexSubmajor({ submajor, options }: SubmajorsIndexArgs) {
     apiKey: options.meilisearch.key,
   });
 
-  const index = searchClient.index('submajors');
+  const index = searchClient.index("submajors");
 
   const submajorHtml = await getHTML(submajor.link, redis);
 
@@ -241,7 +241,7 @@ export async function indexSubmajor({ submajor, options }: SubmajorsIndexArgs) {
 
   const $ = load(submajorHtml);
 
-  const pageContent = $('.ie-images').html();
+  const pageContent = $(".ie-images").html();
 
   if (!pageContent) {
     return;
@@ -257,6 +257,6 @@ export async function indexSubmajor({ submajor, options }: SubmajorsIndexArgs) {
   };
 
   const id = await index.addDocuments([submajorData], {
-    primaryKey: 'code',
+    primaryKey: "code",
   });
 }

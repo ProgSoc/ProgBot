@@ -1,6 +1,6 @@
 const bootstrap = async () => {
   try {
-    const response = await fetch('http://localhost:3000/health');
+    const response = await fetch("http://localhost:3000/health");
     if (!response.ok) {
       process.exit(1);
     } else {

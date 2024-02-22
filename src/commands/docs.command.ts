@@ -1,21 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { EmbedBuilder } from 'discord.js';
+import { Injectable } from "@nestjs/common";
+import { EmbedBuilder } from "discord.js";
 import {
   Context,
   Options,
   SlashCommand,
   type SlashCommandContext,
-} from 'necord';
-import { DocsSearchCommandDto } from 'src/dto/DocsSearchCommandDto';
-import { DocsService, SearchResult } from 'src/services/docs.service';
+} from "necord";
+import { DocsSearchCommandDto } from "src/dto/DocsSearchCommandDto";
+import { DocsService, SearchResult } from "src/services/docs.service";
 
 @Injectable()
 export class DocsCommand {
   constructor(private readonly docsService: DocsService) {}
 
   @SlashCommand({
-    name: 'docs',
-    description: 'Search the docs',
+    name: "docs",
+    description: "Search the docs",
     dmPermission: true,
   })
   public async docs(
@@ -28,7 +28,7 @@ export class DocsCommand {
     const results = await this.docsService.searchDocs(query);
 
     if (results.length === 0) {
-      await interaction.editReply('No results found');
+      await interaction.editReply("No results found");
       return;
     }
 
@@ -68,13 +68,13 @@ const searchResultToEmbed = (result: SearchResult) => {
    * It includes the position of the term and the length of the term
    */
   const positionsToHighlightByField = Object.entries(result.meta).reduce(
-    (acc, [term, fields]) => {
-      Object.entries(fields).forEach(([field, { position }]) => {
+    (acc, [_term, fields]) => {
+      for (const [field, { position }] of Object.entries(fields)) {
         if (!acc[field]) {
           acc[field] = [];
         }
         acc[field].push(...position);
-      });
+      }
       return acc;
     },
     {} as Record<string, [number, number][]>,
@@ -99,11 +99,11 @@ const searchResultToEmbed = (result: SearchResult) => {
 
   const embed = new EmbedBuilder()
     .setTitle(result.title)
-    .setDescription(result.text.split('\n').slice(0, 2).join('\n'))
+    .setDescription(result.text.split("\n").slice(0, 2).join("\n"))
     .setURL(`https://docs.progsoc.org/${result.location}`);
 
   if (result.tags) {
-    embed.addFields({ name: 'Tags', value: result.tags?.join(', ') ?? 'None' });
+    embed.addFields({ name: "Tags", value: result.tags?.join(", ") ?? "None" });
   }
 
   return embed;

@@ -1,9 +1,8 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { type Cache } from 'cache-manager';
-import { MatchData } from 'lunr';
-import { z } from 'zod';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { type Cache } from "cache-manager";
+import { z } from "zod";
 
 const DocSchema = z.object({
   title: z.string(),
@@ -38,11 +37,11 @@ const MetadataSchema = z.record(
       position: z.array(z.tuple([z.number(), z.number()])),
     }),
     {
-      description: 'The metadata about the field',
+      description: "The metadata about the field",
     },
   ),
   {
-    description: 'The metadata about the search term',
+    description: "The metadata about the search term",
   },
 );
 
@@ -65,29 +64,29 @@ export class DocsService {
    * @returns The lunr index as a string
    */
   private async getDocsIndex(): Promise<string> {
-    const cacheKey = 'docs-index-position-md3';
+    const cacheKey = "docs-index-position-md3";
     const cached = await this.cacheManager.get<string>(cacheKey);
     if (cached) {
       return cached;
     }
     const docs = await this.getDocs();
-    const { default: lunr } = await import('lunr');
+    const { default: lunr } = await import("lunr");
     const idx = lunr((builder) => {
-      builder.ref('location');
-      builder.field('location');
-      builder.field('title', {
+      builder.ref("location");
+      builder.field("location");
+      builder.field("title", {
         boost: 10,
       });
-      builder.field('text', {
+      builder.field("text", {
         boost: 5,
       });
-      builder.field('tags', {
+      builder.field("tags", {
         boost: 5,
       });
-      builder.metadataWhitelist = ['position'];
-      docs.docs.forEach((doc) => {
+      builder.metadataWhitelist = ["position"];
+      for (const doc of docs.docs) {
         builder.add(doc);
-      });
+      }
     });
 
     const serializedIdx = JSON.stringify(idx);
@@ -101,11 +100,11 @@ export class DocsService {
    * @returns The docs as a validated object
    */
   private async getDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
-    const cacheKey = 'docs-md3';
+    const cacheKey = "docs-md3";
     const cached = await this.cacheManager.get<string>(cacheKey);
     if (cached) {
       const validated = await DocsResponseSchema.parse(JSON.parse(cached));
-      const { NodeHtmlMarkdown } = await import('node-html-markdown'); // This markdown processor is fast but sacrifices spacing
+      const { NodeHtmlMarkdown } = await import("node-html-markdown"); // This markdown processor is fast but sacrifices spacing
       const markedDown = validated.docs.map((doc) => ({
         ...doc,
         text: NodeHtmlMarkdown.translate(doc.text),
@@ -131,7 +130,7 @@ export class DocsService {
    * @returns The search index as a validated object
    */
   private async fetchDocs(): Promise<z.infer<typeof DocsResponseSchema>> {
-    const docsUrl = this.configService.getOrThrow('DOCS_LUNR_INDEX_URL');
+    const docsUrl = this.configService.getOrThrow("DOCS_LUNR_INDEX_URL");
     const response = await fetch(docsUrl);
 
     const docs = await response.json();
@@ -149,14 +148,14 @@ export class DocsService {
   public async searchDocs(query: string): Promise<SearchResult[]> {
     const searchIndex = await this.getDocsIndex();
     const docs = await this.getDocs();
-    const { default: lunr } = await import('lunr');
+    const { default: lunr } = await import("lunr");
     const idx = lunr.Index.load(JSON.parse(searchIndex));
 
     const results = idx.search(query);
 
     const resultsWithDocs: Array<SearchResult> = [];
 
-    results.forEach((result) => {
+    for (const result of results) {
       const doc = docs.docs.find((doc) => doc.location === result.ref);
       if (doc) {
         resultsWithDocs.push(
@@ -166,7 +165,7 @@ export class DocsService {
           }),
         );
       }
-    });
+    }
 
     return resultsWithDocs;
   }

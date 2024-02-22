@@ -1,18 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
   hyperlink,
   time,
-} from 'discord.js';
-import { eq } from 'drizzle-orm';
-import { Button, type ButtonContext, ComponentParam, Context } from 'necord';
-import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
+} from "discord.js";
+import { eq } from "drizzle-orm";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import { DATABASE_TOKEN, type Database } from "src/db/db.module";
 import {
   ActivitySchemaType,
   TimetableService,
-} from 'src/services/timetable.service';
+} from "src/services/timetable.service";
 
 @Injectable()
 export class ActivitiesButton {
@@ -21,12 +21,12 @@ export class ActivitiesButton {
     private readonly timetableService: TimetableService,
   ) {}
 
-  @Button('timetable/:year/:semester/:subjectId/activities')
+  @Button("timetable/:year/:semester/:subjectId/activities")
   public async onSubjectActivities(
     @Context() [interaction]: ButtonContext,
-    @ComponentParam('year') year: string,
-    @ComponentParam('subjectId') subjectId: string,
-    @ComponentParam('semester') semester: string,
+    @ComponentParam("year") year: string,
+    @ComponentParam("subjectId") subjectId: string,
+    @ComponentParam("semester") semester: "AUT" | "SUM" | "SPR",
   ) {
     await interaction.deferReply();
     const odd = parseInt(year) % 2 === 1;
@@ -34,7 +34,7 @@ export class ActivitiesButton {
     const subjectTimetable = await this.timetableService.getSubjectTimetable(
       subjectId,
       parseInt(year),
-      semester as any,
+      semester,
     );
     const firstSubject = subjectTimetable.at(0);
 
@@ -63,7 +63,7 @@ export class ActivitiesButton {
     if (!activityEmbeds.length) {
       await interaction.reply({
         ephemeral: true,
-        content: 'No available activities found',
+        content: "No available activities found",
       });
     }
 
@@ -83,7 +83,7 @@ export class ActivitiesButton {
   ) {
     return new ButtonBuilder()
       .setCustomId(`timetable/${year}/${semester}/${subjectId}/activities`)
-      .setLabel('Activities')
+      .setLabel("Activities")
       .setStyle(ButtonStyle.Secondary);
   }
 }
@@ -107,19 +107,19 @@ const SubjectActivityBuilder = (activity: ActivitySchemaType) => {
     .setDescription(description)
     .setColor(colour)
     .addFields(
-      { name: 'Location', value: location, inline: true },
+      { name: "Location", value: location, inline: true },
       {
-        name: 'Availability',
+        name: "Availability",
         value: availability.toString(),
         inline: true,
       },
       {
-        name: 'Time',
+        name: "Time",
         value: dateTime,
         inline: true,
       },
       {
-        name: 'Duration',
+        name: "Duration",
         value:
           durationInHours === 1
             ? `${durationInHours} hour`

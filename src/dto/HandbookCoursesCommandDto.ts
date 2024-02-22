@@ -1,9 +1,9 @@
-import { StringOption } from 'necord';
+import { StringOption } from "necord";
 
 export class HandbookCoursesCommandDto {
   @StringOption({
-    name: 'search',
-    description: 'The search query',
+    name: "search",
+    description: "The search query",
     required: true,
   })
   search: string;

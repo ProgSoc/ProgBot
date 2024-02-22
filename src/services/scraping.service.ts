@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { HandbookService } from './handbook.service';
-import { ConfigService } from '@nestjs/config';
-import Piscina from 'piscina';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import mainLogger from 'src/logger';
+import { Injectable } from "@nestjs/common";
+import { HandbookService } from "./handbook.service";
+import { ConfigService } from "@nestjs/config";
+import Piscina from "piscina";
+import path from "path";
+import { fileURLToPath } from "url";
+import mainLogger from "src/logger";
 import {
   CourseIndexArgs,
   MajorIndexArgs,
   SubjectIndexArgsArgs,
   SubmajorsIndexArgs,
-} from 'src/workers/subjectWorker';
+} from "src/workers/subjectWorker";
 
 @Injectable()
 export class ScrapingService {
@@ -25,17 +25,17 @@ export class ScrapingService {
     this.pool = new Piscina({
       filename: path.join(
         fileURLToPath(import.meta.url),
-        '../workers/subjectWorker.js',
+        "../workers/subjectWorker.js",
       ),
       minThreads: 1,
       maxThreads: 4,
     });
 
-    this.pool.on('error', (error) => {
+    this.pool.on("error", (error) => {
       this.logger.error(error);
     });
 
-    this.pool.on('taskerror', (error) => {
+    this.pool.on("taskerror", (error) => {
       this.logger.error(error);
     });
   }
@@ -48,22 +48,22 @@ export class ScrapingService {
         subject,
         options: {
           meilisearch: {
-            url: this.configService.getOrThrow<string>('MEILI_URL'),
-            key: this.configService.getOrThrow<string>('MEILI_MASTER_KEY'),
+            url: this.configService.getOrThrow<string>("MEILI_URL"),
+            key: this.configService.getOrThrow<string>("MEILI_MASTER_KEY"),
           },
           redis: {
-            url: this.configService.getOrThrow<string>('REDIS_URL'),
+            url: this.configService.getOrThrow<string>("REDIS_URL"),
           },
         },
       } satisfies SubjectIndexArgsArgs;
 
       return this.pool.run(args, {
-        name: 'indexSubject',
+        name: "indexSubject",
       });
     });
-    this.logger.time('Scraping subjects');
+    this.logger.time("Scraping subjects");
     await Promise.all(subjectPromises);
-    this.logger.timeEnd('Scraping subjects');
+    this.logger.timeEnd("Scraping subjects");
   }
 
   public async scrapeCourses() {
@@ -74,23 +74,23 @@ export class ScrapingService {
         course,
         options: {
           meilisearch: {
-            url: this.configService.getOrThrow<string>('MEILI_URL'),
-            key: this.configService.getOrThrow<string>('MEILI_MASTER_KEY'),
+            url: this.configService.getOrThrow<string>("MEILI_URL"),
+            key: this.configService.getOrThrow<string>("MEILI_MASTER_KEY"),
           },
           redis: {
-            url: this.configService.getOrThrow<string>('REDIS_URL'),
+            url: this.configService.getOrThrow<string>("REDIS_URL"),
           },
         },
       } satisfies CourseIndexArgs;
 
       return this.pool.run(args, {
-        name: 'indexCourse',
+        name: "indexCourse",
       });
     });
 
-    this.logger.time('Scraping courses');
+    this.logger.time("Scraping courses");
     await Promise.all(coursePromises);
-    this.logger.timeEnd('Scraping courses');
+    this.logger.timeEnd("Scraping courses");
   }
 
   public async scrapeMajors() {
@@ -101,23 +101,23 @@ export class ScrapingService {
         major,
         options: {
           meilisearch: {
-            url: this.configService.getOrThrow<string>('MEILI_URL'),
-            key: this.configService.getOrThrow<string>('MEILI_MASTER_KEY'),
+            url: this.configService.getOrThrow<string>("MEILI_URL"),
+            key: this.configService.getOrThrow<string>("MEILI_MASTER_KEY"),
           },
           redis: {
-            url: this.configService.getOrThrow<string>('REDIS_URL'),
+            url: this.configService.getOrThrow<string>("REDIS_URL"),
           },
         },
       } satisfies MajorIndexArgs;
 
       return this.pool.run(args, {
-        name: 'indexMajor',
+        name: "indexMajor",
       });
     });
 
-    this.logger.time('Scraping majors');
+    this.logger.time("Scraping majors");
     await Promise.all(majorPromises);
-    this.logger.timeEnd('Scraping majors');
+    this.logger.timeEnd("Scraping majors");
   }
 
   public async scrapeSubmajors() {
@@ -128,22 +128,22 @@ export class ScrapingService {
         submajor,
         options: {
           meilisearch: {
-            url: this.configService.getOrThrow<string>('MEILI_URL'),
-            key: this.configService.getOrThrow<string>('MEILI_MASTER_KEY'),
+            url: this.configService.getOrThrow<string>("MEILI_URL"),
+            key: this.configService.getOrThrow<string>("MEILI_MASTER_KEY"),
           },
           redis: {
-            url: this.configService.getOrThrow<string>('REDIS_URL'),
+            url: this.configService.getOrThrow<string>("REDIS_URL"),
           },
         },
       } satisfies SubmajorsIndexArgs;
 
       return this.pool.run(args, {
-        name: 'indexSubmajor',
+        name: "indexSubmajor",
       });
     });
 
-    this.logger.time('Scraping submajors');
+    this.logger.time("Scraping submajors");
     await Promise.all(submajorPromises);
-    this.logger.timeEnd('Scraping submajors');
+    this.logger.timeEnd("Scraping submajors");
   }
 }

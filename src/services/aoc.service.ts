@@ -1,11 +1,11 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Global, Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { type Cache } from 'cache-manager';
-import { eq } from 'drizzle-orm';
-import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
-import { guilds } from 'src/db/schema';
-import { z } from 'zod';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Global, Inject, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { type Cache } from "cache-manager";
+import { eq } from "drizzle-orm";
+import { DATABASE_TOKEN, type Database } from "src/db/db.module";
+import { guilds } from "src/db/schema";
+import { z } from "zod";
 
 /**
  * The AoC service is responsible for setting up AoC for a guild and managing the leaderboard
@@ -85,14 +85,14 @@ export class AoCService {
       .where(eq(guilds.guildId, guildId));
 
     if (!guild) {
-      throw new Error('Guild not found');
+      throw new Error("Guild not found");
     }
 
     const leaderboardUrl = guild.aocLeaderboardUrl;
     const sessionToken = guild.aocSessionCookie;
 
     if (!leaderboardUrl || !sessionToken) {
-      throw new Error('Leaderboard url or session token not found');
+      throw new Error("Leaderboard url or session token not found");
     }
 
     const leaderboard = await fetch(leaderboardUrl, {

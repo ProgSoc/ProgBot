@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import {
   ActionRowBuilder,
   MessageActionRowComponent,
@@ -7,23 +7,23 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-} from 'discord.js';
-import { Ctx, Modal, type ModalContext } from 'necord';
-import { VerifyButton } from 'src/buttons/VerifyButton';
-import { MembershipsService } from 'src/services/memberships.service';
+} from "discord.js";
+import { Ctx, Modal, type ModalContext } from "necord";
+import { VerifyButton } from "src/buttons/VerifyButton";
+import { MembershipsService } from "src/services/memberships.service";
 
 @Injectable()
 export class LinkMembershipEmailModal {
   constructor(private readonly membershipService: MembershipsService) {}
 
-  @Modal(`link-membership-email`)
+  @Modal("link-membership-email")
   public async modal(@Ctx() [interaction]: ModalContext) {
-    const email = interaction.fields.getTextInputValue('email');
+    const email = interaction.fields.getTextInputValue("email");
     const guild = interaction.guild;
 
     if (!guild) {
       await interaction.reply({
-        content: 'This command can only be used in a guild',
+        content: "This command can only be used in a guild",
         ephemeral: true,
       });
       return;
@@ -36,7 +36,7 @@ export class LinkMembershipEmailModal {
           VerifyButton.getButton(),
         );
       await interaction.reply({
-        content: 'Check your email for a code',
+        content: "Check your email for a code",
         ephemeral: true,
         components: [actionRow],
       });
@@ -50,7 +50,7 @@ export class LinkMembershipEmailModal {
         return;
       }
       await interaction.reply({
-        content: 'Unknown error',
+        content: "Unknown error",
         ephemeral: true,
       });
       return;
@@ -59,14 +59,14 @@ export class LinkMembershipEmailModal {
 
   public static getModal() {
     return new ModalBuilder()
-      .setTitle('Link Membership')
-      .setCustomId('link-membership-email')
+      .setTitle("Link Membership")
+      .setCustomId("link-membership-email")
       .setComponents([
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
           new TextInputBuilder()
-            .setCustomId('email')
-            .setLabel('Email')
-            .setPlaceholder('Enter the email you used to sign up')
+            .setCustomId("email")
+            .setLabel("Email")
+            .setPlaceholder("Enter the email you used to sign up")
             .setRequired(true)
             .setStyle(TextInputStyle.Short),
         ]),

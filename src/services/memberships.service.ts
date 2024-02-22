@@ -1,17 +1,17 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { type Cache } from 'cache-manager';
-import { parse } from 'csv-parse';
-import { Client, Routes } from 'discord.js';
-import { and, eq, gte, ilike, isNotNull, sql } from 'drizzle-orm';
-import { DateTime } from 'luxon';
-import { Transporter, createTransport } from 'nodemailer';
-import { DATABASE_TOKEN, type Database } from 'src/db/db.module';
-import { discordUsers, guilds, memberships } from 'src/db/schema';
-import mainLogger from 'src/logger';
-import { ListSchema } from 'src/schema/MembershipRowSchema';
-import { z } from 'zod';
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { type Cache } from "cache-manager";
+import { parse } from "csv-parse";
+import { Client, Routes } from "discord.js";
+import { and, eq, gte, ilike, isNotNull, sql } from "drizzle-orm";
+import { DateTime } from "luxon";
+import { Transporter, createTransport } from "nodemailer";
+import { DATABASE_TOKEN, type Database } from "src/db/db.module";
+import { discordUsers, guilds, memberships } from "src/db/schema";
+import mainLogger from "src/logger";
+import { ListSchema } from "src/schema/MembershipRowSchema";
+import { z } from "zod";
 
 @Injectable()
 export class MembershipsService {
@@ -25,12 +25,12 @@ export class MembershipsService {
     private readonly client: Client,
   ) {
     this.mailer = createTransport({
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
-        user: configService.getOrThrow('EMAIL_USER'),
-        pass: configService.getOrThrow('EMAIL_PASS'),
+        user: configService.getOrThrow("EMAIL_USER"),
+        pass: configService.getOrThrow("EMAIL_PASS"),
       },
     });
   }
@@ -45,12 +45,12 @@ export class MembershipsService {
     await this.cacheManager.set(code, userDetails, ONE_HOUR_IN_MILLISECONDS);
     this.logger.info(`Sending email to ${email} with code ${code}`);
 
-    if (this.configService.get('NODE_ENV') === 'development') return;
+    if (this.configService.get("NODE_ENV") === "development") return;
 
     await this.mailer.sendMail({
-      from: this.configService.getOrThrow('EMAIL_USER'),
+      from: this.configService.getOrThrow("EMAIL_USER"),
       to: email,
-      subject: 'Verify your email',
+      subject: "Verify your email",
       text: `Your verification code is ${code}`,
     });
 
@@ -61,7 +61,7 @@ export class MembershipsService {
     const cachedUserDetails = await this.cacheManager.get<string>(code);
 
     if (!cachedUserDetails) {
-      throw new Error('Invalid code');
+      throw new Error("Invalid code");
     }
 
     const rawData = JSON.parse(cachedUserDetails);
@@ -76,11 +76,11 @@ export class MembershipsService {
     try {
       userDetails = await UserDetailsSchema.parseAsync(rawData);
     } catch (error) {
-      throw new Error('Invalid code');
+      throw new Error("Invalid code");
     }
 
     if (userDetails.userId !== userId) {
-      throw new Error('User Id does not match');
+      throw new Error("User Id does not match");
     }
 
     const membership = await this.hasMembershipEmail(
@@ -125,7 +125,7 @@ export class MembershipsService {
         const role = await guild.roles.fetch(guildSettings.memberRole);
 
         if (!role) {
-          throw new Error('Invalid role');
+          throw new Error("Invalid role");
         }
 
         await member.roles.add(role);
@@ -137,7 +137,7 @@ export class MembershipsService {
     } catch (error) {
       await this.cacheManager.del(code);
       this.logger.error(error);
-      throw new Error('Failed to update membership');
+      throw new Error("Failed to update membership");
     }
 
     return;
@@ -232,17 +232,17 @@ export class MembershipsService {
         csvResponse.trim(),
         {
           columns: [
-            'first_name',
-            'last_name',
-            'preferred_name',
-            'email',
-            'mobile',
-            'type',
-            'joined_date',
-            'end_date',
-            'price_paid',
+            "first_name",
+            "last_name",
+            "preferred_name",
+            "email",
+            "mobile",
+            "type",
+            "joined_date",
+            "end_date",
+            "price_paid",
           ],
-          delimiter: ',',
+          delimiter: ",",
           fromLine: 2,
         },
         (err, records) => {
@@ -261,7 +261,8 @@ export class MembershipsService {
 
     await this.db.transaction(async (tx) => {
       let updates = 0;
-      validatedData.forEach(async (entry) => {
+
+      for await (const entry of validatedData) {
         const updated = await tx
           .insert(memberships)
           .values({
@@ -291,7 +292,7 @@ export class MembershipsService {
         if (updated) {
           updates += updated.length;
         }
-      });
+      }
 
       this.logger.log(updates);
     });
@@ -317,26 +318,26 @@ export class MembershipsService {
       );
 
     if (!user || !user.refreshToken) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
-    const response = await fetch('https://discord.com/api/oauth2/token', {
-      method: 'POST',
+    const response = await fetch("https://discord.com/api/oauth2/token", {
+      method: "POST",
       body: new URLSearchParams({
-        client_id: this.configService.getOrThrow('DISCORD_CLIENT_ID'),
-        client_secret: this.configService.getOrThrow('DISCORD_SECRET'),
-        grant_type: 'refresh_token',
+        client_id: this.configService.getOrThrow("DISCORD_CLIENT_ID"),
+        client_secret: this.configService.getOrThrow("DISCORD_SECRET"),
+        grant_type: "refresh_token",
         refresh_token: user.refreshToken,
-        redirect_uri: this.configService.getOrThrow('DISCORD_CALLBACK'),
-        scope: ['identify', 'role_connections.write'].join(','),
+        redirect_uri: this.configService.getOrThrow("DISCORD_CALLBACK"),
+        scope: ["identify", "role_connections.write"].join(","),
       }),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to get access token');
+      throw new Error("Failed to get access token");
     }
 
     const data = await response.json();
@@ -376,13 +377,13 @@ export class MembershipsService {
         ),
       );
 
-    if (discordUser && discordUser.refreshToken) {
+    if (discordUser?.refreshToken) {
       const accessToken = await this.getUserAccessToken(userId);
       const metadataRoute = Routes.userApplicationRoleConnection(
-        this.configService.getOrThrow('DISCORD_CLIENT_ID'),
+        this.configService.getOrThrow("DISCORD_CLIENT_ID"),
       );
 
-      const progSocGuildId = this.configService.getOrThrow('GUILD_ID');
+      const progSocGuildId = this.configService.getOrThrow("GUILD_ID");
 
       const isMember = await this.hasMembershipDiscord(progSocGuildId, userId);
 
@@ -395,10 +396,10 @@ export class MembershipsService {
         const response = await fetch(
           `https://discord.com/api${metadataRoute}`,
           {
-            method: 'PUT',
+            method: "PUT",
             headers: {
               Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               member: isMember ? 1 : 0,
@@ -409,7 +410,7 @@ export class MembershipsService {
         );
 
         if (!response.ok) {
-          throw new Error('Failed to push metadata');
+          throw new Error("Failed to push metadata");
         }
 
         return;
@@ -435,7 +436,7 @@ export class MembershipsService {
         and(
           eq(memberships.guildId, guildId),
           gte(memberships.end_date, sql`now()::date`),
-        )
+        ),
       );
   }
 }

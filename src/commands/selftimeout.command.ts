@@ -1,21 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import {
   Context,
   Options,
   SlashCommand,
   type SlashCommandContext,
-} from 'necord';
-import mainLogger from 'src/logger';
-import { APIInteractionGuildMember, GuildMember, time } from 'discord.js';
-import { TimeoutCommandDto } from 'src/dto/TimeoutCommandDto';
+} from "necord";
+import mainLogger from "src/logger";
+import { APIInteractionGuildMember, GuildMember, time } from "discord.js";
+import { TimeoutCommandDto } from "src/dto/TimeoutCommandDto";
 
 @Injectable()
 export class SelfTimeoutCommand {
   private readonly logger = mainLogger.scope(SelfTimeoutCommand.name);
 
   @SlashCommand({
-    name: 'selftimeout',
-    description: 'Time yourself out to better focus.',
+    name: "selftimeout",
+    description: "Time yourself out to better focus.",
     dmPermission: false,
   })
   public async ping(
@@ -27,28 +27,29 @@ export class SelfTimeoutCommand {
 
       if (!(member instanceof GuildMember)) {
         return interaction.reply(
-          'You must be in a server to use this command.',
+          "You must be in a server to use this command.",
         );
       }
 
-      if (!interaction.appPermissions?.has('ModerateMembers')) {
+      if (!interaction.appPermissions?.has("ModerateMembers")) {
         return interaction.reply({
           ephemeral: true,
-          content: `The bot needs the \`ModerateMembers\` permission to use this command.`,
+          content:
+            "The bot needs the `ModerateMembers` permission to use this command.",
         });
       }
 
-      if (member.permissions.has('Administrator')) {
+      if (member.permissions.has("Administrator")) {
         return interaction.reply({
           ephemeral: true,
-          content: `You cannot time out an admin.`,
+          content: "You cannot time out an admin.",
         });
       }
 
       if (member.guild.ownerId === member.id) {
         return interaction.reply({
           ephemeral: true,
-          content: `You cannot time out the owner of the server.`,
+          content: "You cannot time out the owner of the server.",
         });
       }
 
@@ -66,7 +67,7 @@ export class SelfTimeoutCommand {
         content: `Timed out ${member.toString()} for ${timeout} minutes.`,
       });
     } catch (error) {
-      this.logger.error('erro', error);
+      this.logger.error("erro", error);
     }
   }
 }

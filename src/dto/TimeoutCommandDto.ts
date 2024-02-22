@@ -1,10 +1,10 @@
-import { NumberOption } from 'necord';
+import { NumberOption } from "necord";
 
 export class TimeoutCommandDto {
   @NumberOption({
-    description: 'The amount of time to timeout for in minutes',
+    description: "The amount of time to timeout for in minutes",
     required: true,
-    name: 'timeout',
+    name: "timeout",
   })
   timeout: number;
 }
