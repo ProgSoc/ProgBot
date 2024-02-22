@@ -296,6 +296,14 @@ export class MembershipsService {
 
       this.logger.log(updates);
     });
+
+    await this.db
+      .update(guilds)
+      .set({
+        membersLastUpdated: sql`now()`,
+      })
+      .where(eq(guilds.guildId, guildId))
+      .execute();
   }
 
   private async getUserAccessToken(userId: string) {
@@ -426,7 +434,7 @@ export class MembershipsService {
   }
 
   public async anonymised(guildId: string) {
-    return await this.db
+    const anonymisedMembers = await this.db
       .select({
         type: memberships.type,
         date: memberships.start_date,
@@ -438,5 +446,20 @@ export class MembershipsService {
           gte(memberships.end_date, sql`now()::date`),
         ),
       );
+
+    const guild = await this.db.query.guilds.findFirst({
+      where: eq(guilds.guildId, guildId),
+    });
+
+    if (!guild) {
+      throw new Error("Guild not found");
+    }
+
+    const { membersLastUpdated } = guild;
+
+    return {
+      members: anonymisedMembers,
+      membersLastUpdated,
+    };
   }
 }

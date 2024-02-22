@@ -22,6 +22,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonComponent,
+  EmbedBuilder,
   MessageActionRowComponent,
   inlineCode,
   userMention,
@@ -385,14 +386,36 @@ export class UploadMembershipsCommand {
       return;
     }
 
-    const list = await this.membershipsService.anonymised(guildId);
+    const { members, membersLastUpdated } =
+      await this.membershipsService.anonymised(guildId);
 
     // IDEA: column-chart plot over the year
 
+    const embed = new EmbedBuilder()
+      .setTitle("ProgSoc Membership Statistics")
+      .setDescription(
+        "Statistics for ProgSoc membership, has to be updated manually by the exec team. Ping an exec if it's out of date.",
+      )
+      .addFields([
+        {
+          name: "Members",
+          value: members.length.toString(),
+        },
+      ])
+      .setColor("#38B6FF")
+      .setTimestamp(new Date());
+
+    if (membersLastUpdated) {
+      embed.setFooter({
+        text: `Last updated ${DateTime.fromISO(
+          membersLastUpdated,
+        ).toRelative()}`,
+      });
+    }
+
     await interaction.reply({
-      content: `ProgSoc has ${list.length} member${
-        list.length !== 1 ? "s" : ""
-      }!`,
+      embeds: [embed],
+      content: "Here are the membership statistics",
     });
   }
 }

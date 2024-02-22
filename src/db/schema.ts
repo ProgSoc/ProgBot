@@ -17,6 +17,10 @@ export const guilds = pgTable("guilds", {
   aocLeaderboardUrl: text("aoc_leaderboard_url"),
   /** Advent of code session cookie */
   aocSessionCookie: text("aoc_session_cookie"),
+  /** Members Last Updated */
+  membersLastUpdated: date("members_last_updated", {
+    mode: "string",
+  }).defaultNow(),
 });
 
 export const membershipTypeEnum = pgEnum("membership_type", [
