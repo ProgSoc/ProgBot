@@ -402,15 +402,10 @@ export class UploadMembershipsCommand {
           value: members.length.toString(),
         },
       ])
-      .setColor("#38B6FF")
-      .setTimestamp(new Date());
+      .setColor("#38B6FF");
 
     if (membersLastUpdated) {
-      embed.setFooter({
-        text: `Last updated ${DateTime.fromISO(
-          membersLastUpdated,
-        ).toRelative()}`,
-      });
+      embed.setTimestamp(DateTime.fromISO(membersLastUpdated).toJSDate());
     }
 
     await interaction.reply({
