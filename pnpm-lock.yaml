@@ -87,7 +87,7 @@ dependencies:
     specifier: 1.3.0
     version: 1.3.0
   nodemailer:
-    specifier: ^6.9.9
+    specifier: 6.9.9
     version: 6.9.9
   passport:
     specifier: 0.7.0
