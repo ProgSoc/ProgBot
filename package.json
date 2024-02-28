@@ -31,7 +31,7 @@
     "cache-manager": "5.4.0",
     "cache-manager-ioredis-yet": "1.2.2",
     "cheerio": "1.0.0-rc.12",
-    "csv-parse": "5.5.4",
+    "csv-parse": "5.5.5",
     "deepmerge": "4.3.1",
     "discord-api-types": "0.37.70",
     "discord.js": "14.14.1",
