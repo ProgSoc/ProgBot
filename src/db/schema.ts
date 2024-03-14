@@ -51,8 +51,10 @@ export const memberships = pgTable(
     guildId: text("guild_id")
       .references(() => guilds.guildId)
       .notNull(),
-    /** The email of the member */
+    /** The lowercased-email of the member */
     email: text("email"),
+    /** The email of the member, with the case specified when signing up. */
+    casedEmail: text("cased_email"),
     /** The phone number */
     phone: text("phone"),
     /** The name of the member */
