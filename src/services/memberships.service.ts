@@ -273,7 +273,8 @@ export class MembershipsService {
             }`,
             start_date: entry.joined_date,
             type: entry.type,
-            email: entry.email,
+            email: entry.email.toLowerCase(),
+            casedEmail: entry.email,
             phone: entry.mobile,
             userId: null,
           })
@@ -284,6 +285,7 @@ export class MembershipsService {
               name: `${entry.preferred_name ?? entry.first_name} ${
                 entry.last_name
               }`,
+              casedEmail: entry.email,
               phone: entry.mobile,
               type: entry.type,
             },
