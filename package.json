@@ -46,7 +46,7 @@
     "nodemailer": "6.9.13",
     "passport": "0.7.0",
     "passport-discord": "0.1.4",
-    "pg": "8.11.3",
+    "pg": "8.11.4",
     "piscina": "4.4.0",
     "postgres": "3.4.4",
     "reflect-metadata": "0.2.1",
