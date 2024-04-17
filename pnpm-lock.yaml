@@ -72,8 +72,8 @@ importers:
         specifier: 0.30.1
         version: 0.30.1(pg@8.11.5)(postgres@3.4.4)
       ioredis:
-        specifier: 5.4.0
-        version: 5.4.0
+        specifier: 5.4.1
+        version: 5.4.1
       lunr:
         specifier: 2.3.9
         version: 2.3.9
@@ -1848,8 +1848,8 @@ packages:
     resolution: {integrity: sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==}
     engines: {node: '>= 0.10'}
 
-  ioredis@5.4.0:
-    resolution: {integrity: sha512-lGiiZyWFOskPu3pH4P8+uicHOZHpzYpgfKZFre68wLK6059zBo+KDTQpwxAVibBajKqpcrRJ5k+jl/uNHcCo3A==}
+  ioredis@5.4.1:
+    resolution: {integrity: sha512-2YZsvl7jopIa1gaePkeMtd9rAcSjOOjPtpcLlOeusyO+XH2SK5ZcT+UCrElPP+WVIInh2TzeI4XW9ENaSLVVHA==}
     engines: {node: '>=12.22.0'}
 
   ipaddr.js@1.9.1:
@@ -3337,7 +3337,7 @@ snapshots:
 
   '@keyv/redis@2.8.4':
     dependencies:
-      ioredis: 5.4.0
+      ioredis: 5.4.1
     transitivePeerDependencies:
       - supports-color
 
@@ -3929,7 +3929,7 @@ snapshots:
   cache-manager-ioredis-yet@2.0.3:
     dependencies:
       cache-manager: 5.5.1
-      ioredis: 5.4.0
+      ioredis: 5.4.1
       telejson: 7.2.0
     transitivePeerDependencies:
       - supports-color
@@ -4712,7 +4712,7 @@ snapshots:
 
   interpret@1.4.0: {}
 
-  ioredis@5.4.0:
+  ioredis@5.4.1:
     dependencies:
       '@ioredis/commands': 1.2.0
       cluster-key-slot: 1.1.2
