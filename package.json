@@ -49,7 +49,7 @@
     "pg": "8.11.5",
     "piscina": "4.4.0",
     "postgres": "3.4.4",
-    "reflect-metadata": "0.2.1",
+    "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "stream-transform": "3.3.1",
     "terminal-link": "3.0.0",
