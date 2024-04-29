@@ -19,7 +19,7 @@ importers:
         version: 1.2.2(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.14.1)(necord@6.8.3(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/cache-manager':
         specifier: 2.2.2
-        version: 2.2.2(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.5.1)(rxjs@7.8.1)
+        version: 2.2.2(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.5.2)(rxjs@7.8.1)
       '@nestjs/common':
         specifier: 10.3.8
         version: 10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -45,8 +45,8 @@ importers:
         specifier: 0.9.0
         version: 0.9.0
       cache-manager:
-        specifier: 5.5.1
-        version: 5.5.1
+        specifier: 5.5.2
+        version: 5.5.2
       cache-manager-ioredis-yet:
         specifier: 2.0.3
         version: 2.0.3
@@ -1181,8 +1181,8 @@ packages:
     resolution: {integrity: sha512-KzNMpQ4uH2zMhN695upVZS7dymQA5WIrYvzcWiU3HbQwfbDo+bzLTUyd5Zou0bO6zgbMLbbzBq0/nUfogIblpQ==}
     engines: {node: '>= 18.0.0'}
 
-  cache-manager@5.5.1:
-    resolution: {integrity: sha512-QYZFOjZTTennYdN3NNCKh+yq452+wQ4ChyL40jkEyghIgg5Ugwb4YO8ARIIF1fvTBkgDLlLTYFaxZVaPGmQ92A==}
+  cache-manager@5.5.2:
+    resolution: {integrity: sha512-HozSRPCBB26O1ZVIzX8GjauYMoZOpWcArqRIFlPKr+Mm3o+p/6VcHxRt8ia0F/tMwZdKxpHG0M+Am5Qh9FmfKw==}
 
   call-bind@1.0.5:
     resolution: {integrity: sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==}
@@ -2066,6 +2066,10 @@ packages:
 
   lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
+    engines: {node: 14 || >=16.14}
+
+  lru-cache@10.2.2:
+    resolution: {integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==}
     engines: {node: 14 || >=16.14}
 
   lru-cache@6.0.0:
@@ -3370,11 +3374,11 @@ snapshots:
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
 
-  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.5.1)(rxjs@7.8.1)':
+  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.5.2)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.8(@nestjs/common@10.3.8(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      cache-manager: 5.5.1
+      cache-manager: 5.5.2
       rxjs: 7.8.1
 
   '@nestjs/cli@10.3.2(@swc/core@1.5.2)(esbuild@0.19.7)':
@@ -3939,17 +3943,17 @@ snapshots:
 
   cache-manager-ioredis-yet@2.0.3:
     dependencies:
-      cache-manager: 5.5.1
+      cache-manager: 5.5.2
       ioredis: 5.4.1
       telejson: 7.2.0
     transitivePeerDependencies:
       - supports-color
 
-  cache-manager@5.5.1:
+  cache-manager@5.5.2:
     dependencies:
       eventemitter3: 5.0.1
       lodash.clonedeep: 4.5.0
-      lru-cache: 10.2.0
+      lru-cache: 10.2.2
       promise-coalesce: 1.1.2
 
   call-bind@1.0.5:
@@ -4897,6 +4901,8 @@ snapshots:
       is-unicode-supported: 0.1.0
 
   lru-cache@10.2.0: {}
+
+  lru-cache@10.2.2: {}
 
   lru-cache@6.0.0:
     dependencies:
