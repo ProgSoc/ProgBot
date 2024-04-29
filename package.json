@@ -28,7 +28,7 @@
     "@sentry/integrations": "7.112.2",
     "@sentry/node": "7.112.2",
     "ascii-table3": "0.9.0",
-    "cache-manager": "5.5.1",
+    "cache-manager": "5.5.2",
     "cache-manager-ioredis-yet": "2.0.3",
     "cheerio": "1.0.0-rc.12",
     "csv-parse": "5.5.5",
