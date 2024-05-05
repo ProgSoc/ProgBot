@@ -34,7 +34,7 @@
     "csv-parse": "5.5.5",
     "deepmerge": "4.3.1",
     "discord-api-types": "0.37.81",
-    "discord.js": "14.15.1",
+    "discord.js": "14.15.2",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.30.9",
     "ioredis": "5.4.1",
