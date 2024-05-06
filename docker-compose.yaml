@@ -15,7 +15,7 @@ services:
     volumes:
       - redis:/data
   search:
-    image: getmeili/meilisearch:v1.7
+    image: getmeili/meilisearch:v1.8
     ports:
       - 7700:7700
     volumes:
