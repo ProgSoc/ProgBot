@@ -26,7 +26,7 @@
     "@nestjs/passport": "10.0.3",
     "@nestjs/platform-express": "10.3.8",
     "@sentry/integrations": "7.114.0",
-    "@sentry/node": "7.115.0",
+    "@sentry/node": "7.116.0",
     "ascii-table3": "0.9.0",
     "cache-manager": "5.5.2",
     "cache-manager-ioredis-yet": "2.0.4",
