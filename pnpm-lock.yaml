@@ -70,7 +70,7 @@ importers:
         version: 16.4.5
       drizzle-orm:
         specifier: 0.30.9
-        version: 0.30.9(pg@8.11.5)(postgres@3.4.4)
+        version: 0.30.9(pg@8.12.0)(postgres@3.4.4)
       ioredis:
         specifier: 5.4.1
         version: 5.4.1
@@ -99,8 +99,8 @@ importers:
         specifier: 0.1.4
         version: 0.1.4
       pg:
-        specifier: 8.11.5
-        version: 8.11.5
+        specifier: 8.12.0
+        version: 8.12.0
       piscina:
         specifier: 4.5.1
         version: 4.5.1
@@ -2551,8 +2551,8 @@ packages:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
     engines: {node: '>=4'}
 
-  pg@8.11.5:
-    resolution: {integrity: sha512-jqgNHSKL5cbDjFlHyYsCXmQDrfIX/3RsNwYqpd4N0Kt8niLuNoRNH+aazv6cOd43gPh9Y4DjQCtb+X0MH0Hvnw==}
+  pg@8.12.0:
+    resolution: {integrity: sha512-A+LHUSnwnxrnL/tZ+OLfqR1SxLN3c/pgDztZ47Rpbsd4jUytsTtwQo/TLPRzPJMp/1pbhYVhH9cuSZLAajNfjQ==}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
       pg-native: '>=3.0.1'
@@ -4491,9 +4491,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.30.9(pg@8.11.5)(postgres@3.4.4):
+  drizzle-orm@0.30.9(pg@8.12.0)(postgres@3.4.4):
     optionalDependencies:
-      pg: 8.11.5
+      pg: 8.12.0
       postgres: 3.4.4
 
   eastasianwidth@0.2.0: {}
@@ -5453,9 +5453,9 @@ snapshots:
 
   pg-int8@1.0.1: {}
 
-  pg-pool@3.6.2(pg@8.11.5):
+  pg-pool@3.6.2(pg@8.12.0):
     dependencies:
-      pg: 8.11.5
+      pg: 8.12.0
 
   pg-protocol@1.6.1: {}
 
@@ -5467,10 +5467,10 @@ snapshots:
       postgres-date: 1.0.7
       postgres-interval: 1.2.0
 
-  pg@8.11.5:
+  pg@8.12.0:
     dependencies:
       pg-connection-string: 2.6.4
-      pg-pool: 3.6.2(pg@8.11.5)
+      pg-pool: 3.6.2(pg@8.12.0)
       pg-protocol: 1.6.1
       pg-types: 2.2.0
       pgpass: 1.0.5
