@@ -73,7 +73,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build
         with:
           context: .
@@ -86,7 +86,7 @@ jobs:
             VERSION=${{ needs.release.outputs.version }}
 
       - name: Extract /app/dist
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build_dist
         with:
           context: .
