@@ -30,9 +30,14 @@ export class GHCommands {
       "Get information on how to contribute to the organisation's projects",
   })
   public async contributing(@Context() [interaction]: SlashCommandContext) {
-    let embed = new EmbedBuilder().setTitle("Contributing to ProgSoc Projects")
-      .setDescription(`Contributions to ProgSoc projects are always welcome! To contribute:
-1. Find a project you're interested in on the [Github](https://github.com/progsoc).
+    const organisation = await this.ghService.get_organisation(
+      interaction.guildId!
+    );
+    const embed = new EmbedBuilder().setTitle(
+      `Contributing to ${organisation} Projects`
+    )
+      .setDescription(`Contributions to ${organisation} projects are always welcome! To contribute:
+1. Find a project you're interested in on the [Github](https://github.com/${organisation}).
 1. Find a feature you would like to add or a bug you would like to fix. This can either be something you've found yourself or something from the issues tab. This can be anything from a small typo fix to a large new feature.
 1. [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the repository and clone it to your local machine.
 1. Get a development environment set up. Most of the projects will contain instructions in their READMEs.

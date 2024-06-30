@@ -48,6 +48,23 @@ export class GHService {
   }
 
   /**
+   * @param guildId The ID of the guild to get the organisation for
+   * @returns The organisation name or null if an error occurred
+   */
+  public async get_organisation(guildId: string): Promise<string | null> {
+    const [guild] = await this.db
+      .select()
+      .from(guilds)
+      .where(eq(guilds.guildId, guildId));
+
+    if (!guild) {
+      return null;
+    }
+
+    return guild.ghOrganisation;
+  }
+
+  /**
    * @param guildId The ID of the guild to get the contribution scores for
    * @param timespan The timespan to include PRs and issues from when calculating scores
    * @returns The contribution scores for the organisation or null if an error occurred
