@@ -110,9 +110,9 @@ export class GHCommands {
       return;
     }
 
-    const members = Object.values(scores.members).sort(
-      (a, b) => b.score - a.score
-    );
+    const members = Object.values(scores.members)
+      .sort((a, b) => b.score - a.score)
+      .filter((member) => member.mergedPrs > 0 || member.createdIssues > 0);
 
     const table = new AsciiTable3().setHeading(
       "Rank",

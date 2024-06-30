@@ -144,6 +144,7 @@ export class GHService {
 
       return scores;
     } catch (e) {
+      console.error(e);
       return null;
     }
   }
@@ -252,7 +253,7 @@ async function repositoryIssues(
 
     issues.push(
       ...res.data
-        .filter((pr) => pr.user?.type === "User")
+        .filter((issue) => !issue.pull_request && issue.user?.type === "User")
         .map((issue) => ({
           author: issue.user?.login ?? "Unknown",
           dateCreated: new Date(issue.created_at),
