@@ -162,7 +162,7 @@ function timespan(period: string): ContributionTimeSpan {
     }
     case "year": {
       const monthAgo = new Date(now);
-      monthAgo.setFullYear(now.getFullYear() - 7);
+      monthAgo.setFullYear(now.getFullYear() - 1);
       return { start: monthAgo };
     }
   }
