@@ -21,6 +21,10 @@ export const guilds = pgTable("guilds", {
   membersLastUpdated: date("members_last_updated", {
     mode: "string",
   }).defaultNow(),
+  /** Github organisation as it appears in URL */
+  ghOrganisation: text("gh_organisation"),
+  /** Github API Token */
+  ghApiToken: text("gh_api_token"),
 });
 
 export const membershipTypeEnum = pgEnum("membership_type", [
@@ -76,7 +80,7 @@ export const memberships = pgTable(
     return {
       pk: primaryKey(table.guildId, table.email),
     };
-  },
+  }
 );
 
 export const membershipsRelations = relations(memberships, ({ one }) => ({

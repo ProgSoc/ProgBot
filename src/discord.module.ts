@@ -35,6 +35,9 @@ import { VerifyEmailButton } from "./buttons/EmailButton";
 import { AoCService } from "./services/aoc.service";
 import { AocSetupModal } from "./modals/AocSetup";
 import { AoCCommands } from "./commands/aoc.command";
+import { GHCommands } from "./commands/gh.command";
+import { GHService } from "./services/gh.service";
+import { GHSetupModal } from "./modals/GHSetup.modal";
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -105,6 +108,9 @@ import { AoCCommands } from "./commands/aoc.command";
     AoCService,
     AocSetupModal,
     AoCCommands,
+    GHService,
+    GHCommands,
+    GHSetupModal,
   ],
   controllers: [DiscordController],
 })
