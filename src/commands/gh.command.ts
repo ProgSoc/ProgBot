@@ -6,7 +6,11 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { ContributionTimeSpan, GHService } from "src/services/gh.service";
+import {
+  ContributionScores,
+  ContributionTimeSpan,
+  GHService,
+} from "src/services/gh.service";
 import { AsciiTable3 } from "ascii-table3";
 import { GHSetupModal } from "src/modals/GHSetup.modal";
 
@@ -59,15 +63,11 @@ export class GHCommands {
   public async ghleaderboard(
     @Context() [interaction]: SlashCommandContext,
     @Options({
-      name: "before",
-      description: "Only include contributions before this date",
+      name: "period",
+      description:
+        "The period to include contributions from. e.g. all, month, week, year",
     })
-    before?: string,
-    @Options({
-      name: "after",
-      description: "Only include contributions after this date",
-    })
-    after?: string
+    period: string
   ) {
     const guildId = interaction.guildId;
 
@@ -82,27 +82,7 @@ export class GHCommands {
       return;
     }
 
-    let timespan: ContributionTimeSpan = {};
-    try {
-      if (before !== undefined) {
-        timespan.end = new Date(before);
-        if (!Number.isFinite(timespan.end.valueOf())) {
-          timespan.end = undefined;
-        }
-      }
-      if (after !== undefined) {
-        timespan.start = new Date(after);
-        if (!Number.isFinite(timespan.start.valueOf())) {
-          timespan.start = undefined;
-        }
-      }
-    } catch (error) {
-      await interaction.editReply({
-        content: "Invalid date format",
-      });
-    }
-
-    let scores = await this.ghService.get_scores(guildId, timespan);
+    let scores = await this.ghService.get_scores(guildId, timespan(period));
     if (!scores) {
       await interaction.editReply({
         content: "An error occurred while fetching the leaderboard",
@@ -110,38 +90,13 @@ export class GHCommands {
       return;
     }
 
-    const members = Object.values(scores.members)
-      .sort((a, b) => b.score - a.score)
-      .filter((member) => member.mergedPrs > 0 || member.createdIssues > 0);
-
-    const table = new AsciiTable3().setHeading(
-      "Rank",
-      "Name",
-      "Score",
-      "PRs",
-      "Issues"
-    );
-
-    for (const [i, member] of members.entries()) {
-      let name: string = member.githubUsername;
-      if (name.length > 16) {
-        name = `${name.substring(0, 16)}…`;
-      }
-
-      table.addRow(
-        i + 1,
-        name,
-        member.score,
-        member.mergedPrs,
-        member.createdIssues
-      );
-    }
+    const table = await createTable(scores);
 
     const embed = new EmbedBuilder()
       .setTitle(`${scores.organisation} Contribution Leaderboard`)
       .setDescription(
         `${codeBlock(
-          table.toString()
+          table
         )}\nFor information on how to contribute, use the \`/contributing\` command.`
       );
 
@@ -150,4 +105,80 @@ export class GHCommands {
       embeds: [embed],
     });
   }
+}
+
+/**
+ * Create ASCII table from contribution scores to display in Discord
+ */
+async function createTable(scores: ContributionScores) {
+  const members = Object.values(scores.members)
+    .sort((a, b) => b.score - a.score)
+    .filter((member) => member.mergedPrs > 0 || member.createdIssues > 0);
+
+  const table = new AsciiTable3().setHeading(
+    "Rank",
+    "Name",
+    "Score",
+    "PRs",
+    "Issues"
+  );
+
+  for (const [i, member] of members.entries()) {
+    let name: string = member.githubUsername;
+    if (name.length > 16) {
+      name = `${name.substring(0, 16)}…`;
+    }
+
+    table.addRow(
+      i + 1,
+      name,
+      member.score,
+      member.mergedPrs,
+      member.createdIssues
+    );
+  }
+
+  return table.toString();
+}
+
+/**
+ * Convert period parameter to ContributionTimeSpan
+ * @param period The period to include contributions from. e.g. all/a, month/m, week/w, year/y
+ * @returns ContributionTimeSpan interval starting from now and going back the queried period
+ */
+function timespan(period: string): ContributionTimeSpan {
+  const now = new Date();
+
+  // Convert short forms to long forms
+  switch (period) {
+    case "m":
+      period = "month";
+      break;
+    case "w":
+      period = "week";
+      break;
+    case "y":
+      period = "year";
+      break;
+  }
+
+  switch (period) {
+    case "month": {
+      const monthAgo = new Date(now);
+      monthAgo.setMonth(now.getMonth() - 1);
+      return { start: monthAgo };
+    }
+    case "week": {
+      const monthAgo = new Date(now);
+      monthAgo.setDate(now.getDate() - 7);
+      return { start: monthAgo };
+    }
+    case "year": {
+      const monthAgo = new Date(now);
+      monthAgo.setFullYear(now.getFullYear() - 7);
+      return { start: monthAgo };
+    }
+  }
+
+  return {};
 }

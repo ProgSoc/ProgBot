@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm";
 import { DATABASE_TOKEN, type Database } from "src/db/db.module";
 import { guilds } from "src/db/schema";
 import { Octokit } from "@octokit/rest";
-import { time } from "console";
 
 /**
  * The GH service is responsible for setting up GH for a guild and managing the leaderboard
@@ -90,59 +89,8 @@ export class GHService {
     }
 
     try {
-      const octokit = new Octokit({ auth: token });
-
-      const repos = await organisationRepositories(organisation, octokit);
-
-      let items = (
-        await Promise.all(
-          repos.map(async (repo) => {
-            const prs = await repositoryPullRequests(
-              organisation,
-              repo,
-              octokit
-            );
-            const issues = await repositoryIssues(organisation, repo, octokit);
-            return [...prs, ...issues];
-          })
-        )
-      ).flat();
-
-      if (timespan) {
-        if (timespan.start !== undefined) {
-          items = items.filter((item) => item.dateCreated >= timespan.start!);
-        }
-        if (timespan.end !== undefined) {
-          items = items.filter((item) => item.dateCreated <= timespan.end!);
-        }
-      }
-
-      const scores: ContributionScores = {
-        organisation,
-        members: {},
-      };
-
-      for (const item of items) {
-        if (!scores.members[item.author]) {
-          scores.members[item.author] = {
-            githubUsername: item.author,
-            score: 0,
-            mergedPrs: 0,
-            createdIssues: 0,
-          };
-        }
-
-        scores.members[item.author].score += scoreOf(item);
-        if ("merged" in item) {
-          if (item.merged) {
-            scores.members[item.author].mergedPrs++;
-          }
-        } else {
-          scores.members[item.author].createdIssues++;
-        }
-      }
-
-      return scores;
+      const items = await organisationItems(token, organisation, timespan);
+      return scoresFromItems(items, organisation);
     } catch (e) {
       console.error(e);
       return null;
@@ -150,18 +98,46 @@ export class GHService {
   }
 }
 
-interface PullRequest {
-  author: string;
-  merged: boolean;
-  dateCreated: Date;
-  dateMerged?: Date;
+/**
+ * Calculate the contribution scores for a list of PRs and issues
+ * @param items The PRs and issues to calculate scores for
+ * @param organisation The organisation the contributions are from
+ */
+function scoresFromItems(
+  items: (PullRequest | Issue)[],
+  organisation: string
+): ContributionScores {
+  const scores: ContributionScores = {
+    organisation,
+    members: {},
+  };
+
+  for (const item of items) {
+    if (!scores.members[item.author]) {
+      scores.members[item.author] = {
+        githubUsername: item.author,
+        score: 0,
+        mergedPrs: 0,
+        createdIssues: 0,
+      };
+    }
+
+    scores.members[item.author].score += scoreOf(item);
+    if ("merged" in item) {
+      if (item.merged) {
+        scores.members[item.author].mergedPrs++;
+      }
+    } else {
+      scores.members[item.author].createdIssues++;
+    }
+  }
+
+  return scores;
 }
 
-interface Issue {
-  author: string;
-  dateCreated: Date;
-}
-
+/**
+ * Calculate the amount of points a PR or issue is worth
+ */
 function scoreOf(item: PullRequest | Issue): number {
   let score = 0;
 
@@ -181,6 +157,47 @@ function scoreOf(item: PullRequest | Issue): number {
   return score;
 }
 
+/**
+ * Fetch all issues an PRs for an organisation
+ * @param token The Github API token to use
+ * @param organisation The organisation to fetch contributions for
+ * @param timespan The timespan to include contributions from
+ * @returns An array of all issues and PRs for the organisation
+ */
+async function organisationItems(
+  token: string,
+  organisation: string,
+  timespan?: ContributionTimeSpan
+): Promise<(PullRequest | Issue)[]> {
+  const octokit = new Octokit({ auth: token });
+
+  const repos = await organisationRepositories(organisation, octokit);
+
+  let items = (
+    await Promise.all(
+      repos.map(async (repo) => {
+        const prs = await repositoryPullRequests(organisation, repo, octokit);
+        const issues = await repositoryIssues(organisation, repo, octokit);
+        return [...prs, ...issues];
+      })
+    )
+  ).flat();
+
+  if (timespan) {
+    if (timespan.start !== undefined) {
+      items = items.filter((item) => item.dateCreated >= timespan.start!);
+    }
+    if (timespan.end !== undefined) {
+      items = items.filter((item) => item.dateCreated <= timespan.end!);
+    }
+  }
+
+  return items;
+}
+
+/**
+ * Fetch the names of all repositories in an organisation
+ */
 async function organisationRepositories(
   organisation: string,
   octokit: Octokit
@@ -194,6 +211,9 @@ async function organisationRepositories(
   return res.data.map((repo) => repo.name);
 }
 
+/**
+ * Fetch all PRs for a repository
+ */
 async function repositoryPullRequests(
   owner: string,
   repo: string,
@@ -230,6 +250,9 @@ async function repositoryPullRequests(
   return prs;
 }
 
+/**
+ * Fetch all issues for a repository
+ */
 async function repositoryIssues(
   owner: string,
   repo: string,
@@ -262,6 +285,18 @@ async function repositoryIssues(
   }
 
   return issues;
+}
+
+interface PullRequest {
+  author: string;
+  merged: boolean;
+  dateCreated: Date;
+  dateMerged?: Date;
+}
+
+interface Issue {
+  author: string;
+  dateCreated: Date;
 }
 
 interface ContributionScoresMember {
