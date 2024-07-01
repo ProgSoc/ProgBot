@@ -13,6 +13,7 @@ import {
 } from "src/services/gh.service";
 import { AsciiTable3 } from "ascii-table3";
 import { GHSetupModal } from "src/modals/GHSetup.modal";
+import { GHLeaderboardCommandDto } from "src/dto/GHLeaderboardCommandDto";
 
 @Injectable()
 export class GHCommands {
@@ -62,12 +63,7 @@ export class GHCommands {
   })
   public async ghleaderboard(
     @Context() [interaction]: SlashCommandContext,
-    @Options({
-      name: "period",
-      description:
-        "The period to include contributions from. e.g. all, month, week, year",
-    })
-    period: string
+    @Options() { period }: GHLeaderboardCommandDto
   ) {
     const guildId = interaction.guildId;
 
@@ -93,7 +89,9 @@ export class GHCommands {
     const table = await createTable(scores);
 
     const embed = new EmbedBuilder()
-      .setTitle(`${scores.organisation} Contribution Leaderboard`)
+      .setTitle(
+        `${periodName(period)} ${scores.organisation} Contribution Leaderboard`
+      )
       .setDescription(
         `${codeBlock(
           table
@@ -149,18 +147,7 @@ async function createTable(scores: ContributionScores) {
 function timespan(period: string): ContributionTimeSpan {
   const now = new Date();
 
-  // Convert short forms to long forms
-  switch (period) {
-    case "m":
-      period = "month";
-      break;
-    case "w":
-      period = "week";
-      break;
-    case "y":
-      period = "year";
-      break;
-  }
+  period = periodFromShortForm(period);
 
   switch (period) {
     case "month": {
@@ -181,4 +168,36 @@ function timespan(period: string): ContributionTimeSpan {
   }
 
   return {};
+}
+
+/**
+ * Convert period parameter to human readable period name for leaderboard title
+ * @param period The period to include contributions from. e.g. all/a, month/m, week/w, year/y
+ */
+function periodName(period: string) {
+  period = periodFromShortForm(period);
+
+  switch (period) {
+    case "month":
+      return "Monthly";
+    case "week":
+      return "Weekly";
+    case "year":
+      return "Yearly";
+    default:
+      return "All Time";
+  }
+}
+
+function periodFromShortForm(period: string) {
+  switch (period) {
+    case "m":
+      return "month";
+    case "w":
+      return "week";
+    case "y":
+      return "year";
+  }
+
+  return period;
 }
