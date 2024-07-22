@@ -68,7 +68,7 @@
     "@types/passport": "1.0.16",
     "drizzle-kit": "0.20.17",
     "lefthook": "1.7.5",
-    "tsup": "8.2.1",
+    "tsup": "8.2.2",
     "typescript": "5.4.5"
   },
   "type": "module",
