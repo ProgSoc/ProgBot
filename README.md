@@ -34,3 +34,4 @@ To get a local instance of the bot running:
 * Docker
 * Docker Compose
 * Node.js
+* pnpm
