@@ -1,4 +1,5 @@
 import {
+  AllowedMentionsTypes,
   RESTAPIPollCreate,
   RESTGetAPIChannelMessageResult,
   RESTPostAPIChannelMessageJSONBody,
@@ -25,12 +26,21 @@ export class PollService {
   public async pollCreate(
     channelId: string,
     poll: RESTAPIPollCreate,
+    content: string | undefined,
+    allowMentionEveryone: boolean,
   ): Promise<RESTPostAPIChannelMessageResult> {
     const url = `${DISCORD_BASE_URL}/channels/${channelId}/messages`;
 
     const reqBody: RESTPostAPIChannelMessageJSONBody = {
+      content,
+      allowed_mentions: {
+        parse: [AllowedMentionsTypes.User, AllowedMentionsTypes.Role],
+      },
       poll,
     };
+    if (allowMentionEveryone) {
+      reqBody.allowed_mentions!.parse!.push(AllowedMentionsTypes.Everyone);
+    }
 
     const res = await fetch(url, {
       method: "POST",

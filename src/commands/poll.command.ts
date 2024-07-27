@@ -6,15 +6,22 @@ import {
   ButtonInteraction,
   ButtonStyle,
   ChatInputCommandInteraction,
+  ModalBuilder,
+  ModalSubmitInteraction,
+  PermissionsBitField,
   PollData,
-  PollLayoutType
+  PollLayoutType,
+  RESTAPIPollCreate,
+  TextInputBuilder,
+  TextInputStyle
 } from "discord.js";
 import {
   Context,
   Options,
   SlashCommand,
   BooleanOption,
-  StringOption
+  StringOption,
+  SlashCommandContext,
 } from "necord";
 
 import { PollService } from "src/services/poll.service";
@@ -28,13 +35,13 @@ export class PollCreateCommandDto {
   question: string;
   @StringOption({
     name: "options",
-    description: "The poll options separated by a comma (max 10)",
+    description: "The poll options, separated by a comma (max 10)",
     required: true,
   })
   options: string;
   @StringOption({
     name: "duration",
-    description: "The duration of the poll (min 1h, max 32d or 4w). Accepts a whole number followed by a unit from the following: h, d, w",
+    description: "The poll duration (min 1h, max 32d or 4w). Accepts a whole number followed by a unit from the following: h, d, w",
     required: true,
   })
   duration: string;
@@ -49,19 +56,19 @@ export class PollCreateCommandDto {
 export class PollExportCommandDto {
   @StringOption({
     name: "channelId",
-    description: "The channel id of the poll. Get this by right clicking the channel and selecting 'Copy Channel ID'",
+    description: "The channel id of the poll message. Get this by right clicking the channel and selecting 'Copy Channel ID'",
     required: true,
   })
   channelId: string;
   @StringOption({
     name: "messageId",
-    description: "The message id of the poll. Get this by right clicking on the poll and selecting 'Copy Message ID'",
+    description: "The message id of the poll message. Get this by right clicking on the poll and selecting 'Copy Message ID'",
     required: true,
   })
   messageId: string;
   @BooleanOption({
     name: "replyPrivately",
-    description: "Whether to send the poll results as a private message",
+    description: "Whether to send the poll results as a private message. Defaults to true.",
     required: false,
   })
   replyPrivately: boolean = true;
@@ -69,14 +76,14 @@ export class PollExportCommandDto {
 
 @Injectable()
 export class PollCommand {
-  constructor(private readonly PollService: PollService) {}
+  constructor(private readonly PollService: PollService) { }
 
   @SlashCommand({
     name: "poll_export",
     description: "Export poll results",
   })
   public async poll_export(
-    @Context() interaction: ChatInputCommandInteraction | ButtonInteraction,
+    @Context() [interaction]: SlashCommandContext,
     @Options() {
       channelId,
       messageId,
@@ -112,7 +119,7 @@ export class PollCommand {
     description: "Create a poll",
   })
   public async poll_create(
-    @Context() interaction: ChatInputCommandInteraction | ButtonInteraction,
+    @Context() interaction: ChatInputCommandInteraction | ButtonInteraction | ModalSubmitInteraction,
     @Options() {
       question,
       options,
@@ -165,22 +172,43 @@ export class PollCommand {
       return;
     }
 
-    const poll: PollData = {
-      question: {
-        text: question,
-      },
-      answers: answers.map((option, index) => ({
-        text: option,
-      })),
-      duration: durationHours,
-      allowMultiselect,
-      layoutType: PollLayoutType.Default
-    };
+    let allow_mention_everyone = false;
+    if (interaction.memberPermissions
+      && interaction.memberPermissions.has(PermissionsBitField.Flags.ManageMessages)
+    ) {
+      allow_mention_everyone = true;
+    }
+
+    let message: string | undefined;
+    if (interaction instanceof ModalSubmitInteraction) {
+      switch (interaction.customId) {
+        case "add_poll_message":
+          message = interaction.fields.getTextInputValue('message');
+          break;
+      }
+      return;
+    }
 
     if (interaction instanceof ButtonInteraction) {
       switch (interaction.customId) {
+        case "add_message":
+          const modal = new ModalBuilder()
+            .setCustomId('add_poll_message')
+            .setTitle('Poll Message')
+            .addComponents(
+              new ActionRowBuilder<TextInputBuilder>().addComponents(
+                new TextInputBuilder()
+                  .setCustomId('message')
+                  .setLabel('Message')
+                  .setMaxLength(2000)
+                  .setStyle(TextInputStyle.Paragraph)
+                  .setRequired(false)
+              )
+            );
+          await interaction.showModal(modal);
+          break;
         case "publish_poll":
-          const _ = await this.PollService.pollCreate(interaction.channelId, {
+          const poll: RESTAPIPollCreate = {
             question: {
               text: question,
             },
@@ -193,12 +221,34 @@ export class PollCommand {
             duration: durationHours,
             allow_multiselect: allowMultiselect,
             layout_type: PollLayoutType.Default
-          });
+          };
+          const _ = await this.PollService.pollCreate(
+            interaction.channelId,
+            poll,
+            message,
+            allow_mention_everyone
+          );
           break;
       }
-      
       return;
     }
+
+    const poll: PollData = {
+      question: {
+        text: question,
+      },
+      answers: answers.map((option, index) => ({
+        text: option,
+      })),
+      duration: durationHours,
+      allowMultiselect,
+      layoutType: PollLayoutType.Default
+    };
+
+    const add_message = new ButtonBuilder()
+      .setCustomId("add_message")
+      .setLabel("Add Message")
+      .setStyle(ButtonStyle.Secondary);
 
     const publish = new ButtonBuilder()
       .setCustomId("publish_poll")
@@ -206,10 +256,9 @@ export class PollCommand {
       .setStyle(ButtonStyle.Primary);
 
     const row = new ActionRowBuilder<ButtonBuilder>()
-      .addComponents(publish);
+      .addComponents(add_message, publish);
 
     await interaction.reply({
-      content,
       ephemeral: true,
       components: [row],
       poll
