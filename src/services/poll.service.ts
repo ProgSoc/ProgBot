@@ -1,5 +1,6 @@
 import {
   RESTAPIPollCreate,
+  RESTGetAPIChannelMessageResult,
   RESTPostAPIChannelMessageJSONBody,
   RESTPostAPIChannelMessageResult
 } from "discord.js";
@@ -22,10 +23,10 @@ export class PollService {
   };
 
   public async pollCreate(
-    channel_id: string,
+    channelId: string,
     poll: RESTAPIPollCreate,
   ): Promise<RESTPostAPIChannelMessageResult> {
-    const url = `${DISCORD_BASE_URL}/channels/${channel_id}/messages`;
+    const url = `${DISCORD_BASE_URL}/channels/${channelId}/messages`;
 
     const reqBody: RESTPostAPIChannelMessageJSONBody = {
       poll,
@@ -42,6 +43,27 @@ export class PollService {
 
     if (!res.ok) {
       throw new Error(`pollCreate !res.ok`);
+    }
+
+    return await res.json();
+  }
+
+  public async pollGet(
+    channelId: string,
+    messageId: string
+  ): Promise<RESTGetAPIChannelMessageResult> {
+    const url = `${DISCORD_BASE_URL}/channels/${channelId}/messages/${messageId}`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bot ${this.configService.getOrThrow("DISCORD_TOKEN")}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`pollGet !res.ok`);
     }
 
     return await res.json();

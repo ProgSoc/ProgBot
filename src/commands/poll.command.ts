@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import {
   ActionRowBuilder,
+  AttachmentBuilder,
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
@@ -18,7 +19,7 @@ import {
 
 import { PollService } from "src/services/poll.service";
 
-export class PollCommandDto {
+export class PollCreateCommandDto {
   @StringOption({
     name: "question",
     description: "The poll question",
@@ -45,25 +46,81 @@ export class PollCommandDto {
   allowMultiselect: boolean;
 }
 
+export class PollExportCommandDto {
+  @StringOption({
+    name: "channelId",
+    description: "The channel id of the poll. Get this by right clicking the channel and selecting 'Copy Channel ID'",
+    required: true,
+  })
+  channelId: string;
+  @StringOption({
+    name: "messageId",
+    description: "The message id of the poll. Get this by right clicking on the poll and selecting 'Copy Message ID'",
+    required: true,
+  })
+  messageId: string;
+  @BooleanOption({
+    name: "replyPrivately",
+    description: "Whether to send the poll results as a private message",
+    required: false,
+  })
+  replyPrivately: boolean = true;
+}
+
 @Injectable()
 export class PollCommand {
   constructor(private readonly PollService: PollService) {}
 
   @SlashCommand({
-    name: "poll",
+    name: "poll_export",
+    description: "Export poll results",
+  })
+  public async poll_export(
+    @Context() interaction: ChatInputCommandInteraction | ButtonInteraction,
+    @Options() {
+      channelId,
+      messageId,
+      replyPrivately,
+    }: PollExportCommandDto,
+  ) {
+    const originalCommand = `/poll_export channelId:${channelId} messageId:${messageId} replyPrivately:${replyPrivately}`;
+    let content = `Original command: ${originalCommand}`;
+
+    const message = await this.PollService.pollGet(interaction.channelId, messageId);
+    if (!message.poll) {
+      content += `\nPoll not found`;
+      await interaction.reply({
+        content,
+        ephemeral: replyPrivately,
+      });
+      return;
+    }
+
+    const attachment = new AttachmentBuilder(Buffer.from(JSON.stringify(message.poll, null, 2)), {
+      name: `poll_${channelId}_${messageId}.json`,
+    });
+
+    await interaction.reply({
+      content,
+      ephemeral: replyPrivately,
+      files: [attachment],
+    });
+  }
+
+  @SlashCommand({
+    name: "poll_create",
     description: "Create a poll",
   })
-  
-  public async poll(
+  public async poll_create(
     @Context() interaction: ChatInputCommandInteraction | ButtonInteraction,
     @Options() {
       question,
       options,
       duration,
       allowMultiselect,
-    }: PollCommandDto,
+    }: PollCreateCommandDto,
   ) {
-    const originalCommand = `/poll question:${question} options:${options} duration:${duration} allowMultiselect:${allowMultiselect}`;
+    const originalCommand = `/poll_create question:${question} options:${options} duration:${duration} allowMultiselect:${allowMultiselect}`;
     let content = `Original command: ${originalCommand}`;
 
     const answers = options.split(",").map(option => option.trim());
