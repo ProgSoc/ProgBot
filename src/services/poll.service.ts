@@ -5,10 +5,9 @@ import {
   RESTPostAPIChannelMessageJSONBody,
   RESTPostAPIChannelMessageResult
 } from "discord.js";
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
-import { DATABASE_TOKEN, type Database } from "src/db/db.module";
 import mainLogger from "src/logger";
 
 const DISCORD_BASE_URL = "https://discord.com/api/v10";
@@ -18,7 +17,6 @@ export class PollService {
   private readonly logger = mainLogger.scope(PollService.name);
 
   constructor(
-    @Inject(DATABASE_TOKEN) private readonly db: Database,
     private readonly configService: ConfigService,
   ) {
   };

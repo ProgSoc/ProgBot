@@ -3,13 +3,10 @@ import {
   ActionRowBuilder,
   AttachmentBuilder,
   ButtonBuilder,
-  ButtonInteraction,
   ButtonStyle,
-  ChatInputCommandInteraction,
+  InteractionResponse,
   ModalBuilder,
-  ModalSubmitInteraction,
   PermissionsBitField,
-  PollData,
   PollLayoutType,
   RESTAPIPollCreate,
   TextInputBuilder,
@@ -21,8 +18,15 @@ import {
   SlashCommand,
   BooleanOption,
   StringOption,
-  SlashCommandContext,
+  Button,
+  Modal,
+  type SlashCommandContext,
+  type ButtonContext,
+  type ModalContext,
+  ComponentParam,
+  ModalParam,
 } from "necord";
+import mainLogger from "src/logger";
 
 import { PollService } from "src/services/poll.service";
 
@@ -41,42 +45,56 @@ export class PollCreateCommandDto {
   options: string;
   @StringOption({
     name: "duration",
-    description: "The poll duration (min 1h, max 32d or 4w). Accepts a whole number followed by a unit from the following: h, d, w",
+    description: "The poll duration (min 1h, max 32d or 4w). Accepted units: h, d, w",
     required: true,
   })
   duration: string;
   @BooleanOption({
-    name: "allowMultiselect",
+    name: "allow_multiselect",
     description: "Allow multiple options to be selected",
     required: true,
   })
-  allowMultiselect: boolean;
+  allow_multiselect: boolean;
 }
 
 export class PollExportCommandDto {
   @StringOption({
-    name: "channelId",
-    description: "The channel id of the poll message. Get this by right clicking the channel and selecting 'Copy Channel ID'",
+    name: "channel_id",
+    description: "The channel id of the poll message. Get this by right click channel > 'Copy Channel ID'",
     required: true,
   })
-  channelId: string;
+  channel_id: string;
   @StringOption({
-    name: "messageId",
-    description: "The message id of the poll message. Get this by right clicking on the poll and selecting 'Copy Message ID'",
+    name: "poll_message_id",
+    description: "The message id of the poll message. Get this by right click poll > 'Copy Message ID'",
     required: true,
   })
-  messageId: string;
+  poll_message_id: string;
   @BooleanOption({
-    name: "replyPrivately",
-    description: "Whether to send the poll results as a private message. Defaults to true.",
+    name: "reply_privately",
+    description: "Whether to export the poll to you only. Defaults to true.",
     required: false,
   })
-  replyPrivately: boolean = true;
+  reply_privately: boolean;
 }
+
+type PollCreateMessage = {
+  message: InteractionResponse<boolean>
+  question: string,
+  answers: string[],
+  duration_h: number,
+  allow_multiselect: boolean,
+  allow_mention_everyone: boolean,
+};
 
 @Injectable()
 export class PollCommand {
-  constructor(private readonly PollService: PollService) { }
+  private readonly logger = mainLogger.scope(PollCommand.name);
+
+  private polls: Record<string, PollCreateMessage> = {};
+  private message: string | undefined;
+
+  constructor(private readonly PollService: PollService) {}
 
   @SlashCommand({
     name: "poll_export",
@@ -84,53 +102,52 @@ export class PollCommand {
   })
   public async poll_export(
     @Context() [interaction]: SlashCommandContext,
-    @Options() {
-      channelId,
-      messageId,
-      replyPrivately,
-    }: PollExportCommandDto,
+    @Options() data: PollExportCommandDto,
   ) {
-    const originalCommand = `/poll_export channelId:${channelId} messageId:${messageId} replyPrivately:${replyPrivately}`;
-    let content = `Original command: ${originalCommand}`;
+    const {
+      channel_id,
+      poll_message_id,
+      reply_privately = true
+    } = data;
 
-    const message = await this.PollService.pollGet(interaction.channelId, messageId);
+    const original_command = `/poll_export channel_id:${channel_id} poll_message_id:${poll_message_id} reply_privately:${reply_privately}`;
+    let content = `### Original command:\n${original_command}`;
+
+    const message = await this.PollService.pollGet(interaction.channelId, poll_message_id);
     if (!message.poll) {
       content += `\nPoll not found`;
       await interaction.reply({
         content,
-        ephemeral: replyPrivately,
+        ephemeral: reply_privately,
       });
       return;
     }
 
     const attachment = new AttachmentBuilder(Buffer.from(JSON.stringify(message.poll, null, 2)), {
-      name: `poll_${channelId}_${messageId}.json`,
+      name: `poll_${channel_id}_${poll_message_id}.json`,
     });
 
     await interaction.reply({
       content,
-      ephemeral: replyPrivately,
+      ephemeral: reply_privately,
       files: [attachment],
     });
   }
 
   @SlashCommand({
     name: "poll_create",
-    description: "Create a poll",
+    description: "Create a poll in the current channel",
   })
   public async poll_create(
-    @Context() interaction: ChatInputCommandInteraction | ButtonInteraction | ModalSubmitInteraction,
-    @Options() {
-      question,
-      options,
-      duration,
-      allowMultiselect,
-    }: PollCreateCommandDto,
+    @Context() [interaction]: SlashCommandContext,
+    @Options() data: PollCreateCommandDto,
   ) {
-    const originalCommand = `/poll_create question:${question} options:${options} duration:${duration} allowMultiselect:${allowMultiselect}`;
-    let content = `Original command: ${originalCommand}`;
+    const { question, options, duration, allow_multiselect } = data;
+    
+    const original_command = `/poll_create question:${question} options:${options} duration:${duration} allow_multiselect:${allow_multiselect}`;
+    let content = `### Original command:\n${original_command}`;
 
-    const answers = options.split(",").map(option => option.trim());
+    const answers = options.split(",").map(option => option.trim()).filter(option => option.length > 0);
     if (answers.length > 10) {
       content += `\nMax 10 answer options. Please enter a comma-separated list of up to 10 options.`;
       await interaction.reply({
@@ -140,8 +157,8 @@ export class PollCommand {
       return;
     }
 
-    const durationMatch = duration.match(/(\d+)([hdw])/);
-    if (!durationMatch) {
+    const duration_match = duration.match(/(\d+)([hdw])/);
+    if (!duration_match) {
       content += `\nInvalid duration. Accepts a whole number followed by a unit from the following: h, d, w (e.g. 1h, 2d, 3w)`;
       await interaction.reply({
         content,
@@ -150,20 +167,20 @@ export class PollCommand {
       return;
     }
 
-    let durationHours = parseInt(durationMatch[1]);
-    const durationUnit = durationMatch[2];
+    let duration_h = parseInt(duration_match[1]);
+    const durationUnit = duration_match[2];
     switch (durationUnit) {
       case "h":
-        durationHours *= 1;
+        duration_h *= 1;
         break;
       case "d":
-        durationHours *= 24;
+        duration_h *= 24;
         break;
       case "w":
-        durationHours *= 24 * 7;
+        duration_h *= 24 * 7;
         break;
     }
-    if (durationHours < 1 || durationHours > 32 * 24) {
+    if (duration_h < 1 || duration_h > 32 * 24) {
       content += `\nPlease enter a duration between 1h and 32d or 4w`;
       await interaction.reply({
         content,
@@ -179,89 +196,129 @@ export class PollCommand {
       allow_mention_everyone = true;
     }
 
-    let message: string | undefined;
-    if (interaction instanceof ModalSubmitInteraction) {
-      switch (interaction.customId) {
-        case "add_poll_message":
-          message = interaction.fields.getTextInputValue('message');
-          break;
-      }
-      return;
-    }
+    const message_set_button = new ButtonBuilder()
+      .setCustomId(`message_set_button/${interaction.id}`)
+      .setLabel("Add/Edit Message")
+      .setStyle(ButtonStyle.Secondary);
 
-    if (interaction instanceof ButtonInteraction) {
-      switch (interaction.customId) {
-        case "add_message":
-          const modal = new ModalBuilder()
-            .setCustomId('add_poll_message')
-            .setTitle('Poll Message')
-            .addComponents(
-              new ActionRowBuilder<TextInputBuilder>().addComponents(
-                new TextInputBuilder()
-                  .setCustomId('message')
-                  .setLabel('Message')
-                  .setMaxLength(2000)
-                  .setStyle(TextInputStyle.Paragraph)
-                  .setRequired(false)
-              )
-            );
-          await interaction.showModal(modal);
-          break;
-        case "publish_poll":
-          const poll: RESTAPIPollCreate = {
-            question: {
-              text: question,
-            },
-            answers: answers.map((option, index) => ({
-              answer_id: index + 1,
-              poll_media: {
-                text: option,
-              },
-            })),
-            duration: durationHours,
-            allow_multiselect: allowMultiselect,
-            layout_type: PollLayoutType.Default
-          };
-          const _ = await this.PollService.pollCreate(
-            interaction.channelId,
-            poll,
-            message,
-            allow_mention_everyone
-          );
-          break;
-      }
-      return;
-    }
+    const publish = new ButtonBuilder()
+      .setCustomId(`publish/${interaction.id}`)
+      .setLabel("Publish")
+      .setStyle(ButtonStyle.Primary);
 
-    const poll: PollData = {
+    const row_1 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      message_set_button
+    );
+    const row_2 = new ActionRowBuilder<ButtonBuilder>().addComponents(
+      publish
+    );
+
+    const poll = {
       question: {
         text: question,
       },
       answers: answers.map((option, index) => ({
         text: option,
       })),
-      duration: durationHours,
-      allowMultiselect,
+      duration: duration_h,
+      allowMultiselect: allow_multiselect,
       layoutType: PollLayoutType.Default
     };
-
-    const add_message = new ButtonBuilder()
-      .setCustomId("add_message")
-      .setLabel("Add Message")
-      .setStyle(ButtonStyle.Secondary);
-
-    const publish = new ButtonBuilder()
-      .setCustomId("publish_poll")
-      .setLabel("Publish")
-      .setStyle(ButtonStyle.Primary);
-
-    const row = new ActionRowBuilder<ButtonBuilder>()
-      .addComponents(add_message, publish);
-
-    await interaction.reply({
+    
+    const message = await interaction.reply({
+      content: `Preview:\n`,
       ephemeral: true,
-      components: [row],
-      poll
+      components: [row_1, row_2],
+      poll,
     });
+
+    this.logger.debug(`poll_create/${interaction.id}`);
+    this.polls[interaction.id] = {
+      message,
+      question,
+      answers,
+      duration_h,
+      allow_multiselect,
+      allow_mention_everyone,
+    };
+  }
+
+  @Button('message_set_button/:id')
+  public async handleAddMessage(
+    @Context() [interaction]: ButtonContext,
+    @ComponentParam('id') id: string,
+  ) {
+    this.logger.debug(`message_set_button/${id}`);
+    const modal = new ModalBuilder()
+      .setCustomId(`message_set_modal/${id}`)
+      .setTitle('Poll Message')
+      .addComponents(
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+          new TextInputBuilder()
+            .setCustomId('message')
+            .setLabel('Message')
+            .setMaxLength(2000)
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(false)
+        )
+      );
+
+    await interaction.showModal(modal);
+    return;
+  }
+
+  @Button('publish/:id')
+  public async handlePublishPoll(
+    @Context() [interaction]: ButtonContext,
+    @ComponentParam('id') id: string,
+  ) {
+    this.logger.debug("publish", id);
+    const data = this.polls[id];
+    if (!data) {
+      return;
+    }
+    const { question, answers, duration_h, allow_multiselect, allow_mention_everyone } = data;
+    const poll: RESTAPIPollCreate = {
+      question: {
+        text: question,
+      },
+      answers: answers.map((option, index) => ({
+        poll_media: {
+          text: option,
+        },
+      })),
+      duration: duration_h,
+      allow_multiselect,
+      layout_type: PollLayoutType.Default
+    };
+
+    const _ = await this.PollService.pollCreate(
+      interaction.channelId,
+      poll,
+      this.message,
+      allow_mention_everyone
+    );
+    
+    await data.message.delete().catch(e => this.logger.error("handlePublishPoll data.message.delete", e));
+    delete this.polls[interaction.id];
+
+    return;
+  }
+
+  @Modal('message_set_modal/:id')
+  public async handleModalSubmit(
+    @Context() [interaction]: ModalContext,
+    @ModalParam('id') id: string,
+  ) {
+    this.message = interaction.fields.getTextInputValue('message');
+    this.polls[id].message.edit({
+      content: `Preview:\n${this.message}`,
+    });
+    await interaction.reply({
+      content: "Poll message updated",
+      ephemeral: true,
+    });
+    await interaction.deleteReply();
+    return;
   }
 }
