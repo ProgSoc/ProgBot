@@ -3,7 +3,8 @@ import {
   RESTAPIPollCreate,
   RESTGetAPIChannelMessageResult,
   RESTPostAPIChannelMessageJSONBody,
-  RESTPostAPIChannelMessageResult
+  RESTPostAPIChannelMessageResult,
+  RESTPostAPIPollExpireResult
 } from "discord.js";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -72,6 +73,27 @@ export class PollService {
 
     if (!res.ok) {
       throw new Error(`pollGet !res.ok`);
+    }
+
+    return await res.json();
+  }
+
+  public async pollEnd(
+    channelId: string,
+    messageId: string,
+  ): Promise<RESTPostAPIPollExpireResult> {
+    const url = `${DISCORD_BASE_URL}/channels/${channelId}/polls/${messageId}/expire`;
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bot ${this.configService.getOrThrow("DISCORD_TOKEN")}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`pollEnd !res.ok`);
     }
 
     return await res.json();

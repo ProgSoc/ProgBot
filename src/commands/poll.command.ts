@@ -1,4 +1,3 @@
-import { Injectable } from "@nestjs/common";
 import {
   ActionRowBuilder,
   AttachmentBuilder,
@@ -16,7 +15,6 @@ import {
 import {
   Context,
   Options,
-  SlashCommand,
   Button,
   type SlashCommandContext,
   type ButtonContext,
@@ -50,6 +48,14 @@ const get_command = <T extends Record<string, any>>(
   data: T
 ): string => {
   return `/${command} ${Object.entries(data).map(([key, value]) => `${key}:${value}`).join(" ")}`;
+};
+
+const get_message_link = (
+  guild_id: string,
+  channel_id: string,
+  message_id: string,
+): string => {
+  return `https://discord.com/channels/${guild_id}/${channel_id}/${message_id}`;
 };
 
 @PollCommandDecorator()
@@ -87,9 +93,29 @@ export class PollCommand {
     });
 
     await interaction.reply({
-      content: `Poll exported: https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${message.id}`,
+      content: `Poll exported: ${get_message_link(interaction.guildId!, interaction.channelId, message.id)}`,
       ephemeral: reply_privately,
       files: [attachment],
+    });
+  }
+
+  @Subcommand({
+    name: "end",
+    description: "Immediately end a poll in the current channel",
+  })
+  public async end(
+    @Context() [interaction]: SlashCommandContext,
+    @Options() data: PollEndCommandDto,
+  ) {
+    const {
+      message_id
+    } = data;
+
+    const message = await this.PollService.pollEnd(interaction.channelId, message_id);
+
+    await interaction.reply({
+      content: `Poll ended: ${get_message_link(interaction.guildId!, interaction.channelId, message.id)}`,
+      ephemeral: true,
     });
   }
 
