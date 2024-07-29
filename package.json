@@ -6,13 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "pnpm tsup",
+    "dev": "pnpm tsup --watch",
     "start": "node dist/main.js --enable-source-maps",
     "healthcheck": "node dist/healthcheck.js",
     "format": "pnpm dlx @biomejs/biome format ./src --write",
     "lint": "pnpm dlx @biomejs/biome lint ./src --apply",
-    "generate": "drizzle-kit generate:pg",
+    "generate": "pnpm drizzle-kit generate:pg",
     "tsc": "tsc"
   },
   "dependencies": {

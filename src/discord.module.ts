@@ -35,6 +35,8 @@ import { VerifyEmailButton } from "./buttons/EmailButton";
 import { AoCService } from "./services/aoc.service";
 import { AocSetupModal } from "./modals/AocSetup";
 import { AoCCommands } from "./commands/aoc.command";
+import { PollService } from "./services/poll.service";
+import { PollCommand } from "./commands/poll.command";
 // import { InjectDynamicProviders } from 'nestjs-dynamic-providers';
 
 // @InjectDynamicProviders({ pattern: 'dist/commands/**/*.command.js' })
@@ -84,27 +86,36 @@ import { AoCCommands } from "./commands/aoc.command";
     DiscordService,
     PingCommand,
     InviteCommand,
-    OutlineCommand,
-    HandbookCommands,
     IndexCommands,
-    HandbookService,
-    TimetableService,
-    TimetableCommand,
     SelfTimeoutCommand,
-    ScrapingService,
     ActivitiesButton,
     UptimeCommand,
-    UploadMembershipsCommand,
+
+    HandbookService,
+    HandbookCommands,
+    OutlineCommand,
+    
+    TimetableService,
+    TimetableCommand,
+
+    ScrapingService,
+
     MembershipsService,
+    UploadMembershipsCommand,
     LinkMemberShipModal,
-    DocsService,
-    DocsCommand,
+    LinkMembershipEmailModal,
     VerifyButton,
     VerifyEmailButton,
-    LinkMembershipEmailModal,
+
+    DocsService,
+    DocsCommand,
+
     AoCService,
-    AocSetupModal,
     AoCCommands,
+    AocSetupModal,
+
+    PollService,
+    PollCommand
   ],
   controllers: [DiscordController],
 })
