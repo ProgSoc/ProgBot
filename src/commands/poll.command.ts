@@ -17,64 +17,20 @@ import {
   Context,
   Options,
   SlashCommand,
-  BooleanOption,
-  StringOption,
   Button,
   type SlashCommandContext,
   type ButtonContext,
   ComponentParam,
+  createCommandGroupDecorator,
+  Subcommand,
 } from "necord";
-import mainLogger from "src/logger";
 
 import { PollService } from "src/services/poll.service";
+import { PollCreateCommandDto } from "src/dto/PollCreateCommandDto";
+import { PollExportCommandDto } from "src/dto/PollExportCommandDto";
+import { PollEndCommandDto } from "src/dto/PollEndCommandDto";
 
-export class PollCreateCommandDto {
-  @StringOption({
-    name: "question",
-    description: "The poll question, max 300 characters",
-    required: true,
-  })
-  question: string;
-  @StringOption({
-    name: "options",
-    description: "The poll options (max 10) separated by a comma, max 50 characters per option",
-    required: true,
-  })
-  options: string;
-  @StringOption({
-    name: "duration",
-    description: "The poll duration (min 1h, max 32d or 4w). Accepts a whole number followed by a unit: h, d, w",
-    required: true,
-  })
-  duration: string;
-  @BooleanOption({
-    name: "allow_multiselect",
-    description: "Allow multiple options to be selected",
-    required: true,
-  })
-  allow_multiselect: boolean;
-  @StringOption({ 
-    name: "poll_message",
-    description: "The poll message, max 2000 characters",
-    required: false,
-  })
-  poll_message: string;
-}
-
-export class PollExportCommandDto {
-  @StringOption({
-    name: "message_id",
-    description: "The message id of the poll message. Get this by right click poll > 'Copy Message ID'",
-    required: true,
-  })
-  message_id: string;
-  @BooleanOption({
-    name: "reply_privately",
-    description: "Whether to export the poll to you only. Defaults to true.",
-    required: true,
-  })
-  reply_privately: boolean;
-}
+import mainLogger from "src/logger";
 
 type PollCreateSlashCommand = {
   command_name: string,
@@ -84,6 +40,11 @@ type PollCreateSlashCommand = {
   allow_mention_everyone: boolean
 };
 
+export const PollCommandDecorator = createCommandGroupDecorator({
+  name: "poll",
+  description: "Commands related to polls",
+});
+
 const get_command = <T extends Record<string, any>>(
   command: string,
   data: T
@@ -91,18 +52,18 @@ const get_command = <T extends Record<string, any>>(
   return `/${command} ${Object.entries(data).map(([key, value]) => `${key}:${value}`).join(" ")}`;
 };
 
-@Injectable()
+@PollCommandDecorator()
 export class PollCommand {
   private readonly logger = mainLogger.scope(PollCommand.name);
   private polls: Record<string, PollCreateSlashCommand> = {};
 
   constructor(private readonly PollService: PollService) {}
 
-  @SlashCommand({
-    name: "poll_export",
-    description: "Export poll results",
+  @Subcommand({
+    name: "export",
+    description: "Export poll results in the current channel",
   })
-  public async poll_export(
+  public async export(
     @Context() [interaction]: SlashCommandContext,
     @Options() data: PollExportCommandDto,
   ) {
@@ -126,16 +87,17 @@ export class PollCommand {
     });
 
     await interaction.reply({
+      content: `Poll exported: https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${message.id}`,
       ephemeral: reply_privately,
       files: [attachment],
     });
   }
 
-  @SlashCommand({
-    name: "poll_create",
+  @Subcommand({
+    name: "create",
     description: "Preview and create a poll in the current channel",
   })
-  public async poll_create(
+  public async create(
     @Context() [interaction]: SlashCommandContext,
     @Options() data: PollCreateCommandDto,
   ) {
