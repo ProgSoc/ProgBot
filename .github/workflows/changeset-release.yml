@@ -39,11 +39,16 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Build
+        run: pnpm build
+
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
         with:
           # this npm script triggers `changeset publish`
           publish: pnpm publish:ci
