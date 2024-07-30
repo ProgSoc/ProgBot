@@ -21,3 +21,17 @@ This includes:
 ## Contributing
 
 This project is open to contributions and if you are interested in doing so please contact us on the Discord server.
+
+### Debugging
+
+To get a local instance of the bot running:
+1. Create a Discord bot for testing from the [Discord developer portal](https://discord.com/developers/applications).
+1. Create a `.env` file from the `.env.example` file and fill out each field following the instructions in the file.
+1. Start the adjacent services using `docker-compose up --build`.
+1. Install the Node dependencies and run the `dev` script with [pnpm](https://pnpm.io/installation) (e.g. `pnpm install` and `pnpm run dev`).
+
+**Requirements:**
+* Docker
+* Docker Compose
+* Node.js
+* pnpm
