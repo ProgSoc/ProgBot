@@ -1,10 +1,13 @@
 {
-  "name": "prog-bot",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
+  "name": "@progsoc/progbot",
+  "version": "1.15.0",
+  "description": "A Discord bot for ProgSoc",
+  "author": "ProgSoc",
+  "private": false,
   "license": "UNLICENSED",
+  "bin": {
+    "progbot": "./dist/main.js"
+  },
   "scripts": {
     "build": "pnpm tsup",
     "dev": "pnpm tsup --watch",
@@ -13,7 +16,8 @@
     "format": "pnpm dlx @biomejs/biome format ./src --write",
     "lint": "pnpm dlx @biomejs/biome lint ./src --apply",
     "generate": "pnpm drizzle-kit generate:pg",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "publish:ci": "pnpm publish && pnpm changeset tag"
   },
   "dependencies": {
     "@dynamicabot/signales": "2.1.1",
@@ -57,6 +61,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@changesets/cli": "^2.27.7",
     "@nestjs/cli": "10.4.2",
     "@swc/core": "1.7.3",
     "@types/cache-manager-redis-store": "2.0.4",
@@ -73,6 +78,12 @@
   },
   "type": "module",
   "module": "dist/main.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "release": {
     "branches": [
       "main"
