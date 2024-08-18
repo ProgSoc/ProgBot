@@ -151,8 +151,8 @@ importers:
         specifier: 3.4.2
         version: 3.4.2
       '@types/node':
-        specifier: 20.15.0
-        version: 20.15.0
+        specifier: 20.16.0
+        version: 20.16.0
       '@types/nodemailer':
         specifier: 6.4.15
         version: 6.4.15
@@ -1201,8 +1201,8 @@ packages:
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
-  '@types/node@20.15.0':
-    resolution: {integrity: sha512-eQf4OkH6gA9v1W0iEpht/neozCsZKMTK+C4cU6/fv7wtJCCL8LEQ4hie2Ln8ZP/0YYM2xGj7//f8xyqItkJ6QA==}
+  '@types/node@20.16.0':
+    resolution: {integrity: sha512-vDxceJcoZhIVh67S568bm1UGZO0DX0hpplJZxzeXMKwIPLn190ec5RRxQ69BKhX44SUGIxxgMdDY557lGLKprQ==}
 
   '@types/nodemailer@6.4.15':
     resolution: {integrity: sha512-0EBJxawVNjPkng1zm2vopRctuWVCxk34JcIlRuXSf54habUWdz1FB7wHDqOqvDa8Mtpt0Q3LTXQkAs2LNyK5jQ==}
@@ -3307,8 +3307,8 @@ packages:
     resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}
     engines: {node: '>=8'}
 
-  undici-types@6.13.0:
-    resolution: {integrity: sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==}
+  undici-types@6.19.6:
+    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
 
   undici@6.13.0:
     resolution: {integrity: sha512-Q2rtqmZWrbP8nePMq7mOJIN98M0fYvSgV89vwl/BQRT4mDOeY2GXZngfGpcBBhtky3woM7G24wZV3Q304Bv6cw==}
@@ -4364,7 +4364,7 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/cache-manager-redis-store@2.0.4':
     dependencies:
@@ -4375,7 +4375,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -4391,7 +4391,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.17.41':
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
       '@types/qs': 6.9.10
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -4417,13 +4417,13 @@ snapshots:
 
   '@types/node@12.20.55': {}
 
-  '@types/node@20.15.0':
+  '@types/node@20.16.0':
     dependencies:
-      undici-types: 6.13.0
+      undici-types: 6.19.6
 
   '@types/nodemailer@6.4.15':
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/passport@1.0.16':
     dependencies:
@@ -4435,24 +4435,24 @@ snapshots:
 
   '@types/redis@2.8.32':
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/semver@7.5.8': {}
 
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/serve-static@1.15.5':
     dependencies:
       '@types/http-errors': 2.0.4
       '@types/mime': 3.0.4
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@types/ws@8.5.10':
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
 
   '@vladfrangu/async_event_emitter@2.2.4': {}
 
@@ -5599,7 +5599,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.15.0
+      '@types/node': 20.16.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -6573,7 +6573,7 @@ snapshots:
     dependencies:
       '@lukeed/csprng': 1.1.0
 
-  undici-types@6.13.0: {}
+  undici-types@6.19.6: {}
 
   undici@6.13.0: {}
 
