@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@dynamicabot/signales':
-        specifier: 2.1.1
-        version: 2.1.1
+        specifier: 2.1.2
+        version: 2.1.2
       '@keyv/redis':
         specifier: 2.8.5
         version: 2.8.5
@@ -367,8 +367,8 @@ packages:
     resolution: {integrity: sha512-PZ+vLpxGCRtmr2RMkqh8Zp+BenUaJqlS6xhgWKEZcgC/vfHLEzpHtKkB0sl3nZWpwtcKk6YWy+pU3okL2I97FA==}
     engines: {node: '>=16.11.0'}
 
-  '@dynamicabot/signales@2.1.1':
-    resolution: {integrity: sha512-7Bn+i9a6aUkFpcpraXZxXMoRbCeRQNjXgld9uiXWWF25fPxL2JjSylheJoH9VlRWM1FZ/byX5NsPomxiFD+iCA==}
+  '@dynamicabot/signales@2.1.2':
+    resolution: {integrity: sha512-/ufI8CR8xZUwOaQhcITZimLGwzG3Rl6srJyFLQ3Y6KClth0t4c+Pd2fPzU4cFnXqWa9Y/BACAhHoXkOmVsNwlA==}
     engines: {node: '>=10'}
 
   '@esbuild-kit/core-utils@3.3.2':
@@ -3785,7 +3785,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@dynamicabot/signales@2.1.1':
+  '@dynamicabot/signales@2.1.2':
     dependencies:
       chalk: 5.3.0
       figures: 6.0.1
