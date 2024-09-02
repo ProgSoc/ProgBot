@@ -73,7 +73,7 @@
     "@types/nodemailer": "6.4.15",
     "@types/passport": "1.0.16",
     "drizzle-kit": "0.20.17",
-    "lefthook": "1.7.14",
+    "lefthook": "1.7.15",
     "tsup": "8.2.4",
     "typescript": "5.4.5"
   },
