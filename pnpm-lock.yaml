@@ -167,10 +167,10 @@ importers:
         version: 1.7.15
       tsup:
         specifier: 8.2.4
-        version: 8.2.4(@swc/core@1.7.24)(typescript@5.5.4)
+        version: 8.2.4(@swc/core@1.7.24)(typescript@5.6.2)
       typescript:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: 5.6.2
+        version: 5.6.2
 
 packages:
 
@@ -3285,8 +3285,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.5.4:
-    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
+  typescript@5.6.2:
+    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -6459,7 +6459,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsup@8.2.4(@swc/core@1.7.24)(typescript@5.5.4):
+  tsup@8.2.4(@swc/core@1.7.24)(typescript@5.6.2):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.0)
       cac: 6.7.14
@@ -6479,7 +6479,7 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       '@swc/core': 1.7.24
-      typescript: 5.5.4
+      typescript: 5.6.2
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -6503,7 +6503,7 @@ snapshots:
 
   typescript@5.3.3: {}
 
-  typescript@5.5.4: {}
+  typescript@5.6.2: {}
 
   uid2@0.0.4: {}
 
