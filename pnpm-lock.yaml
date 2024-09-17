@@ -16,25 +16,25 @@ importers:
         version: 2.8.5
       '@necord/pagination':
         specifier: 1.3.1
-        version: 1.3.1(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.16.2)(necord@6.8.6(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 1.3.1(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.16.2)(necord@6.8.6(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/cache-manager':
         specifier: 2.2.2
-        version: 2.2.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.6)(rxjs@7.8.1)
+        version: 2.2.2(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.6)(rxjs@7.8.1)
       '@nestjs/common':
-        specifier: 10.4.2
-        version: 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 10.4.3
+        version: 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/config':
         specifier: 3.2.3
-        version: 3.2.3(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)
+        version: 3.2.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)
       '@nestjs/core':
-        specifier: 10.4.2
-        version: 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 10.4.3
+        version: 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/passport':
         specifier: 10.0.3
-        version: 10.0.3(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(passport@0.7.0)
+        version: 10.0.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(passport@0.7.0)
       '@nestjs/platform-express':
-        specifier: 10.4.2
-        version: 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2)
+        specifier: 10.4.3
+        version: 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3)
       '@sentry/integrations':
         specifier: 7.114.0
         version: 7.114.0
@@ -85,7 +85,7 @@ importers:
         version: 0.41.0
       necord:
         specifier: 6.8.6
-        version: 6.8.6(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 6.8.6(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       node-html-markdown:
         specifier: 1.3.0
         version: 1.3.0
@@ -872,8 +872,8 @@ packages:
       '@swc/core':
         optional: true
 
-  '@nestjs/common@10.4.2':
-    resolution: {integrity: sha512-7uLRj/1WBX93qM78keTE8b5SqIgz5Rhe0BPnOdCL1QnA7mLVcj0aEyLuHryeZJfx26FDoeAEMrLCC/RAdmIHog==}
+  '@nestjs/common@10.4.3':
+    resolution: {integrity: sha512-4hbLd3XIJubHSylYd/1WSi4VQvG68KM/ECYpMDqA3k3J1/T17SAg40sDoq3ZoO5OZgU0xuNyjuISdOTjs11qVg==}
     peerDependencies:
       class-transformer: '*'
       class-validator: '*'
@@ -891,8 +891,8 @@ packages:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       rxjs: ^7.1.0
 
-  '@nestjs/core@10.4.2':
-    resolution: {integrity: sha512-h2sjNzFHzoxOHU5Ag/pCVn0CrYHKTa0HfjGAa6GOrffRAsIa1H2nJaUzg89yHZXkHgWi+UynRsp8A4HJ1JVg9w==}
+  '@nestjs/core@10.4.3':
+    resolution: {integrity: sha512-6OQz+5C8mT8yRtfvE5pPCq+p6w5jDot+oQku1KzQ24ABn+lay1KGuJwcKZhdVNuselx+8xhdMxknZTA8wrGLIg==}
     peerDependencies:
       '@nestjs/common': ^10.0.0
       '@nestjs/microservices': ^10.0.0
@@ -914,8 +914,8 @@ packages:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       passport: ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0
 
-  '@nestjs/platform-express@10.4.2':
-    resolution: {integrity: sha512-WQVfUyAgMZqDXWc+sIdfWZRl6+CLZhS/GB70ZiKbMNiOETbfBisQoZ1S95o+ztXZC527HnPxvwiF3GPjG/trmg==}
+  '@nestjs/platform-express@10.4.3':
+    resolution: {integrity: sha512-ss7gkofVm3eO+1P9iRhmGq6Xcjg+mIN3dWisKJZYelSV+msb0QpJmqChLvWjLkWtlqDnx915FKUk0IzCa0TVzw==}
     peerDependencies:
       '@nestjs/common': ^10.0.0
       '@nestjs/core': ^10.0.0
@@ -3754,7 +3754,7 @@ snapshots:
       discord-api-types: 0.37.97
       fast-deep-equal: 3.1.3
       ts-mixer: 6.0.4
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@discordjs/collection@1.5.3': {}
 
@@ -3773,7 +3773,7 @@ snapshots:
       '@vladfrangu/async_event_emitter': 2.4.6
       discord-api-types: 0.37.97
       magic-bytes.js: 1.10.0
-      tslib: 2.6.3
+      tslib: 2.7.0
       undici: 6.19.8
 
   '@discordjs/util@1.1.1': {}
@@ -3787,7 +3787,7 @@ snapshots:
       '@types/ws': 8.5.10
       '@vladfrangu/async_event_emitter': 2.4.6
       discord-api-types: 0.37.83
-      tslib: 2.6.3
+      tslib: 2.7.0
       ws: 8.17.0
     transitivePeerDependencies:
       - bufferutil
@@ -4081,19 +4081,19 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@necord/pagination@1.3.1(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.16.2)(necord@6.8.6(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@necord/pagination@1.3.1(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord.js@14.16.2)(necord@6.8.6(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core': 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       discord.js: 14.16.2
-      necord: 6.8.6(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      necord: 6.8.6(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
 
-  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.6)(rxjs@7.8.1)':
+  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.6)(rxjs@7.8.1)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core': 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       cache-manager: 5.7.6
       rxjs: 7.8.1
 
@@ -4125,7 +4125,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       iterare: 1.2.1
       reflect-metadata: 0.2.2
@@ -4133,17 +4133,17 @@ snapshots:
       tslib: 2.7.0
       uid: 2.0.2
 
-  '@nestjs/config@3.2.3(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)':
+  '@nestjs/config@3.2.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
       dotenv: 16.4.5
       dotenv-expand: 10.0.0
       lodash: 4.17.21
       rxjs: 7.8.1
 
-  '@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nuxtjs/opencollective': 0.3.2
       fast-safe-stringify: 2.1.1
       iterare: 1.2.1
@@ -4153,19 +4153,19 @@ snapshots:
       tslib: 2.7.0
       uid: 2.0.2
     optionalDependencies:
-      '@nestjs/platform-express': 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2)
+      '@nestjs/platform-express': 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3)
     transitivePeerDependencies:
       - encoding
 
-  '@nestjs/passport@10.0.3(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(passport@0.7.0)':
+  '@nestjs/passport@10.0.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(passport@0.7.0)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
       passport: 0.7.0
 
-  '@nestjs/platform-express@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2)':
+  '@nestjs/platform-express@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3)':
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core': 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       body-parser: 1.20.3
       cors: 2.8.5
       express: 4.21.0
@@ -4934,7 +4934,7 @@ snapshots:
 
   define-data-property@1.1.1:
     dependencies:
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.2.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
 
@@ -5465,7 +5465,7 @@ snapshots:
 
   has-property-descriptors@1.0.1:
     dependencies:
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.2.4
 
   has-property-descriptors@1.0.2:
     dependencies:
@@ -5892,10 +5892,10 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  necord@6.8.6(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+  necord@6.8.6(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1))(discord-api-types@0.37.93)(discord.js@14.16.2)(reflect-metadata@0.2.2)(rxjs@7.8.1):
     dependencies:
-      '@nestjs/common': 10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core': 10.4.2(@nestjs/common@10.4.2(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/common': 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core': 10.4.3(@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       discord-api-types: 0.37.93
       discord.js: 14.16.2
       path-to-regexp: 8.0.0
@@ -6315,7 +6315,7 @@ snapshots:
   set-function-length@1.1.1:
     dependencies:
       define-data-property: 1.1.1
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.2.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.1
 
