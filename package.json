@@ -71,7 +71,7 @@
     "@types/luxon": "3.4.2",
     "@types/node": "20.16.9",
     "@types/nodemailer": "6.4.16",
-    "@types/passport": "1.0.16",
+    "@types/passport": "1.0.17",
     "drizzle-kit": "0.20.17",
     "lefthook": "1.7.17",
     "tsup": "8.3.5",
