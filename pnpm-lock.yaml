@@ -39,8 +39,8 @@ importers:
         specifier: 7.114.0
         version: 7.114.0
       '@sentry/node':
-        specifier: 7.119.0
-        version: 7.119.0
+        specifier: 7.119.2
+        version: 7.119.2
       ascii-table3:
         specifier: 0.9.0
         version: 0.9.0
@@ -1154,44 +1154,44 @@ packages:
     resolution: {integrity: sha512-jjmJywLAFoWeBi1W7994zZyiNWPIiqRRNAmSERxyg93xRGzNYvGjlZ0gR6x0F4gPRi2+0O6S71kOZYyr3cxaIQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
-  '@sentry-internal/tracing@7.119.0':
-    resolution: {integrity: sha512-oKdFJnn+56f0DHUADlL8o9l8jTib3VDLbWQBVkjD9EprxfaCwt2m8L5ACRBdQ8hmpxCEo4I8/6traZ7qAdBUqA==}
+  '@sentry-internal/tracing@7.119.2':
+    resolution: {integrity: sha512-V2W+STWrafyGJhQv3ulMFXYDwWHiU6wHQAQBShsHVACiFaDrJ2kPRet38FKv4dMLlLlP2xN+ss2e5zv3tYlTiQ==}
     engines: {node: '>=8'}
 
   '@sentry/core@7.114.0':
     resolution: {integrity: sha512-YnanVlmulkjgZiVZ9BfY9k6I082n+C+LbZo52MTvx3FY6RE5iyiPMpaOh67oXEZRWcYQEGm+bKruRxLVP6RlbA==}
     engines: {node: '>=8'}
 
-  '@sentry/core@7.119.0':
-    resolution: {integrity: sha512-CS2kUv9rAJJEjiRat6wle3JATHypB0SyD7pt4cpX5y0dN5dZ1JrF57oLHRMnga9fxRivydHz7tMTuBhSSwhzjw==}
+  '@sentry/core@7.119.2':
+    resolution: {integrity: sha512-hQr3d2yWq/2lMvoyBPOwXw1IHqTrCjOsU1vYKhAa6w9vGbJZFGhKGGE2KEi/92c3gqGn+gW/PC7cV6waCTDuVA==}
     engines: {node: '>=8'}
 
   '@sentry/integrations@7.114.0':
     resolution: {integrity: sha512-BJIBWXGKeIH0ifd7goxOS29fBA8BkEgVVCahs6xIOXBjX1IRS6PmX0zYx/GP23nQTfhJiubv2XPzoYOlZZmDxg==}
     engines: {node: '>=8'}
 
-  '@sentry/integrations@7.119.0':
-    resolution: {integrity: sha512-OHShvtsRW0A+ZL/ZbMnMqDEtJddPasndjq+1aQXw40mN+zeP7At/V1yPZyFaURy86iX7Ucxw5BtmzuNy7hLyTA==}
+  '@sentry/integrations@7.119.2':
+    resolution: {integrity: sha512-dCuXKvbUE3gXVVa696SYMjlhSP6CxpMH/gl4Jk26naEB8Xjsn98z/hqEoXLg6Nab73rjR9c/9AdKqBbwVMHyrQ==}
     engines: {node: '>=8'}
 
-  '@sentry/node@7.119.0':
-    resolution: {integrity: sha512-9PFzN8xS6U0oZCflpVxS2SSIsHkCaj7qYBlsvHj4CTGWfao9ImwrU6+smy4qoG6oxwPfoVb5pOOMb4WpWOvXcQ==}
+  '@sentry/node@7.119.2':
+    resolution: {integrity: sha512-TPNnqxh+Myooe4jTyRiXrzrM2SH08R4+nrmBls4T7lKp2E5R/3mDSe/YTn5rRcUt1k1hPx1NgO/taG0DoS5cXA==}
     engines: {node: '>=8'}
 
   '@sentry/types@7.114.0':
     resolution: {integrity: sha512-tsqkkyL3eJtptmPtT0m9W/bPLkU7ILY7nvwpi1hahA5jrM7ppoU0IMaQWAgTD+U3rzFH40IdXNBFb8Gnqcva4w==}
     engines: {node: '>=8'}
 
-  '@sentry/types@7.119.0':
-    resolution: {integrity: sha512-27qQbutDBPKGbuJHROxhIWc1i0HJaGLA90tjMu11wt0E4UNxXRX+UQl4Twu68v4EV3CPvQcEpQfgsViYcXmq+w==}
+  '@sentry/types@7.119.2':
+    resolution: {integrity: sha512-ydq1tWsdG7QW+yFaTp0gFaowMLNVikIqM70wxWNK+u98QzKnVY/3XTixxNLsUtnAB4Y+isAzFhrc6Vb5GFdFeg==}
     engines: {node: '>=8'}
 
   '@sentry/utils@7.114.0':
     resolution: {integrity: sha512-319N90McVpupQ6vws4+tfCy/03AdtsU0MurIE4+W5cubHME08HtiEWlfacvAxX+yuKFhvdsO4K4BB/dj54ideg==}
     engines: {node: '>=8'}
 
-  '@sentry/utils@7.119.0':
-    resolution: {integrity: sha512-ZwyXexWn2ZIe2bBoYnXJVPc2esCSbKpdc6+0WJa8eutXfHq3FRKg4ohkfCBpfxljQGEfP1+kfin945lA21Ka+A==}
+  '@sentry/utils@7.119.2':
+    resolution: {integrity: sha512-TLdUCvcNgzKP0r9YD7tgCL1PEUp42TObISridsPJ5rhpVGQJvpr+Six0zIkfDUxerLYWZoK8QMm9KgFlPLNQzA==}
     engines: {node: '>=8'}
 
   '@swc/core-darwin-arm64@1.7.40':
@@ -4363,21 +4363,21 @@ snapshots:
 
   '@sapphire/snowflake@3.5.3': {}
 
-  '@sentry-internal/tracing@7.119.0':
+  '@sentry-internal/tracing@7.119.2':
     dependencies:
-      '@sentry/core': 7.119.0
-      '@sentry/types': 7.119.0
-      '@sentry/utils': 7.119.0
+      '@sentry/core': 7.119.2
+      '@sentry/types': 7.119.2
+      '@sentry/utils': 7.119.2
 
   '@sentry/core@7.114.0':
     dependencies:
       '@sentry/types': 7.114.0
       '@sentry/utils': 7.114.0
 
-  '@sentry/core@7.119.0':
+  '@sentry/core@7.119.2':
     dependencies:
-      '@sentry/types': 7.119.0
-      '@sentry/utils': 7.119.0
+      '@sentry/types': 7.119.2
+      '@sentry/utils': 7.119.2
 
   '@sentry/integrations@7.114.0':
     dependencies:
@@ -4386,32 +4386,32 @@ snapshots:
       '@sentry/utils': 7.114.0
       localforage: 1.10.0
 
-  '@sentry/integrations@7.119.0':
+  '@sentry/integrations@7.119.2':
     dependencies:
-      '@sentry/core': 7.119.0
-      '@sentry/types': 7.119.0
-      '@sentry/utils': 7.119.0
+      '@sentry/core': 7.119.2
+      '@sentry/types': 7.119.2
+      '@sentry/utils': 7.119.2
       localforage: 1.10.0
 
-  '@sentry/node@7.119.0':
+  '@sentry/node@7.119.2':
     dependencies:
-      '@sentry-internal/tracing': 7.119.0
-      '@sentry/core': 7.119.0
-      '@sentry/integrations': 7.119.0
-      '@sentry/types': 7.119.0
-      '@sentry/utils': 7.119.0
+      '@sentry-internal/tracing': 7.119.2
+      '@sentry/core': 7.119.2
+      '@sentry/integrations': 7.119.2
+      '@sentry/types': 7.119.2
+      '@sentry/utils': 7.119.2
 
   '@sentry/types@7.114.0': {}
 
-  '@sentry/types@7.119.0': {}
+  '@sentry/types@7.119.2': {}
 
   '@sentry/utils@7.114.0':
     dependencies:
       '@sentry/types': 7.114.0
 
-  '@sentry/utils@7.119.0':
+  '@sentry/utils@7.119.2':
     dependencies:
-      '@sentry/types': 7.119.0
+      '@sentry/types': 7.119.2
 
   '@swc/core-darwin-arm64@1.7.40':
     optional: true
