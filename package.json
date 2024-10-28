@@ -75,7 +75,7 @@
     "drizzle-kit": "0.20.17",
     "lefthook": "1.7.17",
     "tsup": "8.3.5",
-    "typescript": "5.6.2"
+    "typescript": "5.6.3"
   },
   "type": "module",
   "module": "dist/main.js",
