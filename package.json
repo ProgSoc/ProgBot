@@ -50,7 +50,7 @@
     "nodemailer": "6.9.16",
     "passport": "0.7.0",
     "passport-discord": "0.1.4",
-    "pg": "8.13.0",
+    "pg": "8.13.1",
     "piscina": "4.7.0",
     "postgres": "3.4.4",
     "reflect-metadata": "0.2.2",
