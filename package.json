@@ -52,7 +52,7 @@
     "passport-discord": "0.1.4",
     "pg": "8.13.1",
     "piscina": "4.7.0",
-    "postgres": "3.4.4",
+    "postgres": "3.4.5",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "stream-transform": "3.3.2",
