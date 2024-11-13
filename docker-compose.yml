@@ -8,7 +8,7 @@ services:
     ports:
       - "6379:6379"
   search:
-    image: getmeili/meilisearch:v1.10
+    image: getmeili/meilisearch:v1.11
     volumes:
       - meilisearch-data:/meili_data
     env_file: .env
