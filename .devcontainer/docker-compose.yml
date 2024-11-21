@@ -30,7 +30,7 @@ services:
       - meilisearch-data:/meili_data
     env_file: ../.env
   database:
-    image: postgres:16
+    image: postgres:17
     env_file: ../.env
     volumes:
       - postgres:/var/lib/postgresql/data
