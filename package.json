@@ -55,7 +55,7 @@
     "postgres": "3.4.5",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
-    "stream-transform": "3.3.2",
+    "stream-transform": "3.3.3",
     "terminal-link": "3.0.0",
     "zod": "3.23.8"
   },
