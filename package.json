@@ -70,7 +70,7 @@
     "@types/lunr": "2.3.7",
     "@types/luxon": "3.4.2",
     "@types/node": "20.17.9",
-    "@types/nodemailer": "6.4.16",
+    "@types/nodemailer": "6.4.17",
     "@types/passport": "1.0.17",
     "drizzle-kit": "0.20.17",
     "lefthook": "1.8.2",
