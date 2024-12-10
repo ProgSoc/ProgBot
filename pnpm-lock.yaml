@@ -120,8 +120,8 @@ importers:
         specifier: 3.0.0
         version: 3.0.0
       zod:
-        specifier: 3.23.8
-        version: 3.23.8
+        specifier: 3.24.0
+        version: 3.24.0
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -3471,8 +3471,8 @@ packages:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+  zod@3.24.0:
+    resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
 
 snapshots:
 
@@ -4010,10 +4010,10 @@ snapshots:
     dependencies:
       hono: 4.6.7
 
-  '@hono/zod-validator@0.2.2(hono@4.6.7)(zod@3.23.8)':
+  '@hono/zod-validator@0.2.2(hono@4.6.7)(zod@3.24.0)':
     dependencies:
       hono: 4.6.7
-      zod: 3.23.8
+      zod: 3.24.0
 
   '@ioredis/commands@1.2.0': {}
 
@@ -5055,7 +5055,7 @@ snapshots:
     dependencies:
       '@esbuild-kit/esm-loader': 2.6.5
       '@hono/node-server': 1.13.2(hono@4.6.7)
-      '@hono/zod-validator': 0.2.2(hono@4.6.7)(zod@3.23.8)
+      '@hono/zod-validator': 0.2.2(hono@4.6.7)(zod@3.24.0)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -5069,7 +5069,7 @@ snapshots:
       minimatch: 7.4.6
       semver: 7.6.3
       superjson: 2.2.1
-      zod: 3.23.8
+      zod: 3.24.0
     transitivePeerDependencies:
       - supports-color
 
@@ -6679,4 +6679,4 @@ snapshots:
 
   yargs-parser@21.1.1: {}
 
-  zod@3.23.8: {}
+  zod@3.24.0: {}
